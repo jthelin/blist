@@ -12,30 +12,28 @@
 #error Requires C++ for use of these facilities
 #endif
 
-#include <stdarg.h>
-#include <iostream.h>
-#include "Boolean.h"
+#include <string>
+#include <cstdarg>
+#include <iostream>
 
-extern  BOOL  _debug;   // Debugging flag - usually define in main
+extern bool _debug;   // Debugging flag - usually define in main
 
 /*****************************************************************************/
 /* General debugging messages                                                */
 /*****************************************************************************/
 
-extern void  do_debug( char *format, va_list args );
+extern void do_debug(std::string &format, va_list args);
 
-void inline  debug( char *fmt, ... )
-{
-	va_list args;
-
-	if (_debug)
-	{
-		// Debugging flag is on
-		va_start(args,fmt);
-		do_debug(fmt,args);
-		va_end(args);
-	}
-}
+//void inline debug(std::string &fmt, ...) {
+//  va_list args;
+//
+//  if (_debug) {
+//    // Debugging flag is on
+//    va_start(args, &fmt);
+//    do_debug(fmt, args);
+//    va_end(args);
+//  }
+//}
 
 /*****************************************************************************/
 /* Checking of PRE and POST conditions                                       */
@@ -59,18 +57,18 @@ extern ofstream errlog;
 /* PRECONDITIONS : REQUIRE(b) */
 /* -------------------------- */
 #define	REQUIRE(b) \
-	if (!(b)) \
-		errlog	<< "PRECONDITION (REQUIRE) failed at " \
-			<< __FILE__ << " line " << __LINE__ << endl \
-			<< "Check was [ #b ]" << endl
+  if (!(b)) \
+    errlog	<< "PRECONDITION (REQUIRE) failed at " \
+      << __FILE__ << " line " << __LINE__ << endl \
+      << "Check was [ #b ]" << endl
 
 /* POSTCONDITIONS : ENSURE(b) */
 /* -------------------------- */
 #define	ENSURE(b) \
-	if (!(b)) \
-		errlog	<< "POSTCONDITION (ENSURE) failed at " \
-			<< __FILE__ << " line " << __LINE__ << endl \
-			<< "Check was [ #b ]" << endl
+  if (!(b)) \
+    errlog	<< "POSTCONDITION (ENSURE) failed at " \
+      << __FILE__ << " line " << __LINE__ << endl \
+      << "Check was [ #b ]" << endl
 
 #else
 /* No debugging */
@@ -95,7 +93,6 @@ extern ofstream errlog;
 
 #define  trace_char(c)          debug( PLACE( c,  "=%c"  ) )
 ******************************************************************************/
-                                
 /*****************************************************************************/
 /* Function Entry and Exit tracing                                           */
 /*****************************************************************************/
@@ -109,25 +106,23 @@ extern ofstream errlog;
 //	 logEntryExits is TRUE.
 //
 // End ---------------------------------------------------------------------
-class  TraceEntryExit
-{
+class TraceEntryExit {
 private:
-	static char *	EntryPrefix;
-	static char *	ExitPrefix;
+  static std::string EntryPrefix;
+  static std::string ExitPrefix;
 
-	static BOOL	logEntryExits;
-	// If TRUE, entry and exit trace will be logged.
+  static bool logEntryExits; // If true, then entry and exit trace will be logged.
 
-	const char *	className;
-	const char *	functionName;
+  const std::string &className;
+  const std::string &functionName;
 public:
-			TraceEntryExit(
-				const char * className,
-				const char * functionName );
-			~TraceEntryExit ( );
+  TraceEntryExit(
+      const std::string &className,
+      const std::string &functionName);
 
-	static void	SetLogging( BOOL bLogTrace )
-			{ TraceEntryExit::logEntryExits = (bLogTrace != 0); };
+  ~TraceEntryExit();
+
+  static void SetLogging(bool bLogTrace) { TraceEntryExit::logEntryExits = (bLogTrace != 0); };
 };
 // End Class TraceEntryExit
 
@@ -148,11 +143,10 @@ public:
 
 Date          | Name  | Description
 --------------+-------+-------------------------------------------------------
-25-Apr-96	NJT	v1.1 - Initial UNIX version under SCCS control.
-30-Jul-96	NJT	v2.1 - Added functions for checking PRE and POST condns.
-04-Sep-96	NJT	v2.2 - Moved TraceEntryExit ctor/dtor from inline to .C
-			file as it does not cope well with cfront inlining.
+25-Apr-96       NJT     v1.1 - Initial UNIX version under SCCS control.
+30-Jul-96       NJT     v2.1 - Added functions for checking PRE and POST condns.
+04-Sep-96       NJT     v2.2 - Moved TraceEntryExit ctor/dtor from inline to .C
+                               file as it does not cope well with cfront inlining.
 ******************************************************************************/
 
 #endif /* _UTILDBUG_H */
-/* EOF */

@@ -21,11 +21,12 @@
 // End Interface Declarations ----------------------------------------------
 
 // Implementation Dependencies ----------------------------------------------
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <assert.h>
-#include <iomanip.h>
+#include <cstdlib>
+#include <cstring>
+#include <cctype>
+#include <cassert>
+#include <iomanip>
+#include <vector>
 // End Implementation Dependencies -------------------------------------------
 
 
@@ -36,30 +37,30 @@
 //
 // End ---------------------------------------------------------------------
 TextBox::TextBox(
-	const char	text[],
-	box_style	box_type,
-	char		box_char )
-{
-	// Store the text message on the heap
+    const std::string &text,
+    box_style box_type,
+    char box_char) {
+  // Store the text message on the heap
 
-	char * s = (char *) malloc( strlen(text)+1 );
+  char *s = (char *) malloc(strlen(text.c_str()) + 1);
 
-	assert( s != NULL );
+  assert(s != nullptr);
 
-	if (s)  strcpy(s,text);
+  if (s) { strcpy(s, text.c_str()); }
 
-	// Initialise object data
-	this->text = s;
-	this->num_lines = 1;
+  // Initialise object data
+  this->text = s;
+  this->num_lines = 1;
 
-	if (isprint(box_char))
-		this->box_char = box_char;
-	else
-		// Specified box character is unprintable,
-		// so override with a printable default.
-		this->box_char = '*';
+  if (isprint(box_char)) {
+    this->box_char = box_char;
+  } else {
+    // Specified box character is unprintable,
+    // so override with a printable default.
+    this->box_char = '*';
+  }
 
-	this->box_type = box_type;
+  this->box_type = box_type;
 }
 // End TextBox constructor //
 
@@ -72,48 +73,46 @@ TextBox::TextBox(
 //
 // End ---------------------------------------------------------------------
 TextBox::TextBox(
-	const char *	text[],
-	box_style	box_type,
-	char		box_char )
-{
-	// Store the text message on the heap
+    const std::vector<std::string> &text_lines,
+    box_style box_type,
+    char box_char) {
+  // Store the text message on the heap
 
-	char * s, * p;
-	int  num_lines = 0;
-	int  area_size = 0;
-	int  i;   // loop counter
+  char *s, *p;
+  int line_count = 0;
+  int area_size = 0;
 
-	for ( i=0; *text[i] != '\0'; i++ )
-		area_size += strlen(text[i]) + 1;  // count /0 string terminator
+  for (auto text_line : text_lines) {
+    area_size += strlen(text_line.c_str()) + 1;  // count /0 string terminator
+    line_count++;
+  }
 
-	num_lines = i;
+  assert (line_count >= 0);
 
-	assert ( num_lines >= 0 );
+  p = s = (char *) malloc(area_size + 1);   // allow for final /0
 
-	p = s = (char *) malloc( area_size + 1 );   // allow for final /0
+  assert(s != nullptr);
 
-	assert( s != NULL );
+  // Copy lines onto heap
+  for (int i = 0; i < line_count; i++) {
+    strcpy(p, text_lines[i].c_str());
+    p += strlen(text_lines[i].c_str()) + 1;
+  }
+  *p = '\0';   // Add final terminator
 
-	// Copy lines onto heap
-	for ( i=0; i<num_lines; i++)
-	{
-		strcpy( p, text[i] );
-		p += strlen(text[i]) + 1;
-	}
-	*p = '\0';   // Add final terminator
+  // Initialise object data
+  this->text = s;
+  this->num_lines = line_count;
 
-	// Initialise object data
-	this->text = s;
-	this->num_lines = num_lines;
+  if (isprint(box_char)) {
+    this->box_char = box_char;
+  } else {
+    // Specified box character is unprintable,
+    // so override with a printable default.
+    this->box_char = '*';
+  }
 
-	if (isprint(box_char))
-		this->box_char = box_char;
-	else
-		// Specified box character is unprintable,
-		// so override with a printable default.
-		this->box_char = '*';
-
-	this->box_type = box_type;
+  this->box_type = box_type;
 }
 // End TextBox constructor //
 
@@ -124,9 +123,10 @@ TextBox::TextBox(
 //	Frees up the heap memory used to store the message string.
 //
 // End ---------------------------------------------------------------------
-TextBox::~TextBox ( void )
-{
-	if (!this->text)  free(this->text);
+TextBox::~TextBox() {
+  if (!this->text) {
+    free(this->text);
+  }
 }
 // End TextBox Destructor //
 
@@ -137,79 +137,77 @@ TextBox::~TextBox ( void )
 //	Outputs the specified TextBox object to the specified output stream.
 //
 // End ---------------------------------------------------------------------
-ostream& operator << ( ostream& s, TextBox tb )
-{
-	unsigned int text_len = 0;
-	char  *p;
-	unsigned int  l;
-	unsigned int	border_width,
-			gap_width;
-	unsigned int i,j;   // loop counts
+std::ostream &operator<<(std::ostream &s, const TextBox &tb) {
+  int text_len = 0;
+  char *p;
+  unsigned int l;
+  unsigned int border_width,
+      gap_width;
+  unsigned int i, j;   // loop counts
 
-	// Decide border and gap widths
-	if (tb.box_type == TextBox::DOUBLE) 
-		border_width = gap_width = 2;
-	else if (tb.box_type == TextBox::BASIC)
-	{
-		border_width = 1;
-		gap_width = 0;
-	}
-	else
-		border_width = gap_width = 1;
+  const char EOL = '\n';
+  const char SPACE = ' ';
 
-	// Decide on the length of the longest line in the textbox.
-	for ( l=0, p=tb.text; l<tb.num_lines; l++, p += strlen(p)+1 )
-		if (text_len < strlen(p))
-			text_len = strlen(p);
+  // Decide border and gap widths
+  if (tb.box_type == TextBox::DOUBLE)
+    border_width = gap_width = 2;
+  else if (tb.box_type == TextBox::BASIC) {
+    border_width = 1;
+    gap_width = 0;
+  } else
+    border_width = gap_width = 1;
 
-	// Top border
-	for ( j=1; j<=border_width; j++ )
-	{
-		for ( i=1; i<=(text_len+2*border_width+2*gap_width); i++ )
-			s << tb.box_char;
-		s << endl;
-	}
-	// Top gap
-	for ( j=1; j<=gap_width; j++ )
-	{
-		for ( i=1; i<=border_width; i++ )		s<< tb.box_char;
-		for ( i=1; i<=text_len+2*gap_width; i++ )	s<< ' ';
-		for ( i=1; i<=border_width; i++ )		s<< tb.box_char;
-		s << endl;
-	}
+  // Decide on the length of the longest line in the textbox.
+  for (l = 0, p = tb.text; l < tb.num_lines; l++, p += strlen(p) + 1) {
+    if (text_len < strlen(p)) {
+      text_len = strlen(p);
+    }
+  }
 
-	// Output each line of the text message
-	for ( l=0, p=tb.text; l<tb.num_lines; l++, p += strlen(p)+1 )
-	{
-		for ( i=1; i<=border_width; i++ )	s << tb.box_char;
-		for ( i=1; i<=gap_width; i++ )		s << ' ';
+  // Top border
+  for (j = 1; j <= border_width; j++) {
+    for (i = 1; i <= (text_len + 2 * border_width + 2 * gap_width); i++) {
+      s << tb.box_char;
+    }
+    s << EOL;
+  }
+  // Top gap
+  for (j = 1; j <= gap_width; j++) {
+    for (i = 1; i <= border_width; i++) { s << tb.box_char; }
+    for (i = 1; i <= text_len + 2 * gap_width; i++) { s << SPACE; }
+    for (i = 1; i <= border_width; i++) { s << tb.box_char; }
+    s << EOL;
+  }
 
-		// Output this line of the text left justified in a field
-		// big enough to take the longest line in the TextBox.
-		s << setw(text_len) << setiosflags(ios::left) << p;
+  // Output each line of the text message
+  for (l = 0, p = tb.text; l < tb.num_lines; l++, p += strlen(p) + 1) {
+    for (i = 1; i <= border_width; i++) { s << tb.box_char; }
+    for (i = 1; i <= gap_width; i++) { s << SPACE; }
 
-		for ( i=1; i<=gap_width; i++ )		s << ' ';
-		for ( i=1; i<=border_width; i++ )	s << tb.box_char;
-		s << endl;
-	}
+    // Output this line of the text left justified in a field
+    // big enough to take the longest line in the TextBox.
+    s << std::setw(text_len) << std::setiosflags(std::ios::left) << p;
 
-	// Bottom gap
-	for ( j=1; j<=gap_width; j++ )
-	{
-		for ( i=1; i<=border_width; i++ )		s<< tb.box_char;
-		for ( i=1; i<=text_len+2*gap_width; i++ )	s<< ' ';
-		for ( i=1; i<=border_width; i++ )		s<< tb.box_char;
-		s << endl;
-	}
-	// Bottom border
-	for ( j=1; j<=border_width; j++ )
-	{
-		for ( i=1; i<=(text_len+2*border_width+2*gap_width); i++ )
-			s << tb.box_char;
-		s << endl;
-	}
+    for (i = 1; i <= gap_width; i++) { s << SPACE; }
+    for (i = 1; i <= border_width; i++) { s << tb.box_char; }
+    s << EOL;
+  }
 
-	return s;
+  // Bottom gap
+  for (j = 1; j <= gap_width; j++) {
+    for (i = 1; i <= border_width; i++) { s << tb.box_char; }
+    for (i = 1; i <= text_len + 2 * gap_width; i++) { s << SPACE; }
+    for (i = 1; i <= border_width; i++) { s << tb.box_char; }
+    s << EOL;
+  }
+  // Bottom border
+  for (j = 1; j <= border_width; j++) {
+    for (i = 1; i <= (text_len + 2 * border_width + 2 * gap_width); i++)
+      s << tb.box_char;
+    s << EOL;
+  }
+
+  return s;
 }
 // End Stream output Function operator << //
 
@@ -224,21 +222,21 @@ ostream& operator << ( ostream& s, TextBox tb )
 
 void main ( void )
 {
-	char *multi_line[] = { "Line1", "Line2", "Line3", "Last Line", "" };
+  char *multi_line[] = { "Line1", "Line2", "Line3", "Last Line", "" };
 
-	cout << "First Line" << endl;
-	cout << endl;
+  cout << "First Line" << endl;
+  cout << endl;
 
-	cout << TextBox ( "Text in a box" );
+  cout << TextBox ( "Text in a box" );
 
-	cout << TextBox ( "More text in a box", TextBox::STANDARD );
+  cout << TextBox ( "More text in a box", TextBox::STANDARD );
 
-	cout << TextBox ( "Even more text in a box", TextBox::DOUBLE, 'X' );
+  cout << TextBox ( "Even more text in a box", TextBox::DOUBLE, 'X' );
 
-	cout << TextBox ( multi_line, TextBox::STANDARD );
+  cout << TextBox ( multi_line, TextBox::STANDARD );
 
-	cout << endl;
-	cout << "Last Line" << endl;
+  cout << endl;
+  cout << "Last Line" << endl;
 }
 #endif
 
@@ -260,8 +258,6 @@ void main ( void )
 
 Date          | Name  | Description
 --------------+-------+-------------------------------------------------------
-25-Apr-96	NJT	v1.1 - Initial UNIX version under SCCS control.
-07-May-96	NJT	v1.2 - Moved box_style into class TextBox.
+25-Apr-96       NJT     v1.1 - Initial UNIX version under SCCS control.
+07-May-96       NJT     v1.2 - Moved box_style into class TextBox.
 ******************************************************************************/
-
-/* EOF */

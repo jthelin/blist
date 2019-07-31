@@ -2,32 +2,32 @@
 
 #include "utildbug.h"
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <iostream.h>
-#include <strstream.h>
+#include <cstdarg>
+#include <cstdio>
+#include <iostream>
+#include <strstream>
 
 #define  MAX_LINE_SIZE  132
 
 /*  Initialise static data members of class TraceEntryExit */
-char *  TraceEntryExit::EntryPrefix	= ">>>> Entering ";
-char *  TraceEntryExit::ExitPrefix	= "<<<< Exiting  ";
-BOOL	TraceEntryExit::logEntryExits	= FALSE;
+std::string TraceEntryExit::EntryPrefix = ">>>> Entering ";
+std::string TraceEntryExit::ExitPrefix = "<<<< Exiting  ";
+bool TraceEntryExit::logEntryExits = false;
 
 // Description -------------------------------------------------------------
 //
 // Constructor: TraceEntryExit
 //
 // End ---------------------------------------------------------------------
-TraceEntryExit::TraceEntryExit (
-                                const char * class_name,
-                                const char * function_name )
-: className( class_name ), functionName( function_name )
-{
-	if (logEntryExits)
-                // Log entry message
-		clog 	<< TraceEntryExit::EntryPrefix 
-			<< className << "::" << functionName <<endl;
+TraceEntryExit::TraceEntryExit(
+    const std::string &class_name,
+    const std::string &function_name)
+    : className(class_name), functionName(function_name) {
+  if (logEntryExits) {
+    // Log entry message
+    std::clog << TraceEntryExit::EntryPrefix
+              << className << "::" << functionName << std::endl;
+  }
 }
 // End Constructor //
 
@@ -39,12 +39,12 @@ TraceEntryExit::TraceEntryExit (
 //	 depending on the value of the logEntryExits variable.
 //
 // End ---------------------------------------------------------------------
-TraceEntryExit::~TraceEntryExit ( )
-{
-	if (logEntryExits)
-		// Log entry message
-		clog 	<< TraceEntryExit::ExitPrefix 
-			<< className << "::" << functionName << endl;
+TraceEntryExit::~TraceEntryExit() {
+  if (logEntryExits) {
+    // Log entry message
+    std::clog << TraceEntryExit::ExitPrefix
+              << className << "::" << functionName << std::endl;
+  }
 }
 // End Destructor //
 
@@ -67,7 +67,7 @@ void  set_debug_destination( ostream& ostr )
 
 void  dump_debug_buffer( void )
 {
-        clog << debug_dest;
+        std::clog << debug_dest;
 }
  ***************************************** commented out ends *************/
 
@@ -77,20 +77,18 @@ void  dump_debug_buffer( void )
 /* Print an error message from the format-string FORMAT                 */
 /*      with optional extra args as with printf.                        */
 /************************************************************************/
-void  do_debug( char * format, va_list args )
-{
-	static  char  line_buffer[MAX_LINE_SIZE];
-
+void do_debug(std::string &format, va_list args) {
+  static char line_buffer[MAX_LINE_SIZE];
 /*
 	if (debug_dest)
 		// Debugging output destination not set up
 		set_debug_destination(clog);
 */
 
-	vsprintf(line_buffer,format,args);
+  vsprintf(line_buffer, format.c_str(), args);
 
-	/*debug_dest*/
-	clog << line_buffer << endl;
+  /*debug_dest*/
+  std::clog << line_buffer << std::endl;
 }
 
 
@@ -100,8 +98,7 @@ void  do_debug( char * format, va_list args )
 
 Date          | Name  | Description
 --------------+-------+-------------------------------------------------------
-25-Apr-96	NJT	v1.1 - Initial UNIX version under SCCS control.
-04-Sep-96	NJT	v1.2 - Moved TraceEntryExit ctor/dtor from inline to .C 
-			file as it does not cope well with cfront inlining.
+25-Apr-96       NJT     v1.1 - Initial UNIX version under SCCS control.
+04-Sep-96       NJT     v1.2 - Moved TraceEntryExit ctor/dtor from inline to .C
+                               file as it does not cope well with cfront inlining.
 ******************************************************************************/
-/* EOF */

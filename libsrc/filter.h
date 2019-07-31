@@ -7,8 +7,7 @@
 #error Requires C++ for use of these facilities
 #endif
 
-#include <iostream.h>
-#include "Boolean.h"
+#include <iostream>
 
 /*******************************************************************************
 Class: IFilter
@@ -20,64 +19,67 @@ Adapted from The C++ Programming Language (2nd Ed), Section 13.7, Page 455-6
 *******************************************************************************/
 class IFilter {
 public:
-	// Exception
-	class ERetry {
-	public:
-		virtual const char * message()  { return 0; }
-	};
+  // Exception
+  class ERetry {
+  public:
+    virtual const char *message() { return nullptr; }
+  };
 
-	virtual void start() { };
-	virtual int retry() { return 2; }
-	virtual int read() = 0;
-	virtual void write() { };
-	virtual void compute() { };
-	virtual int result() = 0;
+  virtual void start() {};
+
+  virtual int retry() { return 2; }
+
+  virtual int read() = 0;
+
+  virtual void write() {};
+
+  virtual void compute() {};
+
+  virtual int result() = 0;
 };
 // End class IFilter
 
 
 // Function main_loop (using Exceptions unless NEXCEPTIONS is defined)
-int main_loop( IFilter* p )
-{
-	for(;;)	// Loop forever
-	{
+int main_loop(IFilter *p) {
+  for (;;)  // Loop forever
+  {
 
 #ifndef NEXCEPTIONS
 
-		try {
+    try {
 
 #endif /* NEXCEPTIONS */
 
-			p->start();
-			while (p->read())
-			{
-				p->compute();
-				p->write();
-			}
-			return p->result();	// Exit loop
+      p->start();
+      while (p->read()) {
+        p->compute();
+        p->write();
+      }
+      return p->result();  // Exit loop
 
 #ifndef NEXCEPTIONS
 
-		}
-		catch (IFilter::ERetry& m)
-		{
-			cout << m.message() << '\n';
-			int i = p->retry();
-			if (i) return i;	// Exit loop
-		}
-		catch (...)
-		{
-			cout << "Fatal filter error\n";
-			return 1;	// Exit loop
-		}
+    }
+    catch (IFilter::ERetry &m) {
+      std::cout << m.message() << '\n';
+      int i = p->retry();
+      if (i) {
+        return i;  // Exit loop
+      }
+    }
+    catch (...) {
+      std::cout << "Fatal filter error\n";
+      return 1;  // Exit loop
+    }
 
 #endif /* NEXCEPTIONS */
 
-	}
-	// Never reached
-};
+  }
+  // Never reached
+}
 
-
+
 /*******************************************************************************
 Class: ICharStrmFilter
 
@@ -85,23 +87,28 @@ Class: ICharStrmFilter
 
 Adapted from The C++ Programming Language (2nd Ed), Section 13.7, Page 455-6
 *******************************************************************************/
-class ICharStrmFilter : public IFilter
-{
+class ICharStrmFilter : public IFilter {
 protected:
-	istream& is;
-	ostream& os;
-	char c;
-	BOOL bWriteOutput;
+  std::istream &is;
+  std::ostream &os;
+  char c;
+  bool bWriteOutput;
 public:
-	virtual int read() { is.get(c); return is.good(); };
-	virtual void compute() = 0;	// Pure virtual function
-	virtual void write() { if (bWriteOutput) os.put(c); };
-	virtual int result() { return 0; };
+  virtual int read() {
+    is.get(c);
+    return is.good();
+  };
 
-	ICharStrmFilter( istream& ii, ostream& oo )
-	: is(ii), os(oo), bWriteOutput(TRUE) { };
-	ICharStrmFilter( istream& ii )
-	: is(ii), os(NULL), bWriteOutput(FALSE) { };
+  virtual void compute() = 0;  // Pure virtual function
+  virtual void write() { if (bWriteOutput) os.put(c); };
+
+  virtual int result() { return 0; };
+
+  ICharStrmFilter(std::istream &ii, std::ostream &oo)
+      : is(ii), os(oo), bWriteOutput(true) {};
+
+  ICharStrmFilter(std::istream &ii)
+      : is(ii), os(std::clog), bWriteOutput(false) {};
 };
 // End class ICharStrmFilter
 
@@ -113,29 +120,32 @@ Class: ILineStrmFilter
 
 Adapted from The C++ Programming Language (2nd Ed), Section 13.7, Page 455-6
 *******************************************************************************/
-class ILineStrmFilter : public IFilter
-{
+class ILineStrmFilter : public IFilter {
 protected:
-	istream& is;
-	ostream& os;
-	enum { MAX_LINE_SIZE = 1024 };
-	char buff[MAX_LINE_SIZE+1];
-	BOOL bWriteOutput;
+  std::istream &is;
+  std::ostream &os;
+  enum {
+    MAX_LINE_SIZE = 1024
+  };
+  char buff[MAX_LINE_SIZE + 1];
+  bool bWriteOutput;
 public:
-	virtual int read()
-	{
-		is.getline( buff, MAX_LINE_SIZE, '\n' );
-		buff[MAX_LINE_SIZE] = 0;	// Add NULL terminator
-		return is.good();
-	};
-	virtual void compute() = 0;	// Pure virtual function
-	virtual void write() { if (bWriteOutput) os << buff << '\n'; };
-	virtual int result() { return 0; };
+  int read() override {
+    is.getline(buff, MAX_LINE_SIZE, '\n');
+    buff[MAX_LINE_SIZE] = 0;  // Add NULL terminator
+    return is.good();
+  };
 
-	ILineStrmFilter( istream& ii, ostream& oo )
-	: is(ii), os(oo), bWriteOutput(TRUE) { };
-	ILineStrmFilter( istream& ii )
-	: is(ii), os(NULL), bWriteOutput(FALSE) { };
+  void compute() override = 0;  // Pure virtual function
+  void write() override { if (bWriteOutput) os << buff << '\n'; };
+
+  int result() override { return 0; };
+
+  ILineStrmFilter(std::istream &ii, std::ostream &oo)
+      : is(ii), os(oo), bWriteOutput(true) {};
+
+  ILineStrmFilter(std::istream &ii)
+      : is(ii), os(std::clog), bWriteOutput(false) {};
 };
 // End class ILineStrmFilter
 
@@ -159,4 +169,3 @@ Date          | Name  | Description
 *******************************************************************************/
 
 #endif /* ifndef _FILTER_H */
-/* EOF */

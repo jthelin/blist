@@ -12,7 +12,8 @@
 
 
 // Interface Dependencies ---------------------------------------------------
-#include <iostream.h>
+#include <iostream>
+#include <vector>
 // End Interface Dependencies ------------------------------------------------
 
 
@@ -37,27 +38,30 @@
 //	None.
 //
 // End ---------------------------------------------------------------------
-class TextBox
-{
+class TextBox {
 public:
-	enum box_style { BASIC, STANDARD, DOUBLE };
+  enum box_style {
+    BASIC, STANDARD, DOUBLE
+  };
 protected:
-	char *		text;
-	int		num_lines;
-	char		box_char;
-	box_style	box_type;
+  char *text;
+  int num_lines;
+  char box_char;
+  box_style box_type;
 public:
-			TextBox(
-				const char text[],
-				box_style box_type = TextBox::STANDARD,
-				char box_char = '*' );
-			TextBox(
-				const char * text[],
-				box_style box_type = TextBox::STANDARD,
-				char box_char = '*' );
-			~TextBox ( void );
+  explicit TextBox(
+      const std::string &text,
+      box_style box_type = TextBox::STANDARD,
+      char box_char = '*');
 
-	friend  ostream& operator << ( ostream& s, TextBox tb );
+  explicit TextBox(
+      const std::vector<std::string> &text_lines,
+      box_style box_type = TextBox::STANDARD,
+      char box_char = '*');
+
+  ~TextBox();
+
+  friend std::ostream &operator<<(std::ostream &s, const TextBox &tb);
 };
 
 
@@ -77,9 +81,8 @@ public:
 
 Date          | Name  | Description
 --------------+-------+-------------------------------------------------------
-25-Apr-96	NJT	v1.1 - Initial UNIX version under SCCS control.
-07-May-96	NJT	v1.2 - Moved box_style enum into class TextBox.
+25-Apr-96       NJT     v1.1 - Initial UNIX version under SCCS control.
+07-May-96       NJT     v1.2 - Moved box_style enum into class TextBox.
 ******************************************************************************/
 
 #endif // ifndef _TEXTBOX_H //
-/* EOF */

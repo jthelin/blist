@@ -1,5 +1,5 @@
 #ifndef lint
-static char ident_fileutil_c[]="%Z% $Id$__ - njt";
+static char ident_fileutil_c[] = "%Z% $Id$__ - njt";
 #endif /* lint */
 
 /*******************************************************************************
@@ -18,22 +18,20 @@ static char ident_fileutil_c[]="%Z% $Id$__ - njt";
 
 /* include files */
 
-#include <unistd.h>		/* For access */
-#include <stdio.h>		/* For stderr / fprintf */
-#include <sys/types.h>		/* For stat */
-#include <sys/stat.h>		/* For stat */
+#include <unistd.h>    /* For access */
+#include <cstdio>    /* For stderr / fprintf */
+#include <sys/stat.h>    /* For stat */
+#include <string>
 
 #include "fileutil.h"
-
 
 /******************************************************************************
 * Function:	IsFileReadable
 *
 * Purpose:	Return TRUE if specified file exists and is readable.
 ******************************************************************************/
-BOOL IsFileReadable( const char * fname )
-{
-	return ( access( fname, F_OK | R_OK ) == 0 );
+BOOL IsFileReadable(const std::string &file_path) {
+  return (access(file_path.c_str(), F_OK | R_OK) == 0);
 }
 
 
@@ -42,22 +40,18 @@ BOOL IsFileReadable( const char * fname )
 *
 * Purpose:	Return size of specified file (in bytes)
 ******************************************************************************/
-long FileSize( const char * fname )
-{
-	static char szFunc[] = "FileSize";
-	struct stat	stats;
+long FileSize(const std::string &file_path) {
+  static char szFunc[] = "FileSize";
+  struct stat stats{};
 
-	if ( stat( fname, &stats ) == 0 )
-	{
-		return (stats.st_size);
-	}
-	else
-	{
-		fprintf( stderr,
-			"$RCSfile$:%s: Bad return from stat function on file [%s]\n",
-			szFunc, fname );
-		return -1;
-	}
+  if (stat(file_path.c_str(), &stats) == 0) {
+    return (stats.st_size);
+  } else {
+    fprintf(stderr,
+            "$RCSfile$:%s: Bad return from stat function on file [%s]\n",
+            szFunc, file_path.c_str());
+    return -1;
+  }
 }
 
 
@@ -67,7 +61,6 @@ long FileSize( const char * fname )
 
 Date          | Name  | Description
 --------------+-------+-------------------------------------------------------
-28-Mar-96	NJT	v1.1 - Initial version under SCCS control.
-22-Apr-96	NJT	v1.2 - Added function FileSize.
+28-Mar-96       NJT     v1.1 - Initial version under SCCS control.
+22-Apr-96       NJT     v1.2 - Added function FileSize.
 ******************************************************************************/
-/* EOF */

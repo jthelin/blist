@@ -1,17 +1,15 @@
 /*  UTILMSG.C  */
 
+#include <cstdio>
+#include <cstdlib>
+#include <string>
 
+#include "proginfo.h"
 #include "utilmsg.h"
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
+extern const std::string ProgName;   /* Program name - usually defined in main module */
 
-extern char program[];   /* Program name - usually defined in main module */
-
-
-#define ERROR_PREFIX  "**** ERROR"
+const std::string ERROR_PREFIX = "**** ERROR";
 
 
 /******************** START COMMENTED OUT SECTION ***********************/
@@ -23,7 +21,7 @@ extern char program[];   /* Program name - usually defined in main module */
 /*
 void  perror_with_name( char *text )
 {
-  fprintf( stderr, "%s: ", program );
+  fprintf( stderr, "%s: ", ProgName );
   perror( text );
 }
 */
@@ -35,7 +33,7 @@ void  perror_with_name( char *text )
 void  pfatal_with_name( char *text )
 {
   print_message_queue();
-  fprintf( stderr, "%s: ", program );
+  fprintf( stderr, "%s: ", ProgName );
   perror( text );
   exit( 2 );
 }
@@ -44,74 +42,75 @@ void  pfatal_with_name( char *text )
 /******************* END COMMENTED OUT SECTION **************************/
 
 
+/************************************************************************/
+/* Print an error message.                                              */
+/************************************************************************/
+
+void error(const std::string& message) {
+  fprintf(stderr, "\n%s: ", ProgName.c_str());
+  fprintf(stderr, ERROR_PREFIX.c_str(), " ");
+  fprintf(stderr, "%s", message.c_str());
+  fprintf(stderr, "\n");
+}
 
 /************************************************************************/
 /* Print an error message from the format-string FORMAT                 */
 /*  with optional extra args as with printf.                            */
 /************************************************************************/
 /*
-void  error( char *format, ... )
-{
- va_list  args;
+void error(const std::string &format, ...) {
+  va_list args;
 
-  va_start(args,format);
+  va_start(args, format);
 
-  fprintf( stderr, "\n%s: ", program);
-    fprintf( stderr, ERROR_PREFIX " " );
-    vfprintf( stderr, format, args);
-        fprintf( stderr, "\n");
+  fprintf(stderr, "\n%s: ", ProgName.c_str());
+  fprintf(stderr, ERROR_PREFIX.c_str(), " ");
+  vfprintf(stderr, format.c_str(), args);
+  fprintf(stderr, "\n");
 
- va_end(args);
+  va_end(args);
 }
 */
-
 /************************************************************************/
 /* Print an error message containing the string TEXT, then exit.        */
 /************************************************************************/
 
-void  fatal( char *message )
-{
+void fatal(const std::string &message) {
 /**************************
 	print_message_queue();
 **************************/
-/*	error( message, "" ); */
-	fprintf( stderr, message );
-	fflush( stderr );  /* Probably not strictly necessary, but safest */
-	exit( 2 );
+  // error(message);
+  fprintf(stderr, "%s %s", ERROR_PREFIX.c_str(), message.c_str());
+  fflush(stderr);  /* Probably not strictly necessary, but safest */
+  exit(2);
 }
 
 
-
 /************************************************************************/
 /* Like printf, except if paginate_flag is set                          */
 /*      then save the message and print later.                          */
 /************************************************************************/
 
-void  message( char *format, char *arg1, char *arg2, ... )
-{
-
+void message(const std::string &format, const std::string &arg1, const std::string &arg2, ...) {
 /*
+  if (paginate_flag) {
+    struct msg *
+    new = (struct msg *) xmalloc(sizeof(struct msg));
 
-       if (paginate_flag) {
+    if (msg_chain_end == 0)
+      msg_chain = msg_chain_end = new;
+    else {
+      msg_chain_end->next = new;
+      msg_chain_end = new;
+    }
 
-            struct msg *new = (struct msg *) xmalloc (sizeof (struct msg));
-
-         if (msg_chain_end == 0)
-                 msg_chain = msg_chain_end = new;
-                else {
-                  msg_chain_end->next = new;
-                      msg_chain_end = new;
-            }
-
-               new->format = format;
-           new->arg1 = concat( arg1, "", "" );
-             new->arg2 = concat( arg2, "", "" );
-             new->next = NULL;
-       } else
-
+    new->format = format;
+    new->arg1 = concat(arg1, "", "");
+    new->arg2 = concat(arg2, "", "");
+    new->next = NULL;
+  } else
 */
-
-                printf (format, arg1, arg2);
+    printf(format.c_str(), arg1.c_str(), arg2.c_str());
 }
 
 
@@ -132,63 +131,64 @@ void  print_message_queue( void )
 /******************* END COMMENTED OUT SECTION **************************/
 
 
-
 /************************************************************************/
 /* malloc a block of memory,                                            */
 /* with fatal error message if we can't do it.                          */
 /************************************************************************/
+/*
+void *xmalloc(unsigned size) {
+  register void *value;
 
-void *xmalloc ( unsigned size )
-{
-    register void *value;
+  if (size == 0) {
+    size = 1;
+  }
 
-   if (size == 0)
-          size = 1;
+  value = (void *) malloc(size);
 
-       value = (void *) malloc(size);
+  if (!value) {
+    fatal("virtual memory exhausted");
+  }
 
-  if (!value)
-             fatal( "virtual memory exhausted" );
-
-    return value;
+  return value;
 }
-
+*/
 
 /************************************************************************/
 /* realloc a block of memory,                                           */
 /* with fatal error message if we can't do it.                          */
 /************************************************************************/
+/*
+void *xrealloc(void *old, unsigned int size) {
+  register void *value;
 
-void *xrealloc( void *old, unsigned int size )
-{
-     register void *value;
+  if (size == 0) {
+    size = 1;
+  }
 
-   if (size == 0)
-          size = 1;
+  value = (void *) realloc(old, size);
 
-       value = (void *) realloc( old, size );
+  if (!value) {
+    fatal("virtual memory exhausted");
+  }
 
-  if (!value)
-             fatal ("virtual memory exhausted");
-
-     return value;
+  return value;
 }
-
+*/
 
 /************************************************************************/
 /* Concatenate three strings, returning a newly malloc'd string.        */
 /************************************************************************/
-
-char *concat( char *s1, char *s2, char *s3)
-{
+/*
+char *concat(char *s1, char *s2, char *s3) {
   int len = strlen(s1) + strlen(s2) + strlen(s3);
 
-  char *new = (char *) xmalloc( len + 1 );
+  char *
+  new = (char *) xmalloc(len + 1);
 
-  strcpy (new, s1);
-  strcat (new, s2);
-  strcat (new, s3);
+  strcpy(new, s1);
+  strcat(new, s2);
+  strcat(new, s3);
 
   return new;
 }
-
+*/

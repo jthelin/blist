@@ -11,15 +11,14 @@
 
 
 // Interface Dependencies --------------------------------------------------
-#include "Boolean.h"
-#include "sstring.h"
+#include <string>
 // End Interface Dependencies ----------------------------------------------
 
 // Implementation Dependencies ---------------------------------------------
 // End Implementation Dependencies -----------------------------------------
 
-
 #pragma subtitle( "Class: FileName" )
+
 // Description -------------------------------------------------------------
 //
 // class FileName
@@ -56,35 +55,32 @@
 //		TRUE if a file of this name exists in the file system.
 //
 // End ---------------------------------------------------------------------
-class FileName
-{
+class FileName {
 protected:
-	string		fileName;
-	BOOL		fileExists;
+  std::string fileName;
+  bool fileExists;
 public:
-			FileName ( const char filename[] );
-	virtual		~FileName ( void )  { };
+  explicit FileName(std::string filename);
 
-	FileName&	operator = ( const FileName& other );
+  virtual ~FileName() = default;;
 
-	virtual		operator const char * ( void ) const
-			{ return (const char *) fileName; }
-	BOOL		Exists ( void ) const
-			{ return fileExists; };
+  FileName &operator=(const FileName &other) = default;
+
+  virtual explicit operator std::string() const { return fileName; }
+
+  bool Exists() const { return fileExists; };
 protected:
-			FileName ( void ) 
-			:	fileName( "" )
-			{	fileExists = FALSE;
-				/* No access */ };
-			FileName ( const FileName& other )
-			:	fileName( other.fileName ),
-				fileExists( other.fileExists )
-			{ /* No access */ };
+  FileName()
+      : fileName("") {
+    fileExists = false;
+    /* No access */ };
+
+  FileName(const FileName &other) = default;
 };
 
 
-
 #pragma subtitle( "Class: PathName" )
+
 /* Description *************************************************************
 //
 // class PathName
@@ -124,31 +120,27 @@ protected:
 //
 ** End ********************************************************************/
 
-class PathName : public FileName
-{
+class PathName : public FileName {
 protected:
-	string         	dirName;
+  std::string dirName;
 public:
-				PathName ( const char filename[] );
-	virtual			~PathName ( void )
-				{ };
+  explicit PathName(const std::string &path);
 
-	PathName&		operator = ( const PathName& other );
+  virtual ~PathName() = default;
 
-	virtual 		operator const char * ( void )  const
-				{ return this->FullName(); };
-	virtual const char *    DirName ( void )  const
-				{ return (const char *) dirName; };
-	virtual const char *    FName ( void )  const
-				{ return (const char *) fileName; };
-	virtual const char *    FullName ( void )  const;
+  PathName &operator=(const PathName &other) = default;
+
+  virtual explicit operator std::string() const { return this->FullName(); };
+
+  virtual const std::string DirName() const { return dirName; };
+
+  virtual const std::string FName() const { return fileName; };
+
+  virtual const std::string FullName() const;
+
 protected:
-				PathName ( void )
-				: FileName(), dirName( "" )
-				{ /* No access */ };
-//				PathName ( const PathName& other )
-//				: FileName( other ), dirName( other.dirName )
-//				{ /* No access */ };
+  PathName()
+      : FileName(), dirName("") { /* No access */ };
 };
 
 
@@ -173,8 +165,7 @@ protected:
 
 Date          | Name  | Description
 --------------+-------+-------------------------------------------------------
-22-Apr-96	NJT	v1.1 - Initial UNIX version under SCCS control.
+22-Apr-96       NJT     v1.1 - Initial UNIX version under SCCS control.
 ******************************************************************************/
 
 #endif /* ifndef FILENAME_h */
-/* EOF */

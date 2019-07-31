@@ -1,9 +1,8 @@
 #ifndef _FILEUTIL_H
 #define _FILEUTIL_H
 
+#include <cstring>
 #include <sys/cdefs.h>
-
-__BEGIN_DECLS
 
 #ident "%Z% $Id$__ - njt"
 
@@ -24,11 +23,8 @@ typedef int BOOL;
 #endif
 
 
-extern BOOL IsFileReadable( const char * fname );
-extern long FileSize( const char * fname );
+extern BOOL IsFileReadable(const std::string &file_path);
 
-__END_DECLS
+extern long FileSize(const std::string &file_path);
 
-#endif _FILEUTIL_H
-
-/* EOF */
+#endif // _FILEUTIL_H

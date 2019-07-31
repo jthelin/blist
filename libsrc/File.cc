@@ -9,15 +9,14 @@
 // End Interface Declarations ----------------------------------------------
 
 // Implementation Dependencies ----------------------------------------------
-#include <assert.h>
-#include <iostream.h>
-#include <fstream.h>
-#include <string.h>
+#include <cassert>
+#include <iostream>
+#include <sstream>
+
 #include "utildbug.h"
 #include "filter.h"
-extern "C" {
 #include "fileutil.h"
-}
+
 // End Implementation Dependencies -------------------------------------------
 
 
@@ -28,21 +27,18 @@ extern "C" {
 //	exist if log_failures is false.
 //
 // End ---------------------------------------------------------------------
-File::File ( const char fname[], BOOL log_failures )
-: PathName( fname )
-{
-	TraceEntryExit	t( "File", "<constructor>" );
+File::File(const std::string &fname, bool log_failures)
+    : PathName(fname) {
+  TraceEntryExit t("File", "<constructor>");
 
-	if (!Exists())
-	{
-		// File does not exist
-		if (log_failures)
-		{
-			cerr	<< "**** ERROR :  "
-				<< "File " << fname << " does not exist"
-				<< endl;
-		}
-	}
+  if (!Exists()) {
+    // File does not exist
+    if (log_failures) {
+      std::cerr << "**** ERROR :  "
+                << "File " << fname << " does not exist"
+                << std::endl;
+    }
+  }
 }
 // End File constructor //
 
@@ -53,9 +49,8 @@ File::File ( const char fname[], BOOL log_failures )
 //	Closes the input stream if it is open.
 //
 // End ---------------------------------------------------------------------
-File::~File ( )
-{
-	TraceEntryExit t( "File", "<destructor>" );
+File::~File() {
+  TraceEntryExit t("File", "<destructor>");
 }
 // End File Destructor //
 
@@ -66,11 +61,10 @@ File::~File ( )
 //	Return a pointer to a string containing the modification date of a File.
 //
 // End ---------------------------------------------------------------------
-const char *	File::ModificationDate( )
-{
-	static char szModnDate[] = "";  /* HACK! */
+std::string File::ModificationDate() {
+  std::string modDate = "";  /* HACK! */
 
-	return szModnDate;
+  return modDate;
 }
 // End Member function ModificationDate
 
@@ -81,9 +75,8 @@ const char *	File::ModificationDate( )
 //	Return a File's size in bytes.
 //
 // End ---------------------------------------------------------------------
-long  File::FileSize( )
-{
-	return ::FileSize( this->FullName() );
+long File::FileSize() {
+  return ::FileSize(this->FullName());
 }
 // End Member function Size
 
@@ -94,29 +87,16 @@ long  File::FileSize( )
 //	Return a (static) string array of file info details
 //
 // End ---------------------------------------------------------------------
-char**  File::FileInfo( )
-{
-	static char finfo[4][300];
-	char fsize[20];
+std::string File::FileInfo() {
+  std::stringstream out;
 
-	strcpy(finfo[0], "File name: " );
-	strcat(finfo[0], this->FullName() );
+  out << "File name: " << this->FullName() << std::endl;
+/*
+  out << "Last modified: " << this->ModificationDate() << std::endl;
 
-	strcpy(finfo[1], "Last modified: " );
-	strcat(finfo[1], this->ModificationDate() );
-
-	sprintf( fsize, "%ld", this->FileSize() );
-	strcpy(finfo[2], "File size (bytes): " );
-	strcat(finfo[2], fsize );
-
-	finfo[3][0] = NULL;	// List terminator
-
-cerr << "File::FileInfo : returning [0] = [" << finfo[0] << "]\n";
-cerr << "File::FileInfo : returning [1] = [" << finfo[1] << "]\n";
-cerr << "File::FileInfo : returning [2] = [" << finfo[2] << "]\n";
-cerr << "File::FileInfo : returning [3] = [" << finfo[3] << "]\n";
-
-	return (char**) finfo;
+  out << "File size (bytes): " << this->FileSize() << std::endl;
+*/
+  return out.str();
 }
 // End Member function FileInfo
 
@@ -127,36 +107,33 @@ cerr << "File::FileInfo : returning [3] = [" << finfo[3] << "]\n";
 //       Outputs the file to the specified output stream.
 //
 // End ---------------------------------------------------------------------
-void      File::PrintOn ( ostream& s )
-{
-	TraceEntryExit t( "File", "PrintOn" );
+void File::PrintOn(std::ostream &s) {
+  TraceEntryExit t("File", "PrintOn");
 
-	assert (s);   // Output stream should always be open
+  assert (s);   // Output stream should always be open
 
-	class printfile : public ILineStrmFilter
-	{
-	public:
-		printfile( ifstream& ii, ostream& oo )
-		: ILineStrmFilter(ii,oo) { }
-		void compute() { /* pass through */ };
-	};
-	// End class printfile
+  class printfile : public ILineStrmFilter {
+  public:
+    printfile(std::ifstream &ii, std::ostream &oo)
+        : ILineStrmFilter(ii, oo) {}
 
-	if (this->Exists())
-	{
-		// Copy file contents to output stream
+    void compute() override { /* pass through */ };
+  };
+  // End class printfile
 
-		ifstream f( this->FullName() );
+  if (this->Exists()) {
+    // Copy file contents to output stream
 
-		printfile pr(f,s);
-		main_loop(&pr); /* Iterate */
-	}
-	/* else: File does not exist, so no output. */
+    std::ifstream f(this->FullName());
+
+    printfile pr(f, s);
+    main_loop(&pr); /* Iterate */
+  }
+  /* else: File does not exist, so no output. */
 }
 // End Stream output Function operator << //
 
 
-
 #ifdef TEST
 //     ****
 
@@ -168,24 +145,24 @@ void      File::PrintOn ( ostream& s )
 
 void main ( )
 {
-	TraceEntryExit t( "File test program", "main" );
+  TraceEntryExit t( "File test program", "main" );
 
-	File f("file.C");   // This file !
+  File f("file.C");   // This file !
 
-	cout << "Start File test" << endl;
-	cout << endl;
+  cout << "Start File test" << endl;
+  cout << endl;
 
-	cout << "File.h" << endl;
-	cout << File("File.h");
+  cout << "File.h" << endl;
+  cout << File("File.h");
 
-	cout << f.FullName() << endl;
-	cout << f;
+  cout << f.FullName() << endl;
+  cout << f;
 
-	cout << "nofile.non" << endl;
-	cout << File("nofile.non");
+  cout << "nofile.non" << endl;
+  cout << File("nofile.non");
 
-	cout << endl;
-	cout << "End File test" << endl;
+  cout << endl;
+  cout << "End File test" << endl;
 }
 #endif /* TEST */
 
@@ -227,9 +204,7 @@ void main ( )
 
 Date          | Name  | Description
 --------------+-------+-------------------------------------------------------
-23-Apr-96	NJT	v1.1 - Initial UNIX version under SCCS control.
-02-May-96	NJT	v1.2 - Removed all file iterator functionality from
-			class File.
-			Class FileIterator is not working properly yet.
+23-Apr-96       NJT     v1.1 - Initial UNIX version under SCCS control.
+02-May-96       NJT     v1.2 - Removed all file iterator functionality from class File.
+                               Class FileIterator is not working properly yet.
 ******************************************************************************/
-/* EOF */

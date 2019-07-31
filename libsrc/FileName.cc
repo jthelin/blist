@@ -11,13 +11,11 @@
 // End Interface Declarations ----------------------------------------------
 
 // Implementation Dependencies ----------------------------------------------
-#include <unistd.h>	// For getcwd
-#include <limits.h>	// For PATH_MAX
-#include "sstring.h"	// For class string
-extern "C" {
-#include <libgen.h>	// For basename / dirname
+#include <string>
+#include <unistd.h>  // For getcwd
+#include <climits>  // For PATH_MAX
 #include "fileutil.h"
-}
+#include <libgen.h>  // For basename / dirname
 // End Implementation Dependencies -------------------------------------------
 
 
@@ -31,35 +29,11 @@ extern "C" {
 //		The filename we are to use to locate this file.
 //
 // End ---------------------------------------------------------------------
-FileName::FileName ( const char fname[] )
-  :  fileName ( fname )
-{
-	fileExists = IsFileReadable( fname );
+FileName::FileName(const std::string fname)
+    : fileName(fname) {
+  fileExists = IsFileReadable(fname);
 }
 // End FileName constructor //
-
-
-// Summary -----------------------------------------------------------------
-//
-// Assignment operator for FileName object (operator =).
-//	Initialises the object data.
-//
-// Parameters
-//	other
-//		The other FileName object to be assigned to this one.
-//
-// End ---------------------------------------------------------------------
-FileName&    FileName::operator = ( const FileName& other )
-{
-	if ( *this != other )
-	{
-		fileExists = other.fileExists;
-		fileName = other.fileName;
-	}
-
-	return *this;
-};
-// End Member Function  operator = //
 
 
 // Summary -----------------------------------------------------------------
@@ -68,34 +42,30 @@ FileName&    FileName::operator = ( const FileName& other )
 //	Initialises the object data.
 //
 // Parameters
-//	fname
+//	path
 //		The filename we are to use to locate this file.
 //
 // End ---------------------------------------------------------------------
-PathName::PathName ( const char fname[] )
-  :  FileName ( fname ), dirName ( "." )
-{
-	if (fileExists)
-	{
-		// Split file name into components
-		string tmpfname( fname );
-		fileName = basename( (char*) tmpfname );
-		dirName  = dirname(  (char*) tmpfname );
-		// NOTE: dirname must be done last, as it is semi-descructive!
+PathName::PathName(const std::string &path)
+    : FileName(path), dirName(".") {
+  if (fileExists) {
+    // Split file name into components
+    // int pos = path.last_index_of()
+    std::string tmpfname = path;
+    fileName = basename((char *) tmpfname.c_str());
+    dirName = dirname((char *) tmpfname.c_str());
+    // NOTE: dirname must be done last, as it is semi-destructive!
 
-		if ( strcmp(dirName,".") == 0 )
-		{
-			// No directory specified - so use current.
-			char	dname[PATH_MAX+1];
-			getcwd(dname,PATH_MAX);
-			dirName = dname;  /* Create directory name string */
-		}
-	}
-	else
-	{
-		// File does not exist
-		// dirName is already initialised to null string
-	}
+    if (dirName == ".") {
+      // No directory specified - so use current.
+      char dname[PATH_MAX + 1];
+      getcwd(dname, PATH_MAX);
+      dirName = dname;  /* Create directory name string */
+    }
+  } else {
+    // File does not exist
+    // dirName is already initialised to null string
+  }
 }
 // End PathName constructor //
 
@@ -109,51 +79,24 @@ PathName::PathName ( const char fname[] )
 //	be overwritten by subsequent calls.
 //
 // End ---------------------------------------------------------------------
-const char * PathName::FullName ( void )  const
-{
-	static  char  path[PATH_MAX+1];
+const std::string PathName::FullName() const {
+  static char path[PATH_MAX + 1];
 
-        if (fileExists) {
-		strcpy(path,dirName);
-		strcat(path,"/");
-		strcat(path,fileName);
-	}
-	else
-	{
-		strcpy(path,"**Non-existant:");
-		strncat(path,fileName,(PATH_MAX-strlen(path)));
-		strncat(path,"**",(PATH_MAX-strlen(path)));
-	}
+  if (fileExists) {
+    strcpy(path, dirName.c_str());
+    strcat(path, "/");
+    strcat(path, fileName.c_str());
+  } else {
+    strcpy(path, "**Non-existent:");
+    strncat(path, fileName.c_str(), (PATH_MAX - strlen(path)));
+    strncat(path, "**", (PATH_MAX - strlen(path)));
+  }
 
-	return path;
+  return path;
 }
 /* End Member function FullName */
 
 
-// Summary -----------------------------------------------------------------
-//
-// Assignment operator for PathName object (operator =).
-//
-// Parameters
-//	other
-//		The other PathName object to be assigned to this one.
-//
-// End ---------------------------------------------------------------------
-PathName&    PathName::operator = ( const PathName& other )
-{
-	if ( *this != other )
-	{
-		fileExists = other.fileExists;
-		fileName = other.fileName;
-		dirName = other.dirName;
-	}
-
-	return *this;
-};
-/* End Member Function  operator = */
-
-
-
 #ifdef TEST
 //     ****
 
@@ -163,40 +106,40 @@ PathName&    PathName::operator = ( const PathName& other )
 
 void main ( int argc, char *argv[] )
 {
-	FileName *      f    = new FileName("FileName.C");  // This file !
-	FileName *      none = new FileName("nofile.non");  // Non-existant file
+  FileName *      f    = new FileName("FileName.C");  // This file !
+  FileName *      none = new FileName("nofile.non");  // Non-existant file
 
-	cout << "Start FileName test" << endl;
-	cout << endl;
+  cout << "Start FileName test" << endl;
+  cout << endl;
 
-	cout << FileName("FileName.h") << endl;
-	cout << "f : " << *f << endl;
-	cout << "f: Exists = " << f->Exists() << endl;
+  cout << FileName("FileName.h") << endl;
+  cout << "f : " << *f << endl;
+  cout << "f: Exists = " << f->Exists() << endl;
 
-	cout << "none : " << *none << endl;
-	cout << "none: Exists = " << none->Exists() << endl;
+  cout << "none : " << *none << endl;
+  cout << "none: Exists = " << none->Exists() << endl;
 
-	f = new PathName( *f );
-	cout << "path f : " << *f << endl;
-	cout << "path f: Exists = " << f->Exists() << endl;
+  f = new PathName( *f );
+  cout << "path f : " << *f << endl;
+  cout << "path f: Exists = " << f->Exists() << endl;
 
-	cout << endl;
+  cout << endl;
 
-	if (argc > 1) {
-		cout << "User supplied files" << endl;
+  if (argc > 1) {
+    cout << "User supplied files" << endl;
 
-		for ( int i = 1; i<argc; i++ )
-		{
-			cout << "arg " << i << " : " << argv[i] << endl;
+    for ( int i = 1; i<argc; i++ )
+    {
+      cout << "arg " << i << " : " << argv[i] << endl;
 
-			f = new PathName ( argv[i] );
-			cout << "path : " << *f << endl;
-			cout << "path : Exists = " << f->Exists() << endl;
-		}
-	}
+      f = new PathName ( argv[i] );
+      cout << "path : " << *f << endl;
+      cout << "path : Exists = " << f->Exists() << endl;
+    }
+  }
 
-	cout << endl;
-	cout << "End FileName test" << endl;
+  cout << endl;
+  cout << "End FileName test" << endl;
 }
 #endif /* TEST */
 
@@ -204,9 +147,9 @@ void main ( int argc, char *argv[] )
 
 /****************************************************************************/
 /* $Log$
-/* Revision 1.1  1996/05/07 14:29:37  njt
-/* Initial revision
-/*
+ * Revision 1.1  1996/05/07 14:29:37  njt
+ * Initial revision
+ *
  * Revision 1.1  91/07/06  23:51:02  njt
  * Added assignment operator= for FileName & PathName classes.
  * 

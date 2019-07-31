@@ -10,9 +10,9 @@
 
 
 // Interface Dependencies --------------------------------------------------
-#include <iostream.h>
-#include <fstream.h>
-#include "Boolean.h"
+#include <string>
+#include <iostream>
+#include <fstream>
 #include "FileName.h"
 // End Interface Dependencies ----------------------------------------------
 
@@ -56,23 +56,27 @@
 //
 // End ---------------------------------------------------------------------
 
-class File : public PathName
-{
+class File : public PathName {
 public:
-			File( const char * filename, BOOL log_failures = TRUE );
-	virtual		~File( );
+  explicit File(const std::string &filename, bool log_failures = true);
 
-	virtual void	PrintOn( ostream& s );
-	const char *	ModificationDate( );
-	long		FileSize( );
-	char **		FileInfo( );
+  virtual ~File();
 
-	friend  ostream&	operator << ( ostream& s, File& f )
-				{ f.PrintOn(s); return s; };
+  virtual void PrintOn(std::ostream &s);
 
+  std::string ModificationDate();
+
+  long FileSize();
+
+  std::string FileInfo();
+
+  friend std::ostream &operator<<(std::ostream &s, File &f) {
+    f.PrintOn(s);
+    return s;
+  };
 };
 
-
+
 // Description -------------------------------------------------------------
 //
 //  class FileIterator
@@ -181,11 +185,9 @@ public:
 
 Date          | Name  | Description
 --------------+-------+-------------------------------------------------------
-23-Apr-96	NJT	v1.1 - Initial UNIX version under SCCS control.
-02-May-96	NJT	v1.2 - Removed all file iterator functionality from
-			class File.
-			Class FileIterator is not working properly yet.
+23-Apr-96       NJT     v1.1 - Initial UNIX version under SCCS control.
+02-May-96       NJT     v1.2 - Removed all file iterator functionality from class File.
+                               Class FileIterator is not working properly yet.
 ******************************************************************************/
 
 #endif // ifndef FILE_h //
-/* EOF */
