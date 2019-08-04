@@ -33,7 +33,7 @@ static std::string ident_blist = "%Z%  $RCSfile$($Revision$)  $Date$__ - njt";
 // --------------
 bool _debug = false;
 const int DEF_TAB_SIZE = 4;
-bool bFormFeed = false;
+bool useFormFeed = false;
 
 // Call as (for example)  cout << NL;
 // Function: NL - Output a new line onto a stream.
@@ -64,9 +64,7 @@ void ShowUsage() {
 }
 
 int blist_main(int argc, char **argv) {
-  int i;
-  int errflag = 0;
-  int c;
+  int arg_error_count = 0;
 
   // Parameter values
   int tab_size;
@@ -76,13 +74,14 @@ int blist_main(int argc, char **argv) {
 
   // Check arguments
   if (argc < 2) {
-    errflag++;
+    arg_error_count++;
   }
 
   // Set default values for options
   tab_size = DEF_TAB_SIZE;
 
   // Check option values
+  int c;
   while ((c = getopt(argc, argv, "t:FD")) != EOF) {
     switch (c) {
       case 't':
@@ -93,34 +92,34 @@ int blist_main(int argc, char **argv) {
         break;
       case 'D':
         /* Debug mode */
-        _debug = 1;
+        _debug = true;
         TraceEntryExit::SetLogging(true);
         std::cerr << ProgName << ":"
                   << " Debug mode set to on." << std::endl;
         break;
       case 'F':
         /* FormFeed mode */
-        bFormFeed = 1;
+        useFormFeed = true;
         std::cerr << ProgName << ":"
-                  << " FordFeed mode set to on." << std::endl;
+                  << " FormFeed mode set to on." << std::endl;
         break;
       case '?':
       default:
         /* Invalid option specified */
-        errflag++;
+        arg_error_count++;
     }
   }
 
-  if (errflag > 0) {
+  if (arg_error_count > 0) {
     // Show usage summary
     ShowUsage();
     exit(1);
   }
 
   // Process files
-  for (i = optind; i < argc; i++) {
-    char *fname = argv[i];
-    File f(fname);
+  for (auto i = optind; i < argc; i++) {
+    char *file_name = argv[i];
+    File f(file_name);
 
     if (f.Exists()) {
       // List this file
@@ -145,19 +144,20 @@ std::cerr << "FInfo[3]=[" << fi[3] << "]\n";
       // Output file contents
       f.PrintOn(std::cout);
 
-      if (bFormFeed)
+      if (useFormFeed) {
         std::cout << FF;  // Start new page
-      else
+      } else {
         std::cout << std::endl;  // Just insert a blank line
+      }
 
       std::cout.flush();
     } else {
       std::cerr << "**** ERROR :  "
-                << " File " << fname
+                << " File " << file_name
                 << " does not exist" << std::endl;
       exit(1);
     }
-  }
+  } // End process each file
   exit(0);
 }
 

@@ -94,20 +94,20 @@ protected:
   char c;
   bool bWriteOutput;
 public:
-  virtual int read() {
+  int read() override {
     is.get(c);
     return is.good();
   };
 
-  virtual void compute() = 0;  // Pure virtual function
-  virtual void write() { if (bWriteOutput) os.put(c); };
+  void compute() override = 0;  // Pure virtual function
+  void write() override { if (bWriteOutput) os.put(c); };
 
-  virtual int result() { return 0; };
+  int result() override { return 0; };
 
   ICharStrmFilter(std::istream &ii, std::ostream &oo)
       : is(ii), os(oo), bWriteOutput(true) {};
 
-  ICharStrmFilter(std::istream &ii)
+  explicit ICharStrmFilter(std::istream &ii)
       : is(ii), os(std::clog), bWriteOutput(false) {};
 };
 // End class ICharStrmFilter
@@ -144,7 +144,7 @@ public:
   ILineStrmFilter(std::istream &ii, std::ostream &oo)
       : is(ii), os(oo), bWriteOutput(true) {};
 
-  ILineStrmFilter(std::istream &ii)
+  explicit ILineStrmFilter(std::istream &ii)
       : is(ii), os(std::clog), bWriteOutput(false) {};
 };
 // End class ILineStrmFilter

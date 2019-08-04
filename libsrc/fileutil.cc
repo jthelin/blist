@@ -30,7 +30,7 @@ static char ident_fileutil_c[] = "%Z% $Id$__ - njt";
 *
 * Purpose:	Return TRUE if specified file exists and is readable.
 ******************************************************************************/
-BOOL IsFileReadable(const std::string &file_path) {
+bool IsFileReadable(const std::string &file_path) {
   return (access(file_path.c_str(), F_OK | R_OK) == 0);
 }
 

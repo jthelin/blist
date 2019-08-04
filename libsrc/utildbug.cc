@@ -2,10 +2,8 @@
 
 #include "utildbug.h"
 
-#include <cstdarg>
 #include <cstdio>
 #include <iostream>
-#include <strstream>
 
 #define  MAX_LINE_SIZE  132
 

@@ -50,7 +50,7 @@
 // Protected Members
 //	fileName
 //		The name of this file.
-//		[ NOTE: This is just the terminal name, e.g. fname.ext ]
+//		[ NOTE: This is just the terminal name, e.g. filename.ext ]
 //	fileExists
 //		TRUE if a file of this name exists in the file system.
 //
@@ -60,7 +60,7 @@ protected:
   std::string fileName;
   bool fileExists;
 public:
-  explicit FileName(std::string filename);
+  explicit FileName(const std::string& filename);
 
   virtual ~FileName() = default;;
 
@@ -126,17 +126,17 @@ protected:
 public:
   explicit PathName(const std::string &path);
 
-  virtual ~PathName() = default;
+  ~PathName() override = default;
 
   PathName &operator=(const PathName &other) = default;
 
-  virtual explicit operator std::string() const { return this->FullName(); };
+  explicit operator std::string() const override { return this->FullName(); };
 
-  virtual const std::string DirName() const { return dirName; };
+  virtual std::string DirName() const { return dirName; };
 
-  virtual const std::string FName() const { return fileName; };
+  virtual std::string FName() const { return fileName; };
 
-  virtual const std::string FullName() const;
+  virtual std::string FullName() const;
 
 protected:
   PathName()
