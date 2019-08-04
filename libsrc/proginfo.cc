@@ -21,14 +21,27 @@ static std::string ident_proginfo_c = "%Z% $RCSfile$  v$Revision$  $Date$__ - nj
 
 #include "proginfo.h"
 
-void ModuleSignOn(
+std::ostream& ModuleSignOn(
     const std::string &progName,
     const std::string &progVer,
     const std::string &progReleaseStatus,
-    const std::string &progAuthor) {
-  std::cerr
-      << progName
-      << " v" << progVer << ".[" << progReleaseStatus << "]"
-      << " (" << progAuthor << ")"
-      << std::endl;
+    const std::string &progAuthor,
+    const std::string &progDate) {
+  std::ostream& out = std::cerr;
+
+  out << progName << " v" << progVer;
+
+  if (!progReleaseStatus.empty()) {
+    out << ".[" << progReleaseStatus << "]";
+  }
+  if (!progAuthor.empty()) {
+    out << " (" << progAuthor << ")";
+  }
+  if (!progDate.empty()) {
+    out << " " << progDate;
+  }
+
+  out << std::endl;
+
+  return out;
 }
