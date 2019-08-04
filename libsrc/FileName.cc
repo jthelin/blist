@@ -29,7 +29,7 @@
 //		The filename we are to use to locate this file.
 //
 // End ---------------------------------------------------------------------
-FileName::FileName(const std::string fname)
+FileName::FileName(const std::string& fname)
     : fileName(fname) {
   fileExists = IsFileReadable(fname);
 }
@@ -79,7 +79,7 @@ PathName::PathName(const std::string &path)
 //	be overwritten by subsequent calls.
 //
 // End ---------------------------------------------------------------------
-const std::string PathName::FullName() const {
+std::string PathName::FullName() const {
   static char path[PATH_MAX + 1];
 
   if (fileExists) {

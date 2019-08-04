@@ -18,12 +18,7 @@
 *
 ******************************************************************************/
 
-#ifndef BOOL
-typedef int BOOL;
-#endif
-
-
-extern BOOL IsFileReadable(const std::string &file_path);
+extern bool IsFileReadable(const std::string &file_path);
 
 extern long FileSize(const std::string &file_path);
 

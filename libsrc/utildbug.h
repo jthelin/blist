@@ -123,7 +123,9 @@ public:
 
   ~TraceEntryExit();
 
-  static void SetLogging(bool bLogTrace) { TraceEntryExit::logEntryExits = (bLogTrace != 0); };
+  static void SetLogging(bool bLogTrace) {
+    TraceEntryExit::logEntryExits = bLogTrace;
+  };
 };
 // End Class TraceEntryExit
 

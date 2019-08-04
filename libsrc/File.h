@@ -60,7 +60,7 @@ class File : public PathName {
 public:
   explicit File(const std::string &filename, bool log_failures = true);
 
-  virtual ~File();
+  ~File() override;
 
   virtual void PrintOn(std::ostream &s);
 
