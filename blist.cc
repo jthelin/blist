@@ -72,8 +72,7 @@ int blist_main(int argc, char **argv) {
   int tab_size;
 
   // Sign-on message
-  ProgramSignOn();
-  std::cerr << ProgName << " - " << ProgDesc << std::endl << std::endl;
+  ProgramSignOn() << ProgName << " - " << ProgDesc << std::endl << std::endl;
 
   // Check arguments
   if (argc < 2) {

@@ -25,32 +25,35 @@ extern const std::string ProgName;  /* Program Name */
 extern const std::string ProgVer;  /* Program Version */
 extern const std::string ProgReleaseStatus;  /* Program Release Status eg. Beta, Released */
 extern const std::string ProgAuthor;  /* Program Author */
-
+extern const std::string ProgDate; /* Program date stamp */
 /**
  * Output sign-on message to stderr, based on the contents of the parameters.
  * @param progName - Program name.
  * @param progVer - Program version.
- * @param progReleaseStatus - Program release status.
- * @param progAuthor - Program author.
+ * @param progReleaseStatus - Program release status. (Optional)
+ * @param progAuthor - Program author. (Optional)
+ * @param progDate - Program date stamp. (Optional)
  */
-extern void ModuleSignOn(
+extern std::ostream& ModuleSignOn(
     const std::string &progName,
     const std::string &progVer,
-    const std::string &progReleaseStatus,
-    const std::string &progAuthor
+    const std::string &progReleaseStatus = nullptr,
+    const std::string &progAuthor = nullptr,
+    const std::string &progDate = nullptr
 );
 
 /**
  * Function:	ProgramSignOn
- * Output sign-on message for the program, based on the contents of the variables
- * ProgName, ProgVer, ProgReleaseStatus, and ProgAuthor
+ * Output sign-on message for the program, based on the contents of the variables:
+ * ProgName, ProgVer, ProgReleaseStatus, ProgAuthor, and ProgDate,
  * which should be defined by the main program.
  */
-inline void ProgramSignOn() {
-  ModuleSignOn(
+inline std::ostream& ProgramSignOn() {
+  return ModuleSignOn(
       ProgName,
       ProgVer,
       ProgReleaseStatus,
-      ProgAuthor);
+      ProgAuthor,
+      ProgDate);
 }
 #endif // _PROGINFO_H
