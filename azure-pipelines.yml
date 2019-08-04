@@ -1,0 +1,36 @@
+# A minimal build pipeline to validate code changes.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+# Build with the CMake cross-platform build system
+- task: CMake@1
+  inputs:
+    cmakeArgs: --version
+  displayName: 'CMake Version'
+- task: CMake@1
+  inputs:
+    workingDirectory: $(Build.ArtifactStagingDirectory)
+    cmakeArgs: -S $(Build.SourcesDirectory)
+  displayName: 'CMake Build Generation'
+- task: CMake@1
+  inputs:
+    cmakeArgs: --build $(Build.ArtifactStagingDirectory)
+  displayName: 'CMake Build'
+
+- script: |
+    ls -lhR $(Build.BinariesDirectory)
+    ls -lhR $(Build.ArtifactStagingDirectory)
+    ls -lhR $(Build.SourcesDirectory)
+  displayName: 'List build files'
+
+- script: |
+    $(Build.ArtifactStagingDirectory)/blist blist.cc
+  displayName: 'Test program execution'
