@@ -15,7 +15,7 @@
 const std::string ProgName = "blist";
 const std::string ProgDesc = "Bulk list text file contents and file info to stdout.";
 const std::string ProgAuthor = "J.Thelin";
-const std::string ProgVer = "2.02";
+const std::string ProgVer = "2.03";
 const std::string ProgReleaseStatus = "GA";
 const std::string ProgDate = "02-Aug-2019";
 
@@ -33,9 +33,8 @@ static std::string ident_blist = "%Z%  $RCSfile$($Revision$)  $Date$__ - njt";
 // --------------
 bool _debug = false;
 const int DEF_TAB_SIZE = 4;
-bool useFormFeed = false;
 
-// Call as (for example)  cout << NL;
+// Call as (for example)  std::cout << NL;
 // Function: NL - Output a new line onto a stream.
 inline std::ostream &NL(std::ostream &s) { return (s.put('\n')); }
 
@@ -44,7 +43,7 @@ inline std::ostream &FF(std::ostream &s) { return (s.put('\f')); }
 
 
 void ShowUsage() {
-// Show program usage message
+  // Show program usage message
 
   std::cerr
       << "Usage: " << ProgName
@@ -63,22 +62,63 @@ void ShowUsage() {
       << std::endl;
 }
 
-int blist_main(int argc, char **argv) {
-  int arg_error_count = 0;
+/**
+ * List this file to the specified output stream.
+ * @param f - The file to be processed.
+ * @param out - The output stream to use.
+ * @param flush - Whether the output stream should be flushed after processing.
+ */
+void ProcessFile(
+    File &f,
+    std::ostream &out = std::cout,
+    bool useFormFeed = false,
+    bool flush = true) {
+  // List this file
+  // ==============
 
+  // Get file info details
+/*
+  char** file_info;
+  file_info = f.FileInfo();
+  std::cerr << "FInfo[0]=[" << file_info[0] << "]\n";
+  std::cerr << "FInfo[1]=[" << file_info[1] << "]\n";
+  std::cerr << "FInfo[2]=[" << file_info[2] << "]\n";
+  std::cerr << "FInfo[3]=[" << file_info[3] << "]\n";
+*/
+  const std::string file_info = f.FullName();
+
+  // Output file header
+  out << TextBox(file_info, TextBox::DOUBLE);
+
+  out << NL;  // Blank line
+
+  // Output file contents
+  f.PrintOn(out);
+
+  if (useFormFeed) {
+    out << FF;  // Start new page
+  } else {
+    out << std::endl;  // Just insert a blank line
+  }
+
+  if (flush) {
+    out.flush();
+  }
+}
+
+int blist_main(int argc, char **argv) {
   // Parameter values
-  int tab_size;
+  int tab_size = DEF_TAB_SIZE;
+  bool useFormFeed = false;
 
   // Sign-on message
   ProgramSignOn() << ProgName << " - " << ProgDesc << std::endl << std::endl;
 
   // Check arguments
+  int arg_error_count = 0;
   if (argc < 2) {
     arg_error_count++;
   }
-
-  // Set default values for options
-  tab_size = DEF_TAB_SIZE;
 
   // Check option values
   int c;
@@ -123,34 +163,7 @@ int blist_main(int argc, char **argv) {
 
     if (f.Exists()) {
       // List this file
-      // ==============
-
-      // Get file info details
-/*
-			char** fi;
-			fi = f.FileInfo();
-std::cerr << "FInfo[0]=[" << fi[0] << "]\n";
-std::cerr << "FInfo[1]=[" << fi[1] << "]\n";
-std::cerr << "FInfo[2]=[" << fi[2] << "]\n";
-std::cerr << "FInfo[3]=[" << fi[3] << "]\n";
-*/
-      const std::string fi = f.FullName();
-
-      // Output file header
-      std::cout << TextBox(fi, TextBox::DOUBLE);
-
-      std::cout << NL;  // Blank line
-
-      // Output file contents
-      f.PrintOn(std::cout);
-
-      if (useFormFeed) {
-        std::cout << FF;  // Start new page
-      } else {
-        std::cout << std::endl;  // Just insert a blank line
-      }
-
-      std::cout.flush();
+      ProcessFile(f, std::cout, useFormFeed);
     } else {
       std::cerr << "**** ERROR :  "
                 << " File " << file_name
@@ -162,23 +175,15 @@ std::cerr << "FInfo[3]=[" << fi[3] << "]\n";
 }
 
 
-/* Original RCS change records from DOS version: */
-/******************************************************************************
- * $Log$
- * Revision 1.3  1996/05/23 15:24:02  njt
- * Added FormFeed mode to not output FF by default.
- *
- * Revision 1.1  91/02/09  17:43:39  njt
- * Initial revision
-*****************************************************************************/
-
 /******************************************************************************
  Change History
- ==============
+================
 
 Date          | Name  | Description
 --------------+-------+-------------------------------------------------------
-02-May-96       NJT     v2.00 - Initial UNIX version under SCCS control.
-22-May-96       NJT     v2.01 - Moved infrastructure and utility classes to lib.
-23-May-96       NJT     v2.02 - Added FormFeed mode to not output FF by default.
+09-Feb-1991    NJT     v1.1 - Initial version.
+02-May-1996    NJT     v2.00 - Initial UNIX version under SCCS control.
+22-May-1996    NJT     v2.01 - Moved infrastructure and utility classes to lib.
+23-May-1996    NJT     v2.02 - Added FormFeed mode to not output FF by default.
+02-Aug-2019    NJT     v2.03 - Updated code to use "Modern C++".
 ******************************************************************************/
