@@ -1,17 +1,22 @@
 //
 //  BLIST
 //
-// Output a text file to stdout (for redirection) preceded
-//       by a header identifying the file.
+// Output a text file to stdout (for redirection) preceded by a header identifying the file.
 //
 
 #include <string>
+#include <cstdlib>
+#include <iostream>
+#include <getopt.h>
+
+#include "libsrc/proginfo.h"
+#include "libsrc/utildbug.h"
+#include "libsrc/File.h"
+#include "libsrc/TextBox.h"
 
 #include "blist.h"
 
 /* Program information */
-#include "libsrc/proginfo.h"
-
 const std::string ProgName = "blist";
 const std::string ProgDesc = "Bulk list text file contents and file info to stdout.";
 const std::string ProgAuthor = "J.Thelin";
@@ -19,32 +24,25 @@ const std::string ProgVer = "2.03";
 const std::string ProgReleaseStatus = "GA";
 const std::string ProgDate = "02-Aug-2019";
 
-static std::string ident_blist = "%Z%  $RCSfile$($Revision$)  $Date$__ - njt";
+struct blist_params {
+public:
+  const int DEF_TAB_SIZE = 4;
 
-#include <cstdlib>
-#include <iostream>
-#include <getopt.h>
+  bool _debug = false;
 
-#include "libsrc/utildbug.h"
-#include "libsrc/File.h"
-#include "libsrc/TextBox.h"
+  bool useFormFeed = false;
 
-// Default values
-// --------------
-bool _debug = false;
-const int DEF_TAB_SIZE = 4;
+  int tab_size = DEF_TAB_SIZE;
 
-// Call as (for example)  std::cout << NL;
-// Function: NL - Output a new line onto a stream.
-inline std::ostream &NL(std::ostream &s) { return (s.put('\n')); }
+  bool flush = true;
 
-// Function: FF - Output a form feed (new page) onto a stream.
-inline std::ostream &FF(std::ostream &s) { return (s.put('\f')); }
+  std::vector<std::string> files{};
+};
 
-
+/**
+ * Show program usage message
+ */
 void ShowUsage() {
-  // Show program usage message
-
   std::cerr
       << "Usage: " << ProgName
       << " [-t tabsize]"
@@ -63,57 +61,13 @@ void ShowUsage() {
 }
 
 /**
- * List this file to the specified output stream.
- * @param f - The file to be processed.
- * @param out - The output stream to use.
- * @param flush - Whether the output stream should be flushed after processing.
+ * Parse command line arguments.
+ * @param argc - Argument count.
+ * @param argv - Argument strings.
+ * @param params - Parameter values to be populated with command line overrides.
+ * @return TRUE if there were no errors found when parsing command line arguments.
  */
-void ProcessFile(
-    File &f,
-    std::ostream &out = std::cout,
-    bool useFormFeed = false,
-    bool flush = true) {
-  // List this file
-  // ==============
-
-  // Get file info details
-/*
-  char** file_info;
-  file_info = f.FileInfo();
-  std::cerr << "FInfo[0]=[" << file_info[0] << "]\n";
-  std::cerr << "FInfo[1]=[" << file_info[1] << "]\n";
-  std::cerr << "FInfo[2]=[" << file_info[2] << "]\n";
-  std::cerr << "FInfo[3]=[" << file_info[3] << "]\n";
-*/
-  const std::string file_info = f.FullName();
-
-  // Output file header
-  out << TextBox(file_info, TextBox::DOUBLE);
-
-  out << NL;  // Blank line
-
-  // Output file contents
-  f.PrintOn(out);
-
-  if (useFormFeed) {
-    out << FF;  // Start new page
-  } else {
-    out << std::endl;  // Just insert a blank line
-  }
-
-  if (flush) {
-    out.flush();
-  }
-}
-
-int blist_main(int argc, char **argv) {
-  // Parameter values
-  int tab_size = DEF_TAB_SIZE;
-  bool useFormFeed = false;
-
-  // Sign-on message
-  ProgramSignOn() << ProgName << " - " << ProgDesc << std::endl << std::endl;
-
+bool ParseArguments(int argc, char *const *argv, blist_params &params) {
   // Check arguments
   int arg_error_count = 0;
   if (argc < 2) {
@@ -126,20 +80,20 @@ int blist_main(int argc, char **argv) {
     switch (c) {
       case 't':
         /* Tab size */
-        tab_size = atoi(optarg);
+        params.tab_size = atoi(optarg);
         std::cerr << ProgName << ":"
-                  << " Tab size set to " << tab_size << std::endl;
+                  << " Tab size set to " << params.tab_size << std::endl;
         break;
       case 'D':
         /* Debug mode */
-        _debug = true;
+        params._debug = true;
         TraceEntryExit::SetLogging(true);
         std::cerr << ProgName << ":"
                   << " Debug mode set to on." << std::endl;
         break;
       case 'F':
         /* FormFeed mode */
-        useFormFeed = true;
+        params.useFormFeed = true;
         std::cerr << ProgName << ":"
                   << " FormFeed mode set to on." << std::endl;
         break;
@@ -150,20 +104,81 @@ int blist_main(int argc, char **argv) {
     }
   }
 
-  if (arg_error_count > 0) {
+  // Gather file names
+  for (auto i = optind; i < argc; i++) {
+    char *file_name = argv[i];
+    if (params._debug) { std::cerr << "File argument '" << file_name << "'\n"; }
+    params.files.emplace_back(std::string(file_name));
+  }
+
+  return (arg_error_count == 0);
+}
+
+/**
+ * List this file to the specified output stream.
+ * @param f - The file to be processed.
+ * @param params - Parameters to use when processing this file.
+ * @param out - The output stream to use.
+ */
+void ProcessFile(
+    File &f,
+    const blist_params &params,
+    std::ostream &out = std::cout) {
+  // List this file
+  // ==============
+
+  // Get file info details
+/*
+  char** file_info;
+  file_info = f.FileInfo();
+  std::cerr << "FInfo[0]=[" << file_info[0] << "]\n";
+  std::cerr << "FInfo[1]=[" << file_info[1] << "]\n";
+  std::cerr << "FInfo[2]=[" << file_info[2] << "]\n";
+  std::cerr << "FInfo[3]=[" << file_info[3] << "]\n";
+*/
+  const std::vector<std::string> file_info = {f.FullName()};
+
+  // Output file header
+  out << TextBox(file_info, TextBox::DOUBLE);
+
+  out << NL;  // Blank line
+
+  // Output file contents
+  f.PrintOn(out);
+
+  if (params.useFormFeed) {
+    out << FF;  // Start new page
+  } else {
+    out << std::endl;  // Just insert a blank line
+  }
+
+  if (params.flush) {
+    out.flush();
+  }
+}
+
+int blist_main(int argc, char **argv) {
+  // Sign-on message
+  ProgramSignOn() << ProgName << " - " << ProgDesc << std::endl << std::endl;
+
+  // Parameter values
+  blist_params params{};
+  bool args_ok = ParseArguments(argc, argv, params);
+  if (!args_ok) {
     // Show usage summary
     ShowUsage();
     exit(1);
   }
 
   // Process files
-  for (auto i = optind; i < argc; i++) {
-    char *file_name = argv[i];
+  for (const auto &file_name : params.files) {
+    if (params._debug) { std::cerr << "Processing file '" << file_name << "'\n"; }
+
     File f(file_name);
 
     if (f.Exists()) {
       // List this file
-      ProcessFile(f, std::cout, useFormFeed);
+      ProcessFile(f, params, std::cout);
     } else {
       std::cerr << "**** ERROR :  "
                 << " File " << file_name
@@ -171,6 +186,7 @@ int blist_main(int argc, char **argv) {
       exit(1);
     }
   } // End process each file
+
   exit(0);
 }
 
