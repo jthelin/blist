@@ -13,6 +13,7 @@
 
 // Interface Dependencies ---------------------------------------------------
 #include <iostream>
+#include <string>
 #include <vector>
 // End Interface Dependencies ------------------------------------------------
 
