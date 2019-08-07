@@ -2,6 +2,23 @@
 #define BLIST_BLIST_H
 
 #include <iostream>
+#include <string>
+#include <vector>
+
+struct blist_params {
+public:
+  const int DEF_TAB_SIZE = 4;
+
+  bool _debug = false;
+
+  bool useFormFeed = false;
+
+  int tab_size = DEF_TAB_SIZE;
+
+  bool flush = true;
+
+  std::vector<std::string> files{};
+};
 
 int blist_main(int argc, char **argv);
 

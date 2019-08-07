@@ -24,21 +24,6 @@ const std::string ProgVer = "2.03";
 const std::string ProgReleaseStatus = "GA";
 const std::string ProgDate = "02-Aug-2019";
 
-struct blist_params {
-public:
-  const int DEF_TAB_SIZE = 4;
-
-  bool _debug = false;
-
-  bool useFormFeed = false;
-
-  int tab_size = DEF_TAB_SIZE;
-
-  bool flush = true;
-
-  std::vector<std::string> files{};
-};
-
 /**
  * Show program usage message
  */

@@ -26,6 +26,7 @@ extern const std::string ProgVer;  /* Program Version */
 extern const std::string ProgReleaseStatus;  /* Program Release Status eg. Beta, Released */
 extern const std::string ProgAuthor;  /* Program Author */
 extern const std::string ProgDate; /* Program date stamp */
+
 /**
  * Output sign-on message to stderr, based on the contents of the parameters.
  * @param progName - Program name.
@@ -56,4 +57,5 @@ inline std::ostream& ProgramSignOn() {
       ProgAuthor,
       ProgDate);
 }
+
 #endif // _PROGINFO_H
