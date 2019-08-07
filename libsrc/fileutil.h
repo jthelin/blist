@@ -4,8 +4,6 @@
 #include <cstring>
 #include <sys/cdefs.h>
 
-#ident "%Z% $Id$__ - njt"
-
 /*******************************************************************************
 *
 * File		:	fileutil.h

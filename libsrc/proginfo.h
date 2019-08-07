@@ -4,8 +4,6 @@
 #include <sys/cdefs.h>
 #include <string>
 
-#ident "%Z% $Id$__ - njt"
-
 /*******************************************************************************
 *
 * File		:	proginfo.h
@@ -20,12 +18,17 @@
 *  
 ******************************************************************************/
 
-/* Program Information variables to be defined in the main program module */
-extern const std::string ProgName;  /* Program Name */
-extern const std::string ProgVer;  /* Program Version */
-extern const std::string ProgReleaseStatus;  /* Program Release Status eg. Beta, Released */
-extern const std::string ProgAuthor;  /* Program Author */
-extern const std::string ProgDate; /* Program date stamp */
+/**
+ * Program Information variables to be defined in the main program module.
+ */
+struct ProgInfo {
+  static std::string Name;           /* Program Name */
+  static std::string Desc;           /* Program Description */
+  static std::string Version;        /* Program Version */
+  static std::string Author;         /* Program Author */
+  static std::string ReleaseDate;    /* Program Release Date */
+  static std::string ReleaseStatus;  /* Program Release Status eg. Beta, Released */
+};
 
 /**
  * Output sign-on message to stderr, based on the contents of the parameters.
@@ -51,11 +54,11 @@ extern std::ostream& ModuleSignOn(
  */
 inline std::ostream& ProgramSignOn() {
   return ModuleSignOn(
-      ProgName,
-      ProgVer,
-      ProgReleaseStatus,
-      ProgAuthor,
-      ProgDate);
+      ProgInfo::Name,
+      ProgInfo::Version,
+      ProgInfo::ReleaseStatus,
+      ProgInfo::Author,
+      ProgInfo::ReleaseDate);
 }
 
 #endif // _PROGINFO_H

@@ -1,9 +1,9 @@
 #include "gtest/gtest.h"
 
 #include "../blist.h"
-#include "../libsrc/utilmsg.h"
+#include "../libsrc/proginfo.h"
 
-std::string ProgName = "blist_tests";
+std::string ProgInfo::Name = "blist_tests";
 
 TEST(blist_test, Params)
 {
