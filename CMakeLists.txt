@@ -53,7 +53,7 @@ TARGET_LINK_LIBRARIES(blist_test gtest_main)
 
 ADD_TEST(run_blist_tests blist_test)
 
-ADD_TEST(run_blist_exe blist ../blist.h)
+ADD_TEST(run_blist_exe blist ${CMAKE_CURRENT_SOURCE_DIR}/blist.h)
 
 # Install
 
