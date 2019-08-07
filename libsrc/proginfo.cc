@@ -1,13 +1,9 @@
 #include <string>
 #include <iostream>
 
-#ifndef lint
-static std::string ident_proginfo_c = "%Z% $RCSfile$  v$Revision$  $Date$__ - njt";
-#endif /* lint */
-
 /*******************************************************************************
 *
-* File		:	proginfo.h
+* File		:	proginfo.cc
 *
 * Authors	:	Jorgen Thelin
 * 

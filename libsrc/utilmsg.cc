@@ -7,8 +7,6 @@
 #include "proginfo.h"
 #include "utilmsg.h"
 
-extern const std::string ProgName;   /* Program name - usually defined in main module */
-
 const std::string ERROR_PREFIX = "**** ERROR";
 
 
@@ -21,7 +19,7 @@ const std::string ERROR_PREFIX = "**** ERROR";
 /*
 void  perror_with_name( char *text )
 {
-  fprintf( stderr, "%s: ", ProgName );
+  fprintf( stderr, "%s: ", ProgInfo::Name );
   perror( text );
 }
 */
@@ -33,7 +31,7 @@ void  perror_with_name( char *text )
 void  pfatal_with_name( char *text )
 {
   print_message_queue();
-  fprintf( stderr, "%s: ", ProgName );
+  fprintf( stderr, "%s: ", ProgInfo::Name );
   perror( text );
   exit( 2 );
 }
@@ -47,6 +45,8 @@ void  pfatal_with_name( char *text )
 /************************************************************************/
 
 void error(const std::string& message) {
+  const std::string& ProgName = ProgInfo::Name;
+
   fprintf(stderr, "\n%s: ", ProgName.c_str());
   fprintf(stderr, ERROR_PREFIX.c_str(), " ");
   fprintf(stderr, "%s", message.c_str());
@@ -63,7 +63,7 @@ void error(const std::string &format, ...) {
 
   va_start(args, format);
 
-  fprintf(stderr, "\n%s: ", ProgName.c_str());
+  fprintf(stderr, "\n%s: ", ProgInfo::Name.c_str());
   fprintf(stderr, ERROR_PREFIX.c_str(), " ");
   vfprintf(stderr, format.c_str(), args);
   fprintf(stderr, "\n");

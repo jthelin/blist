@@ -1,8 +1,6 @@
-//
 //  BLIST
 //
 // Output a text file to stdout (for redirection) preceded by a header identifying the file.
-//
 
 #include <string>
 #include <cstdlib>
@@ -17,19 +15,19 @@
 #include "blist.h"
 
 /* Program information */
-const std::string ProgName = "blist";
-const std::string ProgDesc = "Bulk list text file contents and file info to stdout.";
-const std::string ProgAuthor = "J.Thelin";
-const std::string ProgVer = "2.03";
-const std::string ProgReleaseStatus = "GA";
-const std::string ProgDate = "02-Aug-2019";
+std::string ProgInfo::Name          = "blist";
+std::string ProgInfo::Desc          = "Bulk list text file contents and file info to stdout.";
+std::string ProgInfo::Author        = "J.Thelin";
+std::string ProgInfo::Version       = "2.04";
+std::string ProgInfo::ReleaseStatus = "GA";
+std::string ProgInfo::ReleaseDate   = "08-Aug-2019";
 
 /**
  * Show program usage message
  */
 void ShowUsage() {
   std::cerr
-      << "Usage: " << ProgName
+      << "Usage: " << ProgInfo::Name
       << " [-t tabsize]"
       << " [-F]"
       << " [-D]"
@@ -53,6 +51,8 @@ void ShowUsage() {
  * @return TRUE if there were no errors found when parsing command line arguments.
  */
 bool ParseArguments(int argc, char *const *argv, blist_params &params) {
+  const std::string& ProgName = ProgInfo::Name;
+
   // Check arguments
   int arg_error_count = 0;
   if (argc < 2) {
@@ -144,7 +144,7 @@ void ProcessFile(
 
 int blist_main(int argc, char **argv) {
   // Sign-on message
-  ProgramSignOn() << ProgName << " - " << ProgDesc << std::endl << std::endl;
+  ProgramSignOn() << ProgInfo::Name << " - " << ProgInfo::Desc << std::endl << std::endl;
 
   // Parameter values
   blist_params params{};
