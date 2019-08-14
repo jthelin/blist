@@ -12,6 +12,7 @@ SET(blist_SRCS main.cc blist.cc blist.h)
 
 ADD_LIBRARY(mylib STATIC ${lib_HDRS} ${lib_SRCS})
 ADD_EXECUTABLE(blist ${blist_SRCS} ${lib_HDRS} ${lib_SRCS})
+ADD_EXECUTABLE(test_filter test_filter.cc libsrc/filter.h)
 
 # Google Test Framework
 
