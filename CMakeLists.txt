@@ -56,6 +56,8 @@ ADD_TEST(run_blist_tests blist_test)
 
 ADD_TEST(run_blist_exe blist ${CMAKE_SOURCE_DIR}/blist.h)
 
+ADD_TEST(run_filter_exe test_filter ${CMAKE_SOURCE_DIR}/blist.h)
+
 # Install
 
 INSTALL(TARGETS blist RUNTIME DESTINATION bin)

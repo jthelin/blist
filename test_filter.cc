@@ -1,7 +1,10 @@
 
 #include "libsrc/filter.h"
 
+#include <fstream>
+#include <ios>
 #include <iostream>
+#include <memory>
 
 class MyCharFilter : public ICharStrmFilter {
   int num_chars;
@@ -36,14 +39,20 @@ public:
 // End class MyLineFilter
 
 
-int main() {
+int main(int argc, char **argv) {
+  std::istream *p_input_stream = nullptr;
+  if (argc < 1) {
+    p_input_stream = &(std::cin);
+  } else {
+    p_input_stream = std::make_unique<std::ifstream>( std::ifstream(argv[1]) ).get();
+  }
 
-  // std::cerr << "test_filter: Read from cin stream and count characters.\n";
-  // MyCharFilter f(std::cin);
+  // std::cerr << "test_filter: Read from input stream and count characters.\n";
+  // MyCharFilter f(*p_input_stream);
 
-  std::cerr << "test_filter: Read from cin stream and count lines.\n";
-  MyLineFilter f(std::cin);
+  std::cerr << "test_filter: Read from input stream and count lines.\n";
+  MyLineFilter f(*p_input_stream);
 
   return main_loop(&f);
-};
+}
 // End function main
