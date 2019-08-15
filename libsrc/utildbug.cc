@@ -5,7 +5,7 @@
 #include <cstdio>
 #include <iostream>
 
-#define  MAX_LINE_SIZE  132
+constexpr int MAX_LINE_SIZE = 132;
 
 /*  Initialise static data members of class TraceEntryExit */
 std::string TraceEntryExit::EntryPrefix = ">>>> Entering ";

@@ -13,6 +13,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include "FileName.h"
 // End Interface Dependencies ----------------------------------------------
 
@@ -68,9 +69,9 @@ public:
 
   long FileSize();
 
-  std::string FileInfo();
+  std::vector<std::string> FileInfo();
 
-  friend std::ostream &operator<<(std::ostream &s, File &f) {
+  friend std::ostream &operator<<(std::ostream &s, File f) {
     f.PrintOn(s);
     return s;
   };

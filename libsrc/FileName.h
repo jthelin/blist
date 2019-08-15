@@ -1,21 +1,9 @@
-#pragma title( "FileName class declaration" )
-
 #ifndef FILENAME_h
 #define FILENAME_h
 
-// Contents ----------------------------------------------------------------
-//
-//	Contains the class declaration for the FileName class
-//
-// End ---------------------------------------------------------------------
+#pragma title( "FileName class declaration" )
 
-
-// Interface Dependencies --------------------------------------------------
 #include <string>
-// End Interface Dependencies ----------------------------------------------
-
-// Implementation Dependencies ---------------------------------------------
-// End Implementation Dependencies -----------------------------------------
 
 #pragma subtitle( "Class: FileName" )
 
@@ -57,25 +45,34 @@
 // End ---------------------------------------------------------------------
 class FileName {
 protected:
-  std::string fileName;
   bool fileExists;
+  std::string fileName;
 public:
-  explicit FileName(const std::string& filename);
+  explicit FileName(const std::string &filename);
 
-  virtual ~FileName() = default;;
+  explicit FileName(const char *filename);
+
+  FileName(const FileName &other) = default;
+
+  virtual ~FileName() = default;
 
   FileName &operator=(const FileName &other) = default;
 
-  virtual explicit operator std::string() const { return fileName; }
+  virtual std::string to_string() const { return this->fileName; };
 
   bool Exists() const { return fileExists; };
+
+  friend std::ostream &operator<<(std::ostream &s, const FileName &f) {
+    s << f.fileName;
+    return s;
+  };
+
 protected:
   FileName()
       : fileName("") {
     fileExists = false;
     /* No access */ };
 
-  FileName(const FileName &other) = default;
 };
 
 
@@ -126,11 +123,20 @@ protected:
 public:
   explicit PathName(const std::string &path);
 
+  explicit PathName(const FileName &file_name);
+
+  PathName(const PathName &other) = default;
+
   ~PathName() override = default;
 
   PathName &operator=(const PathName &other) = default;
 
-  explicit operator std::string() const override { return this->FullName(); };
+  PathName &operator=(const PathName *other) {
+    this->operator=(*other);
+    return *this;
+  };
+
+  std::string to_string() const override { return this->FullName(); };
 
   virtual std::string DirName() const { return dirName; };
 
@@ -138,9 +144,16 @@ public:
 
   virtual std::string FullName() const;
 
+  static std::string GetCurrentDirectory();
+
+  friend std::ostream &operator<<(std::ostream &s, const PathName &path_name) {
+    s << path_name.FullName();
+    return s;
+  };
+
 protected:
   PathName()
-      : FileName(), dirName("") { /* No access */ };
+      : FileName(), dirName(".") { /* No access */ };
 };
 
 

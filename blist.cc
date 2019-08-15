@@ -113,18 +113,10 @@ void ProcessFile(
   // ==============
 
   // Get file info details
-/*
-  char** file_info;
-  file_info = f.FileInfo();
-  std::cerr << "FInfo[0]=[" << file_info[0] << "]\n";
-  std::cerr << "FInfo[1]=[" << file_info[1] << "]\n";
-  std::cerr << "FInfo[2]=[" << file_info[2] << "]\n";
-  std::cerr << "FInfo[3]=[" << file_info[3] << "]\n";
-*/
-  const std::vector<std::string> file_info = {f.FullName()};
+  const auto file_info = f.FileInfo();
 
   // Output file header
-  out << TextBox(file_info, TextBox::DOUBLE);
+  out << TextBox(file_info, TextBox::STANDARD);
 
   out << NL;  // Blank line
 
@@ -144,7 +136,9 @@ void ProcessFile(
 
 int blist_main(int argc, char **argv) {
   // Sign-on message
-  ProgramSignOn() << ProgInfo::Name << " - " << ProgInfo::Desc << std::endl << std::endl;
+  auto &announce = ProgramSignOn();
+  announce << ProgInfo::Name << " - " << ProgInfo::Desc << std::endl << std::endl;
+  announce.flush();
 
   // Parameter values
   blist_params params{};

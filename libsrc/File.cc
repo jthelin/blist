@@ -10,8 +10,10 @@
 
 // Implementation Dependencies ----------------------------------------------
 #include <cassert>
+#include <chrono>
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 #include "utildbug.h"
 #include "filter.h"
@@ -62,9 +64,20 @@ File::~File() {
 //
 // End ---------------------------------------------------------------------
 std::string File::ModificationDate() {
-  std::string modDate = "";  /* HACK! */
+  time_t timestamp = FileCreationTimestamp(this->FullName());
 
-  return modDate;
+  auto modTime = std::string(std::asctime(std::localtime(&timestamp)));
+  // Clean any non-printable characters.
+  for (int i = 0; i < modTime.length(); i++) {
+    if (!isprint(modTime[i])) {
+      modTime[i] = ' ';
+    }
+  }
+//  std::cerr << "[" << modTime << "]"
+//            << " c='" << modTime[modTime.length() - 1] << "'"
+//            << " len = " << modTime.length()
+//            << std::endl;
+  return modTime;
 }
 // End Member function ModificationDate
 
@@ -87,16 +100,22 @@ long File::FileSize() {
 //	Return a (static) string array of file info details
 //
 // End ---------------------------------------------------------------------
-std::string File::FileInfo() {
-  std::stringstream out;
+std::vector<std::string> File::FileInfo() {
+  auto file_info = std::vector<std::string>();
 
-  out << "File name: " << this->FullName() << std::endl;
-/*
-  out << "Last modified: " << this->ModificationDate() << std::endl;
+  auto out = std::stringstream();
+  out << "File name: " << this->FullName();
+  file_info.push_back(out.str());
 
-  out << "File size (bytes): " << this->FileSize() << std::endl;
-*/
-  return out.str();
+  out = std::stringstream();
+  out << "Last modified: " << this->ModificationDate();
+  file_info.push_back(out.str());
+
+  out = std::stringstream();
+  out << "File size (bytes): " << this->FileSize();
+  file_info.push_back(out.str());
+
+  return file_info;
 }
 // End Member function FileInfo
 
@@ -132,39 +151,6 @@ void File::PrintOn(std::ostream &s) {
   /* else: File does not exist, so no output. */
 }
 // End Stream output Function operator << //
-
-
-#ifdef TEST
-//     ****
-
-// **********************************
-// main function for testing purposes
-// **********************************
-
-#define DEBUG
-
-void main ( )
-{
-  TraceEntryExit t( "File test program", "main" );
-
-  File f("file.C");   // This file !
-
-  cout << "Start File test" << endl;
-  cout << endl;
-
-  cout << "File.h" << endl;
-  cout << File("File.h");
-
-  cout << f.FullName() << endl;
-  cout << f;
-
-  cout << "nofile.non" << endl;
-  cout << File("nofile.non");
-
-  cout << endl;
-  cout << "End File test" << endl;
-}
-#endif /* TEST */
 
 
 /* Original RCS change records from DOS version: */
