@@ -5,8 +5,7 @@
 
 std::string ProgInfo::Name = "blist_tests";
 
-TEST(blist_test, Params)
-{
+TEST(blist_tests, Params) {
   blist_params params{};
 
   EXPECT_EQ(params.DEF_TAB_SIZE, params.tab_size);

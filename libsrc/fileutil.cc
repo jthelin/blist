@@ -41,16 +41,35 @@ bool IsFileReadable(const std::string &file_path) {
 * Purpose:	Return size of specified file (in bytes)
 ******************************************************************************/
 long FileSize(const std::string &file_path) {
-  static char szFunc[] = "FileSize";
+  auto func_name = "FileSize";
   struct stat stats{};
 
   if (stat(file_path.c_str(), &stats) == 0) {
     return (stats.st_size);
   } else {
     fprintf(stderr,
-            "$RCSfile$:%s: Bad return from stat function on file [%s]\n",
-            szFunc, file_path.c_str());
+            "%s:%s: Bad return from stat function on file [%s]\n",
+            __FILE__, func_name, file_path.c_str());
     return -1;
+  }
+}
+
+/******************************************************************************
+* Function:	FileCreationTimestamp
+*
+* Purpose:	Return creation timestamp of the specified file.
+******************************************************************************/
+time_t FileCreationTimestamp(const std::string &file_path) {
+  auto func_name = "FileCreationTimestamp";
+  struct stat stats{};
+
+  if (stat(file_path.c_str(), &stats) == 0) {
+    return (stats.st_mtime);
+  } else {
+    fprintf(stderr,
+            "%s:%s: Bad return from stat function on file [%s]\n",
+            __FILE__, func_name, file_path.c_str());
+    return 0;
   }
 }
 

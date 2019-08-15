@@ -68,9 +68,9 @@ public:
 
   long FileSize();
 
-  std::string FileInfo();
+  std::vector<std::string> FileInfo();
 
-  friend std::ostream &operator<<(std::ostream &s, File &f) {
+  friend std::ostream &operator<<(std::ostream &s, File f) {
     f.PrintOn(s);
     return s;
   };

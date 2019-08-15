@@ -20,4 +20,6 @@ extern bool IsFileReadable(const std::string &file_path);
 
 extern long FileSize(const std::string &file_path);
 
+extern time_t FileCreationTimestamp(const std::string &file_path);
+
 #endif // _FILEUTIL_H

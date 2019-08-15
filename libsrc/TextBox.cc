@@ -213,35 +213,6 @@ std::ostream &operator<<(std::ostream &s, const TextBox &tb) {
 // End Stream output Function operator << //
 
 
-
-#ifdef TEST
-//     ****
-
-// **********************************
-// main function for testing purposes
-// **********************************
-
-void main ( void )
-{
-  char *multi_line[] = { "Line1", "Line2", "Line3", "Last Line", "" };
-
-  cout << "First Line" << endl;
-  cout << endl;
-
-  cout << TextBox ( "Text in a box" );
-
-  cout << TextBox ( "More text in a box", TextBox::STANDARD );
-
-  cout << TextBox ( "Even more text in a box", TextBox::DOUBLE, 'X' );
-
-  cout << TextBox ( multi_line, TextBox::STANDARD );
-
-  cout << endl;
-  cout << "Last Line" << endl;
-}
-#endif
-
-
 /* Original RCS change records from DOS version: */
 /*****************************************************************************
  * $Log$
