@@ -13,6 +13,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include "FileName.h"
 // End Interface Dependencies ----------------------------------------------
 
