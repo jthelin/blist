@@ -31,7 +31,7 @@ public:
 
   virtual int read() = 0;
 
-  virtual void write() {};
+  virtual void write() {}; // Default = No output.
 
   virtual void compute() {};
 
@@ -124,9 +124,7 @@ class ILineStrmFilter : public IFilter {
 protected:
   std::istream &is;
   std::ostream &os;
-  enum {
-    MAX_LINE_SIZE = 1024
-  };
+  static constexpr int MAX_LINE_SIZE = 1024;
   char buff[MAX_LINE_SIZE + 1];
   bool bWriteOutput;
 public:
