@@ -16,7 +16,7 @@
 #include <climits>  // For PATH_MAX
 #include "fileutil.h"
 #include <libgen.h>  // For basename / dirname
-#include <strstream>
+#include <sstream>
 // End Implementation Dependencies -------------------------------------------
 
 
@@ -83,7 +83,7 @@ PathName::PathName(const FileName &file_name)
 //
 // End ---------------------------------------------------------------------
 std::string PathName::FullName() const {
-  std::strstream ss;
+  std::stringstream ss;
   if (fileExists) {
     ss << dirName << "/" << fileName;
   } else {
