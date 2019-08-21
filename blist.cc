@@ -166,6 +166,8 @@ int blist_main(int argc, char **argv) {
     }
   } // End process each file
 
+  std::cout.flush();
+
   exit(0);
 }
 

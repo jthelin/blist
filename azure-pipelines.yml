@@ -32,7 +32,7 @@ steps:
   displayName: 'List build files'
 
 - script: |
-    cd $(Build.ArtifactStagingDirectory) && ctest --output-on-failure
+    cd $(Build.ArtifactStagingDirectory) && ctest --output-on-failure --extra-verbose
   displayName: 'Run Tests'
 
 - script: |
