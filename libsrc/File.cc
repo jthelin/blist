@@ -68,7 +68,7 @@ std::string File::ModificationDate() {
 
   auto modTime = std::string(std::asctime(std::localtime(&timestamp)));
   // Clean any non-printable characters.
-  for (int i = 0; i < modTime.length(); i++) {
+  for (size_t i = 0; i < modTime.length(); i++) {
     if (!isprint(modTime[i])) {
       modTime[i] = ' ';
     }

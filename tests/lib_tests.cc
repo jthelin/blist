@@ -1,3 +1,6 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cert-err58-cpp"
+
 #include "gtest/gtest.h"
 
 #include "../libsrc/proginfo.h"
@@ -14,7 +17,7 @@ TEST(lib_tests, File) {
   std::cout << "Start File test" << std::endl;
 
   File file("cmake_install.cmake");
-  File none("nofile.non", false);  // Non-existent file
+  File none("no-file.non", false);  // Non-existent file
 
   EXPECT_TRUE(file.Exists()) << file.to_string() << " should exist.";
   EXPECT_FALSE(none.Exists()) << none.to_string() << " should not exist.";
@@ -32,7 +35,7 @@ TEST(lib_tests, FileName_Exists) {
   std::cout << "Start FileName test" << std::endl;
 
   FileName file("cmake_install.cmake");
-  FileName none("nofile.non");  // Non-existent file
+  FileName none("no-file.non");  // Non-existent file
 
   std::cout << "file : " << file << " Exists = " << file.Exists() << std::endl;
   EXPECT_TRUE(file.Exists()) << file.to_string() << " should exist.";
@@ -62,17 +65,19 @@ TEST(lib_tests, PathName_Split) {
 TEST(lib_tests, TextBox) {
   TraceEntryExit t("lib_tests", "TextBox test");
 
-  std::vector<std::string> multi_line = { "Line1", "Line2", "Line3", "Last Line" };
+  std::vector<std::string> multi_line = {"Line1", "Line2", "Line3", "Last Line"};
 
   std::cout << "Start TextBox test" << std::endl;
 
-  std::cout << TextBox ( "Text in a box" );
+  std::cout << TextBox("Text in a box");
 
-  std::cout << TextBox ( "More text in a box", TextBox::STANDARD );
+  std::cout << TextBox("More text in a box", TextBox::STANDARD);
 
-  std::cout << TextBox ( "Even more text in an X-box", TextBox::DOUBLE, 'X' );
+  std::cout << TextBox("Even more text in an X-box", TextBox::DOUBLE, 'X');
 
-  std::cout << TextBox ( multi_line, TextBox::STANDARD );
+  std::cout << TextBox(multi_line, TextBox::STANDARD);
 
   std::cout << "End TextBox test" << std::endl;
 }
+
+#pragma clang diagnostic pop
