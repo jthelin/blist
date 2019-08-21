@@ -9,21 +9,16 @@
 // End ---------------------------------------------------------------------
 
 
-// Interface Dependencies --------------------------------------------------
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "FileName.h"
-// End Interface Dependencies ----------------------------------------------
-
-// Implementation Dependencies ---------------------------------------------
-// End Implementation Dependencies -----------------------------------------
+#include "FilePath.h"
 
 
 // Description -------------------------------------------------------------
 //
-// class File
+// Class File
 // ==========
 //
 //	An object representing a DOS (text) file, including its contents.
@@ -46,7 +41,7 @@
 //		Puts the File contents out to the specified output stream.
 //
 // Inherited Members:
-//	<from PathName>
+//	<from FilePath>
 //
 // Private Members:
 //	None
@@ -57,11 +52,11 @@
 //
 // End ---------------------------------------------------------------------
 
-class File : public PathName {
+class File : public FilePath {
 public:
   explicit File(const std::string &filename, bool log_failures = true);
 
-  ~File() override;
+  virtual ~File();
 
   virtual void PrintOn(std::ostream &s);
 
@@ -77,10 +72,9 @@ public:
   };
 };
 
-
 // Description -------------------------------------------------------------
 //
-//  class FileIterator
+// Class FileIterator
 // ==================
 //
 //	Defines the file iterator class.  Upon initialization, we set up

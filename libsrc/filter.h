@@ -8,6 +8,7 @@
 #endif
 
 #include <iostream>
+#include <cstring>
 
 /*******************************************************************************
 Class: IFilter
@@ -18,6 +19,7 @@ Class: IFilter
 Adapted from The C++ Programming Language (2nd Ed), Section 13.7, Page 455-6
 *******************************************************************************/
 class IFilter {
+  int num_retries = 2;
 public:
   // Exception
   class ERetry {
@@ -27,15 +29,17 @@ public:
 
   virtual void start() {};
 
-  virtual int retry() { return 2; }
+  virtual int retry() { return num_retries; }
 
-  virtual int read() = 0;
+  virtual int read() = 0; // Pure virtual function - sub-class must implement.
 
   virtual void write() {}; // Default = No output.
 
   virtual void compute() {};
 
-  virtual int result() = 0;
+  virtual int result() { return 0; };
+
+  virtual ~IFilter() = default;
 };
 // End class IFilter
 
@@ -46,9 +50,7 @@ int main_loop(IFilter *p) {
   {
 
 #ifndef NEXCEPTIONS
-
     try {
-
 #endif /* NEXCEPTIONS */
 
       p->start();
@@ -59,93 +61,105 @@ int main_loop(IFilter *p) {
       return p->result();  // Exit loop
 
 #ifndef NEXCEPTIONS
-
     }
     catch (IFilter::ERetry &m) {
-      std::cout << m.message() << '\n';
+      std::cerr << m.message() << std::endl;
       int i = p->retry();
       if (i) {
-        return i;  // Exit loop
+        return -i;  // Exit loop
       }
     }
     catch (...) {
-      std::cout << "Fatal filter error\n";
-      return 1;  // Exit loop
+      std::cerr << "Fatal filter error" << std::endl;
+      return -10;  // Exit loop
     }
-
 #endif /* NEXCEPTIONS */
 
-  }
-  // Never reached
+  } // End forever loop
+  // Not reached.
 }
 
 
 /*******************************************************************************
-Class: ICharStrmFilter
+Class: ICharStreamFilter
 
 - Version of IFilter for processing streams at the character level.
 
 Adapted from The C++ Programming Language (2nd Ed), Section 13.7, Page 455-6
 *******************************************************************************/
-class ICharStrmFilter : public IFilter {
+class ICharStreamFilter : public IFilter {
 protected:
   std::istream &is;
   std::ostream &os;
-  char c;
+  char c = ' ';
   bool bWriteOutput;
+
 public:
+  void compute() override = 0;  // Pure virtual function - sub-class must implement.
+
   int read() override {
     is.get(c);
     return is.good();
   };
 
-  void compute() override = 0;  // Pure virtual function
-  void write() override { if (bWriteOutput) os.put(c); };
+  void write() override {
+    if (bWriteOutput) {
+      os.put(c);
+    }
+  };
 
-  int result() override { return 0; };
-
-  ICharStrmFilter(std::istream &ii, std::ostream &oo)
+  ICharStreamFilter(std::istream &ii, std::ostream &oo)
       : is(ii), os(oo), bWriteOutput(true) {};
 
-  explicit ICharStrmFilter(std::istream &ii)
+  explicit ICharStreamFilter(std::istream &ii)
       : is(ii), os(std::clog), bWriteOutput(false) {};
 };
-// End class ICharStrmFilter
+// End class ICharStreamFilter
 
 
 /*******************************************************************************
-Class: ILineStrmFilter
+Class: ILineStreamFilter
 
 - Version of IFilter for processing streams at the line level.
 
 Adapted from The C++ Programming Language (2nd Ed), Section 13.7, Page 455-6
 *******************************************************************************/
-class ILineStrmFilter : public IFilter {
+class ILineStreamFilter : public IFilter {
 protected:
+  static constexpr char EOL = '\n';
+  static constexpr int MAX_LINE_SIZE = 1024;
   std::istream &is;
   std::ostream &os;
-  static constexpr int MAX_LINE_SIZE = 1024;
   char buff[MAX_LINE_SIZE + 1];
   bool bWriteOutput;
+
 public:
+  void compute() override = 0;  // Pure virtual function - sub-class must implement.
+
   int read() override {
-    is.getline(buff, MAX_LINE_SIZE, '\n');
-    buff[MAX_LINE_SIZE] = 0;  // Add NULL terminator
+    is.getline(buff, MAX_LINE_SIZE, EOL);
     return is.good();
   };
 
-  void compute() override = 0;  // Pure virtual function
-  void write() override { if (bWriteOutput) os << buff << '\n'; };
+  void write() override {
+    if (bWriteOutput) {
+      os << buff << EOL;
+    }
+  };
 
-  int result() override { return 0; };
+  ILineStreamFilter(std::istream &ii, std::ostream &oo)
+      : is(ii), os(oo) {
+    bWriteOutput = true;
+    memset(buff, '\0', MAX_LINE_SIZE + 1);
+  };
 
-  ILineStrmFilter(std::istream &ii, std::ostream &oo)
-      : is(ii), os(oo), bWriteOutput(true) {};
-
-  explicit ILineStrmFilter(std::istream &ii)
-      : is(ii), os(std::clog), bWriteOutput(false) {};
+  explicit ILineStreamFilter(std::istream &ii)
+      : is(ii), os(std::clog) {
+    bWriteOutput = false;
+    memset(buff, '\0', MAX_LINE_SIZE + 1);
+  };
 };
-// End class ILineStrmFilter
+// End class ILineStreamFilter
 
 
 /*******************************************************************************
@@ -157,9 +171,9 @@ Date          | Name  | Description
 30-Apr-96	NJT	v1.0 - Initial UNIX version.
 01-May-96	NJT	v1.1 - Initial version placed under SCCS control.
 				Added generic classes for Char and Line filters.
-02-May-96	NJT	v1.2 - Add NL after each line output in ILineStrmFilter.
+02-May-96	NJT	v1.2 - Add NL after each line output in ILineStreamFilter.
 15-May-96	NJT	v1.3 - Added bWriteOutput flag to classes 
-				ICharStrmFilter and ILineStrmFilter to cater
+				ICharStreamFilter and ILineStreamFilter to cater
 				for the common case where we want to iterate
 				over an input file / stream and perform an 
 				action on each line / char but not produce any 

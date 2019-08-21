@@ -21,6 +21,15 @@
 
 // End Implementation Dependencies -------------------------------------------
 
+class FilePrinter : public ILineStreamFilter {
+public:
+  FilePrinter(std::ifstream &ii, std::ostream &oo)
+      : ILineStreamFilter(ii, oo) {}
+
+  void compute() override { /* pass through */ };
+};
+// End class FilePrinter
+
 
 // Summary -----------------------------------------------------------------
 //
@@ -30,7 +39,7 @@
 //
 // End ---------------------------------------------------------------------
 File::File(const std::string &fname, bool log_failures)
-    : PathName(fname) {
+    : FilePath(fname) {
   TraceEntryExit t("File", "<constructor>", fname);
 
   if (!Exists()) {
@@ -131,24 +140,14 @@ void File::PrintOn(std::ostream &s) {
 
   assert (s);   // Output stream should always be open
 
-  class printfile : public ILineStrmFilter {
-  public:
-    printfile(std::ifstream &ii, std::ostream &oo)
-        : ILineStrmFilter(ii, oo) {}
-
-    void compute() override { /* pass through */ };
-  };
-  // End class printfile
-
   if (this->Exists()) {
     // Copy file contents to output stream
-
-    std::ifstream f(this->FullName());
-
-    printfile pr(f, s);
+    std::ifstream file_reader(this->FullName());
+    FilePrinter pr(file_reader, s);
     main_loop(&pr); /* Iterate */
+  } else {
+    std::cerr << "File " << this->FullName() << " does not exist, so no output." << std::endl;
   }
-  /* else: File does not exist, so no output. */
 }
 // End Stream output Function operator << //
 
