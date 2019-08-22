@@ -97,37 +97,6 @@ extern ofstream errlog;
 /* Function Entry and Exit tracing                                           */
 /*****************************************************************************/
 
-// Description -------------------------------------------------------------
-//
-// Class: TraceEntryExit
-//	Provides entry and exit tracing facilities.
-//	When the destructor is called for an object of this class, an
-//	 appropriate message will be logged to the stream clog if
-//	 logEntryExits is TRUE.
-//
-// End ---------------------------------------------------------------------
-class TraceEntryExit {
-private:
-  static std::string EntryPrefix;
-  static std::string ExitPrefix;
-
-  static bool logEntryExits; // If true, then entry and exit trace will be logged.
-
-  const std::string &className;
-  const std::string &functionName;
-public:
-  TraceEntryExit(
-      const std::string &className,
-      const std::string &functionName);
-
-  ~TraceEntryExit();
-
-  static void SetLogging(bool bLogTrace) {
-    TraceEntryExit::logEntryExits = bLogTrace;
-  };
-};
-// End Class TraceEntryExit
-
 
 /* Original RCS change records from DOS version: */
 /******************************************************************************

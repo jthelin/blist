@@ -15,9 +15,9 @@
 #include <sstream>
 #include <vector>
 
-#include "utildbug.h"
 #include "filter.h"
 #include "fileutil.h"
+#include "TraceEntryExit.h"
 
 // End Implementation Dependencies -------------------------------------------
 
@@ -31,7 +31,7 @@
 // End ---------------------------------------------------------------------
 File::File(const std::string &fname, bool log_failures)
     : PathName(fname) {
-  TraceEntryExit t("File", "<constructor>");
+  TraceEntryExit t("File", "<constructor>", fname);
 
   if (!Exists()) {
     // File does not exist
@@ -52,7 +52,7 @@ File::File(const std::string &fname, bool log_failures)
 //
 // End ---------------------------------------------------------------------
 File::~File() {
-  TraceEntryExit t("File", "<destructor>");
+  TraceEntryExit t("File", "<destructor>", this->FullName());
 }
 // End File Destructor //
 

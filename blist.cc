@@ -8,9 +8,9 @@
 #include <getopt.h>
 
 #include "libsrc/proginfo.h"
-#include "libsrc/utildbug.h"
 #include "libsrc/File.h"
 #include "libsrc/TextBox.h"
+#include "libsrc/TraceEntryExit.h"
 
 #include "blist.h"
 
@@ -51,7 +51,7 @@ void ShowUsage() {
  * @return TRUE if there were no errors found when parsing command line arguments.
  */
 bool ParseArguments(int argc, char *const *argv, blist_params &params) {
-  const std::string& ProgName = ProgInfo::Name;
+  const std::string &ProgName = ProgInfo::Name;
 
   // Check arguments
   int arg_error_count = 0;
@@ -109,6 +109,7 @@ void ProcessFile(
     File &f,
     const blist_params &params,
     std::ostream &out = std::cout) {
+
   // List this file
   // ==============
 
