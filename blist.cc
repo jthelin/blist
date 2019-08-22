@@ -154,15 +154,13 @@ int blist_main(int argc, char **argv) {
   for (const auto &file_name : params.files) {
     if (params._debug) { std::cerr << "Processing file '" << file_name << "'\n"; }
 
-    File f(file_name);
+    File f(file_name, true /* log_failures */ );
 
     if (f.Exists()) {
       // List this file
       ProcessFile(f, params, std::cout);
     } else {
-      std::cerr << "**** ERROR :  "
-                << " File " << file_name
-                << " does not exist" << std::endl;
+      // Error has already been logged.
       exit(1);
     }
   } // End process each file
