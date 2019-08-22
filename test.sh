@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-pushd _build && ctest --output-on-failure "$@"
+BLD_DIR=_build
+
+pushd "${BLD_DIR}" || return
+
+ctest --output-on-failure --extra-verbose "$@"

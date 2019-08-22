@@ -1,0 +1,27 @@
+name: CI
+
+on: push
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: List environment
+      run: |
+        echo "Runtime Environment" && env | sort
+    - name: cmake version
+      run: |
+        cmake --version
+        cmake --help
+    - name: List build files
+      run: |
+        echo "Current User" && id
+        echo "Current Directory" && pwd
+        echo "Directory Listing - Current Directory" && ls -lhR ${PWD}
+    - name: cmake build
+      run: bash ./build.sh
+    - name: run tests
+      run: bash ./test.sh

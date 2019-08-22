@@ -1,3 +1,12 @@
 #!/usr/bin/env bash
 
-cmake -S . -B _build && cmake --build _build "$@"
+BLD_DIR=_build
+
+mkdir -p "${BLD_DIR}" && pushd "${BLD_DIR}" || return
+
+echo "---- cmake generate ----"
+set -x
+cmake .. && \
+\
+echo "---- cmake build ----" && \
+cmake --build . "$@"
