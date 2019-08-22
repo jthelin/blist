@@ -21,6 +21,15 @@
 
 // End Implementation Dependencies -------------------------------------------
 
+class FilePrinter : public ILineStreamFilter {
+public:
+  FilePrinter(std::ifstream &ii, std::ostream &oo)
+      : ILineStreamFilter(ii, oo) {}
+
+  void compute() override { /* pass through */ };
+};
+// End class FilePrinter
+
 
 // Summary -----------------------------------------------------------------
 //
@@ -30,7 +39,7 @@
 //
 // End ---------------------------------------------------------------------
 File::File(const std::string &fname, bool log_failures)
-    : PathName(fname) {
+    : FilePath(fname) {
   TraceEntryExit t("File", "<constructor>", fname);
 
   if (!Exists()) {
@@ -64,7 +73,7 @@ File::~File() {
 //
 // End ---------------------------------------------------------------------
 std::string File::ModificationDate() {
-  time_t timestamp = FileCreationTimestamp(this->FullName());
+  time_t timestamp = FileUtils::FileCreationTimestamp(this->FullName());
 
   auto modTime = std::string(std::asctime(std::localtime(&timestamp)));
   // Clean any non-printable characters.
@@ -73,10 +82,12 @@ std::string File::ModificationDate() {
       modTime[i] = ' ';
     }
   }
-//  std::cerr << "[" << modTime << "]"
-//            << " c='" << modTime[modTime.length() - 1] << "'"
-//            << " len = " << modTime.length()
-//            << std::endl;
+#ifdef EXTRA_DEBUG
+  std::cerr << "[" << modTime << "]"
+            << " c='" << modTime[modTime.length() - 1] << "'"
+            << " len = " << modTime.length()
+            << std::endl;
+#endif
   return modTime;
 }
 // End Member function ModificationDate
@@ -89,7 +100,7 @@ std::string File::ModificationDate() {
 //
 // End ---------------------------------------------------------------------
 long File::FileSize() {
-  return ::FileSize(this->FullName());
+  return FileUtils::FileSize(this->FullName());
 }
 // End Member function Size
 
@@ -131,24 +142,14 @@ void File::PrintOn(std::ostream &s) {
 
   assert (s);   // Output stream should always be open
 
-  class printfile : public ILineStrmFilter {
-  public:
-    printfile(std::ifstream &ii, std::ostream &oo)
-        : ILineStrmFilter(ii, oo) {}
-
-    void compute() override { /* pass through */ };
-  };
-  // End class printfile
-
   if (this->Exists()) {
     // Copy file contents to output stream
-
-    std::ifstream f(this->FullName());
-
-    printfile pr(f, s);
+    std::ifstream file_reader(this->FullName());
+    FilePrinter pr(file_reader, s);
     main_loop(&pr); /* Iterate */
+  } else {
+    std::cerr << "File " << this->FullName() << " does not exist, so no output." << std::endl;
   }
-  /* else: File does not exist, so no output. */
 }
 // End Stream output Function operator << //
 
