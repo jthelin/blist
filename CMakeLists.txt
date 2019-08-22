@@ -52,8 +52,7 @@ ADD_TEST(run_blist_tests blist_test)
 
 ADD_TEST(run_blist_exe blist "${PROJECT_SOURCE_DIR}/${PROJECT_NAME}_version.h")
 
-## Test step disabled 2019-08-22 - Causes SegFault when running on GitHub Actions build servers.
-## ADD_TEST(run_filter_exe file_filter "${PROJECT_SOURCE_DIR}/${PROJECT_NAME}_version.h")
+ADD_TEST(run_filter_exe file_filter "${PROJECT_SOURCE_DIR}/${PROJECT_NAME}_version.h")
 
 # Install
 
