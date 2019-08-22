@@ -7,46 +7,6 @@
 
 constexpr int MAX_LINE_SIZE = 132;
 
-/*  Initialise static data members of class TraceEntryExit */
-std::string TraceEntryExit::EntryPrefix = ">>>> Entering ";
-std::string TraceEntryExit::ExitPrefix = "<<<< Exiting  ";
-bool TraceEntryExit::logEntryExits = false;
-
-// Description -------------------------------------------------------------
-//
-// Constructor: TraceEntryExit
-//
-// End ---------------------------------------------------------------------
-TraceEntryExit::TraceEntryExit(
-    const std::string &class_name,
-    const std::string &function_name)
-    : className(class_name), functionName(function_name) {
-  if (logEntryExits) {
-    // Log entry message
-    std::clog << TraceEntryExit::EntryPrefix
-              << className << "::" << functionName << std::endl;
-  }
-}
-// End Constructor //
-
-
-// Description -------------------------------------------------------------
-//
-// Destructor: ~TraceEntryExit
-//	Destroys the object, and may or may not display the exit message
-//	 depending on the value of the logEntryExits variable.
-//
-// End ---------------------------------------------------------------------
-TraceEntryExit::~TraceEntryExit() {
-  if (logEntryExits) {
-    // Log entry message
-    std::clog << TraceEntryExit::ExitPrefix
-              << className << "::" << functionName << std::endl;
-  }
-}
-// End Destructor //
-
-
 /***************************************** commented out starts *************
 static  ostream_withassign  debug_dest;
 
