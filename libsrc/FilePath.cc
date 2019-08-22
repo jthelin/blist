@@ -25,7 +25,7 @@ FilePath::FilePath(const char *path) {
     dirName = FilePath::GetCurrentDirectory();
   }
 
-  fileExists = IsFileReadable(path);
+  fileExists = FileUtils::IsFileReadable(path);
 }
 // End FilePath constructor //
 

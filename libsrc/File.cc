@@ -73,7 +73,7 @@ File::~File() {
 //
 // End ---------------------------------------------------------------------
 std::string File::ModificationDate() {
-  time_t timestamp = FileCreationTimestamp(this->FullName());
+  time_t timestamp = FileUtils::FileCreationTimestamp(this->FullName());
 
   auto modTime = std::string(std::asctime(std::localtime(&timestamp)));
   // Clean any non-printable characters.
@@ -82,10 +82,12 @@ std::string File::ModificationDate() {
       modTime[i] = ' ';
     }
   }
-//  std::cerr << "[" << modTime << "]"
-//            << " c='" << modTime[modTime.length() - 1] << "'"
-//            << " len = " << modTime.length()
-//            << std::endl;
+#ifdef EXTRA_DEBUG
+  std::cerr << "[" << modTime << "]"
+            << " c='" << modTime[modTime.length() - 1] << "'"
+            << " len = " << modTime.length()
+            << std::endl;
+#endif
   return modTime;
 }
 // End Member function ModificationDate
@@ -98,7 +100,7 @@ std::string File::ModificationDate() {
 //
 // End ---------------------------------------------------------------------
 long File::FileSize() {
-  return ::FileSize(this->FullName());
+  return FileUtils::FileSize(this->FullName());
 }
 // End Member function Size
 

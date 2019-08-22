@@ -1,85 +1,38 @@
-#ifndef lint
-static char ident_fileutil_c[] = "%Z% $Id$__ - njt";
-#endif /* lint */
-
-/*******************************************************************************
-*
-* File		:	fileutil.h
-*
-* Authors	:	Jorgen Thelin
-* 
-* Abstract	:	File utilities
-*    
-* Environment   :	NCR UNIX V.4
-*
-* Change History:	See bottom of file.
-*  
-******************************************************************************/
-
-/* include files */
-
-#include <unistd.h>    /* For access */
-#include <cstdio>    /* For stderr / fprintf */
-#include <sys/stat.h>    /* For stat */
+#include <iostream>
 #include <string>
+#include <sys/stat.h> // For stat function.
+#include <unistd.h>  // For access function.
 
 #include "fileutil.h"
 
-/******************************************************************************
-* Function:	IsFileReadable
-*
-* Purpose:	Return TRUE if specified file exists and is readable.
-******************************************************************************/
-bool IsFileReadable(const std::string &file_path) {
-  return (access(file_path.c_str(), F_OK | R_OK) == 0);
+bool FileUtils::IsFileReadable(const std::string &file_path) {
+  return access(file_path.c_str(), F_OK | R_OK) == 0;
 }
 
-
-/******************************************************************************
-* Function:	FileSize
-*
-* Purpose:	Return size of specified file (in bytes)
-******************************************************************************/
-long FileSize(const std::string &file_path) {
+long FileUtils::FileSize(const std::string &file_path) {
   auto func_name = "FileSize";
   struct stat stats{};
 
   if (stat(file_path.c_str(), &stats) == 0) {
-    return (stats.st_size);
+    return stats.st_size;
   } else {
-    fprintf(stderr,
-            "%s:%s: Bad return from stat function on file [%s]\n",
-            __FILE__, func_name, file_path.c_str());
+    std::cerr << __FILE__ << "::" << func_name
+              << ": Bad return from stat function on file " << file_path
+              << std::endl;
     return -1;
   }
 }
 
-/******************************************************************************
-* Function:	FileCreationTimestamp
-*
-* Purpose:	Return creation timestamp of the specified file.
-******************************************************************************/
-time_t FileCreationTimestamp(const std::string &file_path) {
+time_t FileUtils::FileCreationTimestamp(const std::string &file_path) {
   auto func_name = "FileCreationTimestamp";
   struct stat stats{};
 
   if (stat(file_path.c_str(), &stats) == 0) {
-    return (stats.st_mtime);
+    return stats.st_mtime;
   } else {
-    fprintf(stderr,
-            "%s:%s: Bad return from stat function on file [%s]\n",
-            __FILE__, func_name, file_path.c_str());
+    std::cerr << __FILE__ << "::" << func_name
+              << ": Bad return from stat function on file " << file_path
+              << std::endl;
     return 0;
   }
 }
-
-
-/******************************************************************************
- Change History
- ==============
-
-Date          | Name  | Description
---------------+-------+-------------------------------------------------------
-28-Mar-96       NJT     v1.1 - Initial version under SCCS control.
-22-Apr-96       NJT     v1.2 - Added function FileSize.
-******************************************************************************/
