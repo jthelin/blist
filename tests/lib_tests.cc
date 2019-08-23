@@ -79,6 +79,20 @@ TEST(lib_tests, FilePath_Absolute) {
   EXPECT_EQ(file_path.DirName(), current_dir);
 }
 
+TEST(lib_tests, FilePath_Absolute_NotFound) {
+  std::string file_name = "/aa/bcdef/gg.txt";
+
+  TraceEntryExit t("lib_tests", "FilePath_Absolute_NotFound", file_name, true);
+
+  std::cout << std::endl << "File = " << file_name << std::endl;
+
+  auto file_path = FilePath(file_name);
+  EXPECT_FALSE(file_path.Exists()) << "File " << file_path.to_string() << " should not exist.";
+
+  EXPECT_EQ(file_path.FName(), "gg.txt");
+  EXPECT_EQ(file_path.DirName(), "/aa/bcdef");
+}
+
 TEST(lib_tests, TextBox) {
   TraceEntryExit t("lib_tests", "TextBox", true);
 

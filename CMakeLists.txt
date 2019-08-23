@@ -12,7 +12,7 @@ SET(blist_SRCS blist.cc blist.h)
 
 ADD_LIBRARY(mylib STATIC ${lib_HDRS} ${lib_SRCS})
 ADD_EXECUTABLE(blist ${blist_SRCS} ${lib_HDRS} ${lib_SRCS})
-ADD_EXECUTABLE(test_filter test_filter.cc
+ADD_EXECUTABLE(file_filter file_filter.cc
         libsrc/filter.h libsrc/filter.cc
         libsrc/FilePath.h libsrc/FilePath.cc
         libsrc/fileutil.h libsrc/fileutil.cc)
@@ -57,10 +57,10 @@ TARGET_LINK_LIBRARIES(blist_test gtest_main)
 
 ADD_TEST(run_blist_tests blist_test)
 
-ADD_TEST(run_blist_exe blist ${PROJECT_SOURCE_DIR}/blist.h)
+ADD_TEST(run_blist_exe blist "${PROJECT_SOURCE_DIR}/blist.h")
 
 ## Test step disabled 2019-08-22 - Causes SegFault when running on GitHub Actions build servers.
-## ADD_TEST(run_filter_exe test_filter ${CMAKE_SOURCE_DIR}/blist.h)
+## ADD_TEST(run_filter_exe file_filter "${PROJECT_SOURCE_DIR}/blist.h")
 
 # Install
 
