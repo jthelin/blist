@@ -82,11 +82,11 @@ TEST(lib_tests, FilePath_Absolute) {
 TEST(lib_tests, TextBox) {
   TraceEntryExit t("lib_tests", "TextBox", true);
 
-  std::vector<std::string> multi_line = {"Line1", "Line2", "Line3", "Last Line"};
+  std::vector<std::string> multi_line = {"Multiple lines", "Line1", "Line2", "Line3", "Last Line"};
 
-  std::cout << TextBox("Text in a box");
+  std::cout << TextBox("Text in a box", TextBox::BASIC);
 
-  std::cout << TextBox("More text in a box", TextBox::STANDARD);
+  std::cout << TextBox("More text in a bigger box", TextBox::STANDARD);
 
   std::cout << TextBox("Even more text in an X-box", TextBox::DOUBLE, 'X');
 
