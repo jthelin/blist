@@ -1,8 +1,6 @@
 #ifndef _FILTER_H
 #define _FILTER_H
 
-// Use  CC -DNEXCEPTIONS ....   if the C++ compiler does not support Exceptions.
-
 #ifndef __cplusplus
 #error Requires C++ for use of these facilities
 #endif
@@ -40,44 +38,10 @@ public:
   virtual int result() { return 0; };
 
   virtual ~IFilter() = default;
+
+  int main_loop();
 };
 // End class IFilter
-
-
-// Function main_loop (using Exceptions unless NEXCEPTIONS is defined)
-int main_loop(IFilter *p) {
-  for (;;)  // Loop forever
-  {
-
-#ifndef NEXCEPTIONS
-    try {
-#endif /* NEXCEPTIONS */
-
-      p->start();
-      while (p->read()) {
-        p->compute();
-        p->write();
-      }
-      return p->result();  // Exit loop
-
-#ifndef NEXCEPTIONS
-    }
-    catch (IFilter::ERetry &m) {
-      std::cerr << m.message() << std::endl;
-      int i = p->retry();
-      if (i) {
-        return -i;  // Exit loop
-      }
-    }
-    catch (...) {
-      std::cerr << "Fatal filter error" << std::endl;
-      return -10;  // Exit loop
-    }
-#endif /* NEXCEPTIONS */
-
-  } // End forever loop
-  // Not reached.
-}
 
 
 /*******************************************************************************
@@ -161,6 +125,27 @@ public:
 };
 // End class ILineStreamFilter
 
+class LineCounter : public ILineStreamFilter {
+  int num_lines;
+public:
+  void compute() override { num_lines++; };
+
+  int result() override { return num_lines; };
+
+  explicit LineCounter(std::istream &ii)
+      : ILineStreamFilter(ii), num_lines(0) {}
+};
+
+class CharCounter : public ICharStreamFilter {
+  int num_chars;
+public:
+  void compute() override { num_chars++; };
+
+  int result() override { return num_chars; };
+
+  explicit CharCounter(std::istream &ii)
+      : ICharStreamFilter(ii), num_chars(0) {}
+};
 
 /*******************************************************************************
  Change History

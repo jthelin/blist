@@ -146,7 +146,7 @@ void File::PrintOn(std::ostream &s) {
     // Copy file contents to output stream
     std::ifstream file_reader(this->FullName());
     FilePrinter pr(file_reader, s);
-    main_loop(&pr); /* Iterate */
+    pr.main_loop(); /* Iterate */
   } else {
     std::cerr << "File " << this->FullName() << " does not exist, so no output." << std::endl;
   }
