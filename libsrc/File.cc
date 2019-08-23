@@ -45,8 +45,8 @@ File::File(const std::string &fname, bool log_failures)
   if (!Exists()) {
     // File does not exist
     if (log_failures) {
-      std::cerr << "**** ERROR :  "
-                << "File " << fname << " does not exist"
+      std::cerr << "**** ERROR:"
+                << " File " << fname << " does not exist."
                 << std::endl;
     }
   }

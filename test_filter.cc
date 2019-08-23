@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
       std::cerr << "test_filter: Input file not found '" << input_file.FullName() << "'." << std::endl;
       return -1;
     }
-    p_input_stream = std::make_unique<std::ifstream>(std::ifstream(file_name)).get();
+    p_input_stream = std::make_unique<std::ifstream>(file_name).get();
     source = "file '" + file_name + "'";
   }
 
