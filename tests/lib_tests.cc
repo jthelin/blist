@@ -12,6 +12,8 @@
 #define DEBUG
 
 TEST(lib_tests, TraceLevelOverride) {
+  TraceEntryExit t("lib_tests", "TraceLevelOverride", true);
+
   // Begin scope #1
   {
     auto trace_override = TraceLevelOverride::SetLogging(true);
@@ -30,15 +32,13 @@ TEST(lib_tests, TraceLevelOverride) {
 TEST(lib_tests, File) {
   TraceEntryExit t("lib_tests", "File", true);
 
-  File file("cmake_install.cmake");
   File none("no-file.non", false);  // Non-existent file
-
-  EXPECT_TRUE(file.Exists()) << file.to_string() << " should exist.";
   EXPECT_FALSE(none.Exists()) << none.to_string() << " should not exist.";
-
-  std::cout << file.FullName() << std::endl << file << std::endl;
-
   std::cout << none.FName() << std::endl << none << std::endl;
+
+  File file("cmake_install.cmake");
+  EXPECT_TRUE(file.Exists()) << file.to_string() << " should exist.";
+  std::cout << file.FullName() << std::endl << file << std::endl;
 }
 
 TEST(lib_tests, FilePath_Exists) {
@@ -66,7 +66,7 @@ TEST(lib_tests, FilePath_Split) {
 }
 
 TEST(lib_tests, FilePath_Absolute) {
-  TraceEntryExit t("lib_tests", "FilePath_Absolute");
+  TraceEntryExit t("lib_tests", "FilePath_Absolute", true);
 
   auto current_dir = FilePath::GetCurrentDirectory();
   std::cout << "Current directory = " << current_dir << std::endl;
