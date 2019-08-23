@@ -16,6 +16,7 @@ jobs:
       run: |
         cmake --version
         cmake --help
+        gcc --version
     - name: List build files
       run: |
         echo "Current User" && id
