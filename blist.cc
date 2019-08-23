@@ -117,7 +117,7 @@ void ProcessFile(
   const auto file_info = f.FileInfo();
 
   // Output file header
-  out << TextBox(file_info, TextBox::STANDARD);
+  out << TextBox(file_info, TextBox::BASIC);
 
   out << NL;  // Blank line
 
@@ -170,6 +170,10 @@ int blist_main(int argc, char **argv) {
   exit(0);
 }
 
+int main(int argc, char *argv[]) {
+  int rc = blist_main(argc, argv);
+  return rc;
+}
 
 /******************************************************************************
  Change History

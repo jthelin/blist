@@ -8,7 +8,7 @@ PROJECT(blist)
 FILE(GLOB lib_SRCS CONFIGURE_DEPENDS "libsrc/*.cc")
 FILE(GLOB lib_HDRS CONFIGURE_DEPENDS "libsrc/*.h")
 
-SET(blist_SRCS main.cc blist.cc blist.h)
+SET(blist_SRCS blist.cc blist.h)
 
 ADD_LIBRARY(mylib STATIC ${lib_HDRS} ${lib_SRCS})
 ADD_EXECUTABLE(blist ${blist_SRCS} ${lib_HDRS} ${lib_SRCS})
