@@ -22,7 +22,7 @@ TEST(file_filter_tests, ReadLines) {
 
   int rc = counter->main_loop();
 
-  std::cout << counter->result() << " lines read" << std::endl;
+  std::cout << counter->result() << " lines read." << std::endl;
 
   EXPECT_GE(counter->result(), 10) << "Should have read some records.";
   EXPECT_NE(rc, 0) << "Should not have got zero result code.";
@@ -39,7 +39,7 @@ TEST(file_filter_tests, ReadChars) {
 
   int rc = counter->main_loop();
 
-  std::cout << counter->result() << " characters read" << std::endl;
+  std::cout << counter->result() << " characters read." << std::endl;
 
   EXPECT_GE(counter->result(), 1000) << "Should have read some data.";
   EXPECT_NE(rc, 0) << "Should not have got zero result code.";
