@@ -1,5 +1,5 @@
-#ifndef BLIST_BLIST_H
-#define BLIST_BLIST_H
+#ifndef _BLIST_H
+#define _BLIST_H
 
 #include <iostream>
 #include <string>
@@ -29,4 +29,4 @@ inline std::ostream &NL(std::ostream &s) { return (s.put('\n')); }
 // Function: FF - Output a form feed (new page) onto a stream.
 inline std::ostream &FF(std::ostream &s) { return (s.put('\f')); }
 
-#endif //BLIST_BLIST_H
+#endif // _BLIST_H

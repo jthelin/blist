@@ -1,7 +1,7 @@
 #ifndef _PROGINFO_H
 #define _PROGINFO_H
 
-#include <sys/cdefs.h>
+#include <iostream>
 #include <string>
 
 /*******************************************************************************

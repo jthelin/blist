@@ -13,14 +13,7 @@
 #include "libsrc/TraceEntryExit.h"
 
 #include "blist.h"
-
-/* Program information */
-std::string ProgInfo::Name          = "blist";
-std::string ProgInfo::Desc          = "Bulk list text file contents and file info to stdout.";
-std::string ProgInfo::Author        = "J.Thelin";
-std::string ProgInfo::Version       = "2.04";
-std::string ProgInfo::ReleaseStatus = "GA";
-std::string ProgInfo::ReleaseDate   = "08-Aug-2019";
+#include "blist_version.h"
 
 /**
  * Show program usage message
