@@ -1,11 +1,24 @@
 # blist
 
-Output a text file to stdout (for redirection) preceded by a header block identifying the file.
+Bulk list contents of text file(s) to stdout (for redirection), preceded by a header block with file info.
+
+## Context
+
+This C++ code was originally created circa 1992 - 1996.
+It will likely always be a work-in-progress, and should NOT be viewed as any type of "model" for "Modern C++" code.
+
+Mostly the purpose of the repo is as a learning exercise for me to work through
+ upgrading this historic application code to use
+ "Modern C++" (meaning primarily >= C++14 ISO standard features)
+ and "modern" C++ software build tools
+ to see how ~25 years of C++ language and core library enhancements have made things better for C++ developers.
 
 ## Historic Note
 
-This app and C++ code-base was originally created around 1992 - 1996 for use in a non-GUI UNIX environment,
- where a significant part of the development process involved pretty-printed code listing on a printer for peer-review & diagnostic archive purposes.
+This app and C++ code-base was originally created around 1992 - 1996,
+ for use in a non-GUI UNIX environment 
+ where a significant part of the development process involved
+ "pretty-printed" code listing on a printer for peer-review & diagnostic archive purposes.
 
 ```shell script
 blist file.* > lpr my-printer
@@ -22,6 +35,4 @@ For context, it is worth mentioning for younger readers that this was a time whe
 
 Yes, the C++ software world is _completely_ different (aka better!) today,
  with Linux GUI-based environments and IDE's everywhere!
-
-Mostly the purpose of this repo is to work through upgrading this application code to use "Modern C++" (meaning primarily C++14/17 ISO standard features)
- to see how ~25 years of C++ language and core library enhancements have made things better for C++ developers.
+But every journey has to start somewhere...
