@@ -11,6 +11,7 @@
 // Implementation Dependencies ----------------------------------------------
 #include <cassert>
 #include <chrono>
+#include <ctime>
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -75,7 +76,7 @@ File::~File() {
 std::string File::ModificationDate() {
   time_t timestamp = FileUtils::FileCreationTimestamp(this->FullName());
 
-  auto modTime = std::string(std::asctime(std::localtime(&timestamp)));
+  auto modTime = std::string(asctime(localtime(&timestamp)));
   // Clean any non-printable characters.
   for (size_t i = 0; i < modTime.length(); i++) {
     if (!isprint(modTime[i])) {
