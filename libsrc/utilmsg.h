@@ -9,7 +9,7 @@
 /* Print an error message.                                              */
 /************************************************************************/
 
-void error(const std::string& message);
+void error(std::string& message);
 
 /************************************************************************/
 /* Print an error message from the format-string FORMAT                 */
@@ -22,14 +22,14 @@ extern void error(const std::string& format, ...);
 /* Print an error message containing the string TEXT, then exit.        */
 /************************************************************************/
 
-extern void fatal(const std::string& message);
+extern void fatal(std::string& message);
 
 /************************************************************************/
 /* Like printf, except if buffer_messages is set                        */
 /*  then save the message and print later.                              */
 /************************************************************************/
 
-extern void message(const std::string &format, const std::string &arg1, const std::string &arg2, ...);
+extern void message(std::string &format, const std::string &arg1, const std::string &arg2, ...);
 
 /************************************************************************/
 /* malloc a block of memory,                                            */

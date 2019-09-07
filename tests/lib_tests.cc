@@ -17,14 +17,14 @@ TEST(lib_tests, TraceLevelOverride) {
   // Begin scope #1
   {
     auto trace_override = TraceLevelOverride::SetLogging(true);
-    TraceEntryExit t("lib_tests", "TraceEntryExit_test_on");
+    TraceEntryExit t1("lib_tests", "TraceEntryExit_test_on");
   }
   // End scope #1
 
   // Begin scope #2
   {
     auto trace_override = TraceLevelOverride::SetLogging(false);
-    TraceEntryExit t("lib_tests", "TraceEntryExit_test_off");
+    TraceEntryExit t2("lib_tests", "TraceEntryExit_test_off");
   }
   // End scope #2
 }

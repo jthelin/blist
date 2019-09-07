@@ -8,15 +8,19 @@ bool TraceEntryExit::logEntryExits = false;
 
 /** Log function entry message. */
 #define TRACE_ENTER(class_name, function_name, args) \
-  std::clog << EntryPrefix << class_name << "::" << function_name; \
-  if (!args.empty()) std::clog << " - " << args; \
-  std::clog << "\n"; // Stream flush not required, so don't use std::endl
+{ \
+  std::clog << EntryPrefix << (class_name) << "::" << (function_name); \
+  if (!(args).empty()) std::clog << " - " << (args); \
+  std::clog << "\n"; /* Stream flush not required, so don't use std::endl */ \
+}
 
 /** Log function exit message. */
 #define TRACE_EXIT(class_name, function_name, args) \
-  std::clog << Exit_Prefix << class_name << "::" << function_name; \
-  if (!args.empty()) std::clog << " - " << args; \
-  std::clog << "\n"; // Stream flush not required, so don't use std::endl
+{ \
+  std::clog << Exit_Prefix << (class_name) << "::" << (function_name); \
+  if (!(args).empty()) std::clog << " - " << (args); \
+  std::clog << "\n"; /* Stream flush not required, so don't use std::endl */ \
+}
 
 TraceEntryExit::TraceEntryExit(
     const std::string &class_name,
