@@ -1,14 +1,21 @@
-#include <climits>  // For PATH_MAX
-#include <cstdlib>    // For PATH_MAX
 #include <iostream>
 #include <string>
 #include <sys/stat.h> // For stat function.
-#include <unistd.h>  // For access and getcwd functions.
 
 #include "fileutil.h"
 
+#if defined(__unix__) || defined(__linux__)
+// Linux / UNIX
+#include <climits>  // For PATH_MAX
+#include <unistd.h>  // For access and getcwd functions.
+#else
+// Windows
+#include <direct.h>   // For getcwd function.
+#include <io.h>       // For access function.
+constexpr int PATH_MAX = 260;
 #ifndef R_OK
-#define R_OK 4
+constexpr int R_OK = 4;
+#endif
 #endif
 
 bool FileUtils::IsFileReadable(const std::string &file_path) {
