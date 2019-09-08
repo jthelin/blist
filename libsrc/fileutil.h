@@ -28,6 +28,12 @@ public:
    * @return Return creation timestamp of the specified file.
    */
   static time_t FileCreationTimestamp(const std::string &file_path);
+
+  /**
+ * Find the current working directory.
+ * @return Current directory.
+ */
+  static std::string GetCurrentDirectory();
 };
 
 #endif // _FILEUTIL_H

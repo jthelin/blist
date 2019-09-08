@@ -62,12 +62,6 @@ public:
 
   std::string to_string() const { return this->FullName(); };
 
-  /**
-   * Find the current working directory.
-   * @return Current directory.
-   */
-  static std::string GetCurrentDirectory();
-
   friend std::ostream &operator<<(std::ostream &s, const FilePath &path_name) {
     s << path_name.FullName();
     return s;

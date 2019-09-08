@@ -8,6 +8,7 @@
 #include "../libsrc/FilePath.h"
 #include "../libsrc/TextBox.h"
 #include "../libsrc/TraceEntryExit.h"
+#include "../libsrc/fileutil.h"
 
 #define DEBUG
 
@@ -56,7 +57,7 @@ TEST(lib_tests, FilePath_Exists) {
 TEST(lib_tests, FilePath_Split) {
   TraceEntryExit t("lib_tests", "FilePath_Split", true);
 
-  auto current_dir = FilePath::GetCurrentDirectory();
+  auto current_dir = FileUtils::GetCurrentDirectory();
 
   std::string file_name = "./FileName.cc";
 
@@ -68,7 +69,7 @@ TEST(lib_tests, FilePath_Split) {
 TEST(lib_tests, FilePath_Absolute) {
   TraceEntryExit t("lib_tests", "FilePath_Absolute", true);
 
-  auto current_dir = FilePath::GetCurrentDirectory();
+  auto current_dir = FileUtils::GetCurrentDirectory();
   std::cout << "Current directory = " << current_dir << std::endl;
 
   std::string file_name = current_dir + "/FileName.cc";

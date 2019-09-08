@@ -2,9 +2,8 @@
 
 #include <sstream>
 #include <string>
-#include <unistd.h>  // For getcwd
-#include <climits>  // For PATH_MAX
 #include <libgen.h>  // For basename / dirname
+
 #include "fileutil.h"
 
 
@@ -22,7 +21,7 @@ FilePath::FilePath(const char *path) {
 
   if (dirName.empty() || dirName == ".") {
     // No directory specified - so use current.
-    dirName = FilePath::GetCurrentDirectory();
+    dirName = FileUtils::GetCurrentDirectory();
   }
 
   fileExists = FileUtils::IsFileReadable(path);
@@ -44,16 +43,6 @@ std::string FilePath::FullName() const {
   return ss.str();
 }
 /* End Member function FullName */
-
-/**
- * Find the current working directory.
- * @return Current directory.
- */
-std::string FilePath::GetCurrentDirectory() {
-  char dname[PATH_MAX + 1];
-  getcwd(dname, PATH_MAX);
-  return std::string(dname);
-}
 
 /****************************************************************************/
 /* $Log$

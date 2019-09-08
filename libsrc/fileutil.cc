@@ -1,7 +1,11 @@
+#include <climits>  // For PATH_MAX
+#include <cstdlib>    // For PATH_MAX
+// #include <direct.h>   // For _getcwd
 #include <iostream>
 #include <string>
 #include <sys/stat.h> // For stat function.
 #include <unistd.h>  // For access function.
+#include <unistd.h>  // For getcwd
 
 #include "fileutil.h"
 
@@ -35,4 +39,14 @@ time_t FileUtils::FileCreationTimestamp(const std::string &file_path) {
               << std::endl;
     return 0;
   }
+}
+
+/**
+ * Find the current working directory.
+ * @return Current directory.
+ */
+std::string FileUtils::GetCurrentDirectory() {
+  char dir_name[PATH_MAX + 1];
+  getcwd(dir_name, PATH_MAX);
+  return std::string(dir_name);
 }
