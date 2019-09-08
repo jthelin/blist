@@ -34,6 +34,9 @@ public:
  * @return Current directory.
  */
   static std::string GetCurrentDirectory();
+
+  static std::string basename(const std::string &file_path);
+  static std::string dirname(const std::string &file_path);
 };
 
 #endif // _FILEUTIL_H

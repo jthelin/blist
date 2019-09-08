@@ -2,7 +2,6 @@
 
 #include <sstream>
 #include <string>
-#include <libgen.h>  // For basename / dirname
 
 #include "fileutil.h"
 
@@ -14,10 +13,8 @@ FilePath::FilePath(const std::string &path)
 FilePath::FilePath(const char *path) {
   // Split file name into components
 
-  char *tmp_fname = ((char *) path);
-  fileName = std::string(basename(tmp_fname));
-  dirName = std::string(dirname(tmp_fname));
-  // NOTE: dirname must be done last, as it is semi-destructive!
+  fileName = FileUtils::basename(path);
+  dirName = FileUtils::dirname(path);
 
   if (dirName.empty() || dirName == ".") {
     // No directory specified - so use current.
