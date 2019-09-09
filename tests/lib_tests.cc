@@ -8,6 +8,7 @@
 #include "../libsrc/FilePath.h"
 #include "../libsrc/TextBox.h"
 #include "../libsrc/TraceEntryExit.h"
+#include "../libsrc/fileutil.h"
 
 #define DEBUG
 
@@ -56,7 +57,7 @@ TEST(lib_tests, FilePath_Exists) {
 TEST(lib_tests, FilePath_Split) {
   TraceEntryExit t("lib_tests", "FilePath_Split", true);
 
-  auto current_dir = FilePath::GetCurrentDirectory();
+  auto current_dir = FileUtils::GetCurrentDirectory();
 
   std::string file_name = "./FileName.cc";
 
@@ -68,7 +69,7 @@ TEST(lib_tests, FilePath_Split) {
 TEST(lib_tests, FilePath_Absolute) {
   TraceEntryExit t("lib_tests", "FilePath_Absolute", true);
 
-  auto current_dir = FilePath::GetCurrentDirectory();
+  auto current_dir = FileUtils::GetCurrentDirectory();
   std::cout << "Current directory = " << current_dir << std::endl;
 
   std::string file_name = current_dir + "/FileName.cc";
@@ -105,6 +106,36 @@ TEST(lib_tests, TextBox) {
   std::cout << TextBox("Even more text in an X-box", TextBox::DOUBLE, 'X');
 
   std::cout << TextBox(multi_line, TextBox::STANDARD);
+}
+
+TEST(lib_tests, file_utils_basename)
+{
+  EXPECT_EQ(FileUtils::basename(""), "");
+  EXPECT_EQ(FileUtils::basename("no_path"), "no_path");
+  EXPECT_EQ(FileUtils::basename("with.ext"), "with.ext");
+  EXPECT_EQ(FileUtils::basename("/no_filename/"), "no_filename");
+  EXPECT_EQ(FileUtils::basename("no_filename/"), "no_filename");
+  EXPECT_EQ(FileUtils::basename("/no/filename/"), "filename");
+  EXPECT_EQ(FileUtils::basename("/absolute/file.ext"), "file.ext");
+  EXPECT_EQ(FileUtils::basename("../relative/file.ext"), "file.ext");
+  EXPECT_EQ(FileUtils::basename("/"), "/");
+  EXPECT_EQ(FileUtils::basename("c:\\windows\\path.ext"), "path.ext");
+  EXPECT_EQ(FileUtils::basename("c:\\windows\\no_filename\\"), "no_filename");
+}
+
+TEST(lib_tests, file_utils_dirname)
+{
+  EXPECT_EQ(FileUtils::dirname(""), ".");
+  EXPECT_EQ(FileUtils::dirname("no_path"), ".");
+  EXPECT_EQ(FileUtils::dirname("with.ext"), ".");
+  EXPECT_EQ(FileUtils::dirname("/no_filename/"), "/no_filename");
+  EXPECT_EQ(FileUtils::dirname("no_filename/"), "no_filename");
+  EXPECT_EQ(FileUtils::dirname("/no/filename/"), "/no/filename");
+  EXPECT_EQ(FileUtils::dirname("/absolute/file.ext"), "/absolute");
+  EXPECT_EQ(FileUtils::dirname("../relative/file.ext"), "../relative");
+  EXPECT_EQ(FileUtils::dirname("/"), "/");
+  EXPECT_EQ(FileUtils::dirname("c:\\windows\\path.ext"), "c:\\windows");
+  EXPECT_EQ(FileUtils::dirname("c:\\windows\\no_filename\\"), "c:\\windows\\no_filename");
 }
 
 #pragma clang diagnostic pop

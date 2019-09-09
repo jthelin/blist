@@ -5,8 +5,8 @@
 #include <string>
 #include <cstdlib>
 #include <iostream>
-#include <getopt.h>
 
+#include "libsrc/getopt.h"
 #include "libsrc/proginfo.h"
 #include "libsrc/File.h"
 #include "libsrc/TextBox.h"

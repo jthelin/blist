@@ -1,12 +1,25 @@
 #include <iostream>
 #include <string>
 #include <sys/stat.h> // For stat function.
-#include <unistd.h>  // For access function.
 
 #include "fileutil.h"
 
+#if defined(__unix__) || defined(__linux__)
+// Linux / UNIX
+#include <climits>  // For PATH_MAX
+#include <unistd.h>  // For access and getcwd functions.
+#else
+// Windows
+#include <direct.h>   // For getcwd function.
+#include <io.h>       // For access function.
+constexpr int PATH_MAX = 260;
+#ifndef R_OK
+constexpr int R_OK = 4;
+#endif
+#endif
+
 bool FileUtils::IsFileReadable(const std::string &file_path) {
-  return access(file_path.c_str(), F_OK | R_OK) == 0;
+  return access(file_path.c_str(), R_OK) == 0;
 }
 
 long FileUtils::FileSize(const std::string &file_path) {
@@ -35,4 +48,76 @@ time_t FileUtils::FileCreationTimestamp(const std::string &file_path) {
               << std::endl;
     return 0;
   }
+}
+
+// Based on https://stackoverflow.com/a/43283887/282326
+std::string FileUtils::basename(const std::string &file_path)
+{
+  if (file_path.empty()) {
+    return {};
+  }
+
+  auto len = file_path.length();
+  auto index = file_path.find_last_of("/\\");
+
+  if (index == std::string::npos) {
+    return file_path;
+  }
+
+  if (index + 1 >= len) {
+
+    len--;
+    index = file_path.substr(0, len).find_last_of("/\\");
+
+    if (len == 0) {
+      return file_path;
+    }
+
+    if (index == 0) {
+      return file_path.substr(1, len - 1);
+    }
+
+    if (index == std::string::npos) {
+      return file_path.substr(0, len);
+    }
+
+    return file_path.substr(index + 1, len - index - 1);
+  }
+
+  return file_path.substr(index + 1, len - index);
+}
+
+std::string FileUtils::dirname(const std::string &file_path)
+{
+  if (file_path.empty()) {
+    return ".";
+  }
+
+  auto len = file_path.length();
+  auto index = file_path.find_last_of("/\\");
+
+  if (index == std::string::npos) {
+    return ".";
+  }
+
+  if (index == 0) {
+    return file_path;
+  }
+
+  if (index + 1 == len) {
+  	// Omit trailing '/' in directory names.
+    return file_path.substr(0, index);
+  }
+
+  return file_path.substr(0, index);
+}
+
+/**
+ * Find the current working directory.
+ * @return Current directory.
+ */
+std::string FileUtils::GetCurrentDirectory() {
+  char dir_name[PATH_MAX + 1];
+  getcwd(dir_name, PATH_MAX);
+  return std::string(dir_name);
 }
