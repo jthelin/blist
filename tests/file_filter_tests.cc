@@ -1,5 +1,7 @@
+#if defined(__clang__)
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "cert-err58-cpp"
+#endif
 
 #include "gtest/gtest.h"
 
@@ -7,7 +9,6 @@
 #include <fstream>
 
 #include "../libsrc/filter.h"
-#include "../libsrc/proginfo.h"
 #include "../libsrc/FilePath.h"
 #include "../libsrc/TraceEntryExit.h"
 
@@ -45,4 +46,6 @@ TEST(file_filter_tests, ReadChars) {
   EXPECT_NE(rc, 0) << "Should not have got zero result code.";
 }
 
+#if defined(__clang__)
 #pragma clang diagnostic pop
+#endif

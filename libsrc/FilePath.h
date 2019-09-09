@@ -3,7 +3,6 @@
 
 #include <string>
 
-#pragma title( "FilePath class declaration" )
 /**
  * Class FilePath
  * ==============

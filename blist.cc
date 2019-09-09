@@ -7,7 +7,6 @@
 #include <iostream>
 
 #include "libsrc/getopt.h"
-#include "libsrc/proginfo.h"
 #include "libsrc/File.h"
 #include "libsrc/TextBox.h"
 #include "libsrc/TraceEntryExit.h"

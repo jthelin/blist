@@ -1,5 +1,7 @@
+#if defined(__clang__)
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "cert-err58-cpp"
+#endif
 
 #include "gtest/gtest.h"
 
@@ -138,4 +140,6 @@ TEST(lib_tests, file_utils_dirname)
   EXPECT_EQ(FileUtils::dirname("c:\\windows\\no_filename\\"), "c:\\windows\\no_filename");
 }
 
+#if defined(__clang__)
 #pragma clang diagnostic pop
+#endif
