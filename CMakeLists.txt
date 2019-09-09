@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 SET(CMAKE_CXX_STANDARD 14)
 
 PROJECT(blist
-    VERSION 2.0.5
+    VERSION 2.0.6
     DESCRIPTION "Bulk list contents of text file(s) to stdout (for redirection), preceded by a header block with file info."
 )
 ## HOMEPAGE_URL "https://github.com/jthelin/blist"
