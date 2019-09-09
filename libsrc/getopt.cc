@@ -12,37 +12,41 @@ int opterr = 1,  /* if error message should be printed */
 
 char *optarg;    /* argument associated with option */
 
-#define BADCH   (int) '?'
-#define BADARG  (int) ':'
-#define EMSG ""
+constexpr int BADCH = '?';
+constexpr int BADARG = ':';
+constexpr const char* BLANK_MSG = "";
 
 /*
 * getopt --
 *      Parse argc/argv argument vector.
 */
 int getopt(int nargc, char *const nargv[], const char *ostr) {
-  static char *place = EMSG;              /* option letter processing */
-  const char *oli;                        /* option letter list index */
+  /* option letter processing */
+  static char *place = const_cast<char*>(BLANK_MSG);
+	
+  /* option letter list index */
+  const char *oli;
 
   if (optreset || !*place) {
     /* update scanning pointer */
     optreset = 0;
     if (optind >= nargc || *(place = nargv[optind]) != '-') {
-      place = EMSG;
-      return (-1);
+      place = const_cast<char*>(BLANK_MSG);
+      return -1;
     }
     if (place[1] && *++place == '-') {
       /* found "--" */
       ++optind;
-      place = EMSG;
-      return (-1);
+      place = const_cast<char*>(BLANK_MSG);
+      return -1;
     }
   }
   /* option letter okay? */
-  if ((optopt = (int) *place++) == (int) ':' || !(oli = strchr(ostr, optopt))) {
+  if ((optopt = static_cast<int>(*place++)) == static_cast<int>(':')
+	  || !( (oli = strchr(ostr, optopt)) )) {
     /* if the user didn't specify '-' as an option, assume it means -1. */
-    if (optopt == (int) '-') {
-      return (-1);
+    if (optopt == static_cast<int>('-')) {
+      return -1;
     }
     if (!*place) {
       ++optind;
@@ -50,7 +54,7 @@ int getopt(int nargc, char *const nargv[], const char *ostr) {
     if (opterr && *ostr != ':') {
       (void) printf("illegal option -- %c\n", optopt);
     }
-    return (BADCH);
+    return BADCH;
   }
   if (*++oli != ':') {
     /* don't need argument */
@@ -66,20 +70,20 @@ int getopt(int nargc, char *const nargv[], const char *ostr) {
     }
     else if (nargc <= ++optind) {
       /* no arg */
-      place = EMSG;
+      place = const_cast<char*>(BLANK_MSG);
       if (*ostr == ':') {
-        return (BADARG);
+        return BADARG;
       }
       if (opterr) {
         (void) printf("option requires an argument -- %c\n", optopt);
       }
-      return (BADCH);
+      return BADCH;
     } else {
       /* white space */
       optarg = nargv[optind];
     }
-    place = EMSG;
+    place = const_cast<char*>(BLANK_MSG);
     ++optind;
   }
-  return (optopt);  /* dump back option letter */
+  return optopt;  /* dump back option letter */
 }
