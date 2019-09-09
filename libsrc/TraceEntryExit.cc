@@ -61,18 +61,27 @@ TraceEntryExit::TraceEntryExit(
 
 TraceEntryExit::~TraceEntryExit() {
   if (alwaysLog || logEntryExits) {
-    TRACE_EXIT(this->className, this->functionName, this->args);
+#if !defined(_LIBCPP_NO_EXCEPTIONS)
+	try {
+#endif
+	  TRACE_EXIT(this->className, this->functionName, this->args);
+#if !defined(_LIBCPP_NO_EXCEPTIONS)
+	}
+	catch (...) {
+	  std::cerr << "ERROR during TRACE_EXIT" << std::endl;
+	}
+#endif
   }
 }
 
 bool TraceEntryExit::SetLogging(bool new_trace_level) {
-  bool old_logEntryExits = logEntryExits;
+  const bool old_logEntryExits = logEntryExits;
   logEntryExits = new_trace_level;
   return old_logEntryExits;
 }
 
 TraceLevelOverride TraceLevelOverride::SetLogging(bool new_trace_level) {
-  bool old_trace_level = TraceEntryExit::SetLogging(new_trace_level);
+  const bool old_trace_level = TraceEntryExit::SetLogging(new_trace_level);
   return TraceLevelOverride(old_trace_level);
 }
 
