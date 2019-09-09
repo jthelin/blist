@@ -13,13 +13,16 @@ static const std::string BLANK_STR = std::string(BLANK);
  * class to allow temporarily override the tracing level.
  */
 class TraceLevelOverride {
-private:
   bool previous;
 
 public:
   static TraceLevelOverride SetLogging(bool new_trace_level);
 
   explicit TraceLevelOverride(bool old_trace_level);
+
+  TraceLevelOverride(const TraceLevelOverride& other) = default;
+	
+  TraceLevelOverride& operator=(const TraceLevelOverride& other) = default;
 
   virtual ~TraceLevelOverride();
 };
@@ -34,18 +37,19 @@ public:
  *  if the flag `logEntryExits` is set.
  */
 class TraceEntryExit {
-private:
   static bool logEntryExits; // If true, then entry and exit trace will be logged.
 
   const std::string &className;
   const std::string &functionName;
   const std::string &args;
 
-  bool alwaysLog;
+  bool alwaysLog = false;
 
 public:
   constexpr static const char *EntryPrefix = ">>>> Enter ";
   constexpr static const char *Exit_Prefix = "<<<< Exit_ ";
+
+  TraceEntryExit(const TraceEntryExit& other) = default;
 
   /**
    * Constructor: TraceEntryExit
