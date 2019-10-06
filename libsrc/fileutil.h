@@ -37,6 +37,16 @@ public:
 
   static std::string basename(const std::string &file_path);
   static std::string dirname(const std::string &file_path);
+
+  static std::string DirSeparator() {
+#if defined(_WIN32)
+    // Windows
+    return std::string("\\");
+#else
+    // Linux / UNIX / MacOS
+    return std::string("/");
+#endif
+  }
 };
 
 #endif // _FILEUTIL_H

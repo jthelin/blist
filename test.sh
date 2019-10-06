@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BLD_DIR=_build
+BLD_DIR=build
 
 pushd "${BLD_DIR}" || return
 
