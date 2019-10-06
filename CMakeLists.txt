@@ -32,10 +32,10 @@ ADD_LIBRARY(mylib STATIC ${lib_HDRS} ${lib_SRCS})
 ADD_EXECUTABLE(${PROJECT_NAME} ${blist_SRCS} ${lib_HDRS})
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} mylib)
 
-ADD_EXECUTABLE(file_filter file_filter.cc
-        libsrc/filter.h libsrc/filter.cc
-        libsrc/FilePath.h libsrc/FilePath.cc
-        libsrc/fileutil.h libsrc/fileutil.cc)
+ADD_EXECUTABLE(file_filter
+        file_filter.cc
+        ${lib_HDRS})
+TARGET_LINK_LIBRARIES(file_filter mylib)
 
 # Testing
 
