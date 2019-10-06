@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BLD_DIR=_build
+BLD_DIR=build
 
 rm -fR "${BLD_DIR}"
 
