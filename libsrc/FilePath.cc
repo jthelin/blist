@@ -31,9 +31,10 @@ FilePath::FilePath(const char *path) {
  * @return Return the full path name, which will be of the form /path/to/filename
  */
 std::string FilePath::FullName() const {
+  const std::string & file_sep = FileUtils::DirSeparator();
   std::stringstream ss;
   if (fileExists) {
-    ss << dirName << "/" << fileName;
+    ss << dirName << file_sep << fileName;
   } else {
     ss << "**Non-existent:" << fileName << "**";
   }
