@@ -28,7 +28,10 @@ FILE(GLOB lib_HDRS CONFIGURE_DEPENDS "libsrc/*.h")
 SET(blist_SRCS blist.cc blist.h ${PROJECT_NAME}_version.h)
 
 ADD_LIBRARY(mylib STATIC ${lib_HDRS} ${lib_SRCS})
-ADD_EXECUTABLE(${PROJECT_NAME} ${blist_SRCS} ${lib_HDRS} ${lib_SRCS})
+
+ADD_EXECUTABLE(${PROJECT_NAME} ${blist_SRCS} ${lib_HDRS})
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} mylib)
+
 ADD_EXECUTABLE(file_filter file_filter.cc
         libsrc/filter.h libsrc/filter.cc
         libsrc/FilePath.h libsrc/FilePath.cc
@@ -41,8 +44,9 @@ ENABLE_TESTING()
 FILE(GLOB test_SRCS CONFIGURE_DEPENDS "tests/*.cc")
 
 # Now simply link against gtest or gtest_main as needed.
-ADD_EXECUTABLE(blist_test ${test_SRCS} ${lib_HDRS} ${lib_SRCS})
+ADD_EXECUTABLE(blist_test ${test_SRCS} ${lib_HDRS})
 TARGET_LINK_LIBRARIES(blist_test gtest_main)
+TARGET_LINK_LIBRARIES(blist_test mylib)
 
 ADD_TEST(run_blist_tests blist_test)
 
