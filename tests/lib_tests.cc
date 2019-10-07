@@ -14,6 +14,14 @@
 
 #define DEBUG
 
+class lib_tests : public ::testing::Test
+{
+public:
+  lib_tests() {
+    ProgInfo::Name = "lib_tests";
+  }
+};
+
 TEST(lib_tests, TraceLevelOverride) {
   TraceEntryExit t("lib_tests", "TraceLevelOverride", true);
 

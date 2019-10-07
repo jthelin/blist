@@ -10,7 +10,16 @@
 
 #include "../libsrc/filter.h"
 #include "../libsrc/FilePath.h"
+#include "../libsrc/proginfo.h"
 #include "../libsrc/TraceEntryExit.h"
+
+class file_filter_tests : public ::testing::Test
+{
+public:
+  file_filter_tests() {
+    ProgInfo::Name = "file_filter_tests";
+  }
+};
 
 TEST(file_filter_tests, ReadLines) {
   TraceEntryExit t("file_filter_tests", "ReadLines", true);
