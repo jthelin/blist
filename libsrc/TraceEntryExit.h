@@ -39,9 +39,9 @@ public:
 class TraceEntryExit {
   static bool logEntryExits; // If true, then entry and exit trace will be logged.
 
-  const std::string &className;
-  const std::string &functionName;
-  const std::string &args;
+  const std::string className;
+  const std::string functionName;
+  const std::string args;
 
   bool alwaysLog = false;
 

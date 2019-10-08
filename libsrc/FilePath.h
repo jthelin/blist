@@ -16,15 +16,15 @@ protected:
 public:
   /**
    * Constructor for FilePath object.
-   * @param path - The path location for this file.
+   * @param file_path - The path location for this file.
    */
-  explicit FilePath(const std::string &path);
+  explicit FilePath(const std::string &file_path);
 
   /**
    * Constructor for FilePath object.
-   * @param path - The path location for this file.
+   * @param file_path - The path location for this file.
    */
-  explicit FilePath(const char *file_name);
+  explicit FilePath(const char *file_path);
 
   /**
    * Copy constructor for FilePath object.

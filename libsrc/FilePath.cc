@@ -6,22 +6,22 @@
 #include "fileutil.h"
 
 
-FilePath::FilePath(const std::string &path)
-    : FilePath(path.c_str()) {
+FilePath::FilePath(const char *file_path)
+    : FilePath(std::string(file_path)) {
 }
 
-FilePath::FilePath(const char *path) {
+FilePath::FilePath(const std::string &file_path) {
   // Split file name into components
 
-  fileName = FileUtils::basename(path);
-  dirName = FileUtils::dirname(path);
+  fileName = FileUtils::basename(file_path);
+  dirName = FileUtils::dirname(file_path);
 
   if (dirName.empty() || dirName == ".") {
     // No directory specified - so use current.
     dirName = FileUtils::GetCurrentDirectory();
   }
 
-  fileExists = FileUtils::IsFileReadable(path);
+  fileExists = FileUtils::IsFileReadable(file_path);
 }
 // End FilePath constructor //
 
@@ -31,10 +31,9 @@ FilePath::FilePath(const char *path) {
  * @return Return the full path name, which will be of the form /path/to/filename
  */
 std::string FilePath::FullName() const {
-  const std::string & file_sep = FileUtils::DirSeparator();
   std::stringstream ss;
   if (fileExists) {
-    ss << dirName << file_sep << fileName;
+	ss << dirName << FileUtils::DirSeparator() << fileName;
   } else {
     ss << "**Non-existent:" << fileName << "**";
   }
