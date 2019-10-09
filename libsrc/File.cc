@@ -73,13 +73,14 @@ File::~File() {
 std::string File::ModificationDate() {
   time_t timestamp = FileUtils::FileCreationTimestamp(this->FullName());
 
-  char time_str[25];
-  #ifdef _MSC_VER
-  asctime_s(time_str, sizeof(time_str), localtime(&timestamp));
-  char * asctime_str = time_str;
-  #else
   struct tm time;
-  char * asctime_str = asctime_r(localtime_r(&timestamp, &time), time_str);
+  char time_str[26];
+  #ifdef _MSC_VER
+  localtime_s(&timestamp, &time);
+  char * asctime_str = asctime_s(time_str, sizeof(time_str), time);
+  #else
+  localtime_r(&timestamp, &time);
+  char * asctime_str = asctime_r(&time, time_str);
   #endif
   auto modTime = std::string(asctime_str);
 
