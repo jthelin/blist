@@ -10,15 +10,15 @@
 std::string prog_name = "file_filter";
 
 int file_filter_main(int argc, char **argv) {
-  bool count_lines = true;
+  bool count_lines = true; // Temp HACK
   std::string source;
-  std::istream *p_input_stream = nullptr;
+  std::istream *p_input_stream;
   if (argc < 1) {
     p_input_stream = &(std::cin);
     source = "stdin stream";
   } else {
-    std::string file_name = argv[1];
-    FilePath input_file(file_name);
+	const std::string file_name = argv[1];
+    const FilePath input_file(file_name);
     if (!input_file.Exists()) {
       std::cerr << prog_name << ": ERROR: Input file not found '" << input_file.FullName() << "'." << std::endl;
       return -1;
@@ -38,7 +38,7 @@ int file_filter_main(int argc, char **argv) {
   std::cerr.flush();
   std::cout.flush();
 
-  int rc = counter->main_loop();
+  const int rc = counter->main_loop();
 
   std::cout.flush();
 

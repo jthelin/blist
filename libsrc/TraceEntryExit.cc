@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <utility>
 
 #include "TraceEntryExit.h"
 
@@ -30,11 +31,15 @@ TraceEntryExit::TraceEntryExit(
 }
 
 TraceEntryExit::TraceEntryExit(
-    const std::string &class_name,
-    const std::string &function_name,
-    const std::string &arguments,
+	std::string class_name,
+	std::string function_name,
+	std::string arguments,
     bool always_log)
-    : className(class_name), functionName(function_name), args(arguments), alwaysLog(always_log) {
+    : className(std::move(class_name)),
+	functionName(std::move(function_name)),
+	args(std::move(arguments)),
+	alwaysLog(always_log)
+{
   if (alwaysLog || logEntryExits) {
     TRACE_ENTER(this->className, this->functionName, this->args);
   }

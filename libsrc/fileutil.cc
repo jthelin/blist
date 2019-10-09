@@ -26,7 +26,7 @@ bool FileUtils::IsFileReadable(const std::string &file_path) {
 }
 
 long FileUtils::FileSize(const std::string &file_path) {
-  auto func_name = "FileSize";
+  const auto func_name = "FileSize";
   struct stat stats{};
 
   if (stat(file_path.c_str(), &stats) == 0) {
@@ -40,7 +40,7 @@ long FileUtils::FileSize(const std::string &file_path) {
 }
 
 time_t FileUtils::FileCreationTimestamp(const std::string &file_path) {
-  auto func_name = "FileCreationTimestamp";
+  const auto func_name = "FileCreationTimestamp";
   struct stat stats{};
 
   if (stat(file_path.c_str(), &stats) == 0) {
@@ -127,8 +127,8 @@ std::string FileUtils::dirname(const std::string &file_path)
     return ".";
   }
 
-  auto len = file_path.length();
-  auto index = file_path.find_last_of("/\\");
+  const auto len = file_path.length();
+  const auto index = file_path.find_last_of("/\\");
 
   if (index == std::string::npos) {
     return ".";

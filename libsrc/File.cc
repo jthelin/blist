@@ -10,6 +10,7 @@
 #include <chrono>
 #include <ctime>
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <vector>
 
@@ -34,15 +35,15 @@ public:
 //	exist if log_failures is false.
 //
 // End ---------------------------------------------------------------------
-File::File(const std::string &fname, bool log_failures)
-    : FilePath(fname) {
-  TraceEntryExit t("File", "<constructor>", fname);
+File::File(const std::string &filename, bool log_failures)
+    : FilePath(filename) {
+  TraceEntryExit t("File", "<constructor>", filename);
 
   if (!Exists()) {
     // File does not exist
     if (log_failures) {
       std::cerr << "**** ERROR:"
-                << " File " << fname << " does not exist."
+                << " File " << filename << " does not exist."
                 << std::endl;
     }
   }
@@ -68,7 +69,7 @@ File::~File() {
 //	Return a string containing the modification date of a File.
 //
 // End ---------------------------------------------------------------------
-std::string File::ModificationDate() {
+std::string File::ModificationDate() const {
   return FileUtils::GetModificationDate(this->FullName());
 }
 // End Member function ModificationDate
@@ -80,7 +81,8 @@ std::string File::ModificationDate() {
 //	Return a File's size in bytes.
 //
 // End ---------------------------------------------------------------------
-long File::FileSize() {
+long File::FileSize() const
+{
   return FileUtils::FileSize(this->FullName());
 }
 // End Member function Size
@@ -92,7 +94,8 @@ long File::FileSize() {
 //	Return a (static) string array of file info details
 //
 // End ---------------------------------------------------------------------
-std::vector<std::string> File::FileInfo() {
+std::vector<std::string> File::FileInfo() const
+{
   auto file_info = std::vector<std::string>();
 
   auto out = std::stringstream();

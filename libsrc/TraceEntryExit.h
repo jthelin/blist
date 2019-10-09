@@ -20,9 +20,12 @@ public:
 
   explicit TraceLevelOverride(bool old_trace_level);
 
-  TraceLevelOverride(const TraceLevelOverride& other) = default;
-	
-  TraceLevelOverride& operator=(const TraceLevelOverride& other) = default;
+  // Copy constructors.
+  TraceLevelOverride(const TraceLevelOverride&) = default;
+  TraceLevelOverride& operator=(const TraceLevelOverride&) = default;
+  // Move constructors.
+  TraceLevelOverride(TraceLevelOverride&&) = default;
+  TraceLevelOverride& operator=(TraceLevelOverride&&) = default;
 
   virtual ~TraceLevelOverride();
 };
@@ -49,7 +52,12 @@ public:
   constexpr static const char *EntryPrefix = ">>>> Enter ";
   constexpr static const char *Exit_Prefix = "<<<< Exit_ ";
 
-  TraceEntryExit(const TraceEntryExit& other) = default;
+  // Copy constructors for File object.
+  TraceEntryExit(const TraceEntryExit&) = default;
+  TraceEntryExit& operator=(const TraceEntryExit&) = delete;
+  // Move constructors for File object.
+  TraceEntryExit(TraceEntryExit&&) = default;
+  TraceEntryExit& operator=(TraceEntryExit&&) = delete;
 
   /**
    * Constructor: TraceEntryExit
@@ -70,9 +78,9 @@ public:
    * @param always_log - Override the logEntryExists flag for this trace object.
    */
   TraceEntryExit(
-      const std::string &class_name,
-      const std::string &function_name,
-      const std::string &arguments,
+	  std::string class_name,
+	  std::string function_name,
+	  std::string arguments,
       bool always_log = false);
 
   /**

@@ -22,7 +22,8 @@ public:
   // Exception
   class ERetry {
   public:
-    virtual const char *message() { return nullptr; }
+	  virtual ~ERetry() = default;
+	  virtual const char *message() { return nullptr; }
   };
 
   virtual void start() {};
@@ -165,4 +166,4 @@ Date          | Name  | Description
 				output until the end of processing.
 *******************************************************************************/
 
-#endif /* ifndef _FILTER_H */
+#endif // _FILTER_H

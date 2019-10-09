@@ -26,18 +26,17 @@ public:
    */
   explicit FilePath(const char *file_path);
 
-  /**
-   * Copy constructor for FilePath object.
-   */
-  FilePath(const FilePath &other) = default;
+  // Copy constructors for FilePath object.
+  FilePath(const FilePath&) = default;
+  FilePath& operator=(const FilePath&) = default;
+  // Move constructors for FilePath object.
+  FilePath(FilePath&&) = default;
+  FilePath& operator=(FilePath&&) = default;
 
   /**
    * Destructor function for FilePath object.
    */
-  ~FilePath() = default;
-
-  FilePath &operator=(const FilePath &other) = delete;
-  FilePath &operator=(const FilePath *other) = delete;
+  virtual ~FilePath() = default;
 
   /**
    * @return Returns true if this file path exists in the file system.

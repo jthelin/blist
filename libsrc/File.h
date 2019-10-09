@@ -11,7 +11,6 @@
 
 #include <string>
 #include <iostream>
-#include <fstream>
 #include <vector>
 #include "FilePath.h"
 
@@ -58,13 +57,20 @@ public:
 
   virtual ~File();
 
+  // Copy constructors for File object.
+  File(const File&) = default;
+  File& operator=(const File&) = default;
+  // Move constructors for File object.
+  File(File&&) = default;
+  File& operator=(File&&) = default;
+
   virtual void PrintOn(std::ostream &s);
 
-  std::string ModificationDate();
+  std::string ModificationDate() const;
 
-  long FileSize();
+  long FileSize() const;
 
-  std::vector<std::string> FileInfo();
+  std::vector<std::string> FileInfo() const;
 
   friend std::ostream &operator<<(std::ostream &s, File f) {
     f.PrintOn(s);
@@ -185,4 +191,4 @@ Date          | Name  | Description
                                Class FileIterator is not working properly yet.
 ******************************************************************************/
 
-#endif // ifndef FILE_h //
+#endif // FILE_h
