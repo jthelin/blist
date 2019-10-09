@@ -2,16 +2,16 @@ name: Build-CI
 
 on: push
 
-strategy:
-  matrix:
-    os: [ 'ubuntu-latest', 'macOS-latest' ]
-
 jobs:
-  build-${{ matrix.os }}:
-    name: Build-CI-${{ matrix.os }}
-    
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-16.04, ubuntu-18.04]
+
     runs-on: ${{ matrix.os }}
     
+    name: Build-${{ matrix.os }}
+
     steps:
     - uses: actions/checkout@v1
     - name: List environment
