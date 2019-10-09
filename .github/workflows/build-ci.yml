@@ -1,17 +1,23 @@
-name: Build-Linux-CI
+name: Build-CI
 
 on: push
 
 jobs:
   build:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macOS-latest ]
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     
+    name: Build-${{ matrix.os }}
+
     steps:
     - uses: actions/checkout@v1
     - name: List environment
       run: |
         echo "Runtime Environment" && env | sort
+      shell: bash
     - name: cmake version
       run: |
         cmake --version
@@ -22,6 +28,7 @@ jobs:
         echo "Current User" && id
         echo "Current Directory" && pwd
         echo "Directory Listing - Current Directory" && ls -lhR ${PWD}
+      shell: bash
     - name: cmake build
       run: bash ./build.sh
     - name: run tests
