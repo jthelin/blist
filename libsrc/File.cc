@@ -73,23 +73,24 @@ File::~File() {
 std::string File::ModificationDate() {
   time_t timestamp = FileUtils::FileCreationTimestamp(this->FullName());
 
-  struct tm time;
+  struct tm time{};
   char time_str[26];
+
   #ifdef _MSC_VER
-  localtime_s(&timestamp, &time);
-  char * asctime_str = asctime_s(time_str, sizeof(time_str), time);
+  localtime_s(&time, &timestamp);
+  asctime_s(time_str, sizeof time_str, &time);
   #else
   localtime_r(&timestamp, &time);
-  char * asctime_str = asctime_r(&time, time_str);
+  asctime_r(&time, time_str);
   #endif
-  auto modTime = std::string(asctime_str);
 
   // Clean any non-printable characters.
-  for (size_t i = 0; i < modTime.length(); i++) {
-    if (!isprint(modTime[i])) {
-      modTime[i] = ' ';
+  for (size_t i = 0; i < sizeof time_str; i++) {
+    if (!isprint(time_str[i])) {
+      time_str[i] = ' ';
     }
   }
+  auto modTime = std::string(time_str);
 #ifdef EXTRA_DEBUG
   std::cerr << "[" << modTime << "]"
             << " c='" << modTime[modTime.length() - 1] << "'"
