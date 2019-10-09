@@ -21,7 +21,7 @@ This app and C++ code-base was originally created around 1992 - 1996,
  "pretty-printed" code listing on a printer for peer-review & diagnostic archive purposes.
 
 ```shell script
-blist file.* > lpr my-printer
+blist file.* | lpr my-printer
 ``` 
 
 For context, it is worth mentioning for younger readers that this was a time when: 
