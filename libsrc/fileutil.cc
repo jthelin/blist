@@ -1,3 +1,4 @@
+#include <ctime>
 #include <iostream>
 #include <string>
 #include <sys/stat.h> // For stat function.
