@@ -4,11 +4,10 @@
 //
 // End ---------------------------------------------------------------------
 
-// Interface Declarations --------------------------------------------------
-#include "File.h"
-// End Interface Declarations ----------------------------------------------
+// #define EXTRA_DEBUG
 
-// Implementation Dependencies ----------------------------------------------
+#include "File.h"
+
 #include <cassert>
 #include <chrono>
 #include <ctime>
@@ -19,8 +18,6 @@
 #include "filter.h"
 #include "fileutil.h"
 #include "TraceEntryExit.h"
-
-// End Implementation Dependencies -------------------------------------------
 
 class FilePrinter : public ILineStreamFilter {
 public:
@@ -76,7 +73,8 @@ File::~File() {
 std::string File::ModificationDate() {
   time_t timestamp = FileUtils::FileCreationTimestamp(this->FullName());
 
-  auto modTime = std::string(asctime(localtime(&timestamp)));
+  auto modTime = std::string(std::asctime(std::localtime(&timestamp)));
+
   // Clean any non-printable characters.
   for (size_t i = 0; i < modTime.length(); i++) {
     if (!isprint(modTime[i])) {
