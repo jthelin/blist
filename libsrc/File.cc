@@ -74,7 +74,7 @@ std::string File::ModificationDate() {
   time_t timestamp = FileUtils::FileCreationTimestamp(this->FullName());
 
   #ifdef _MSC_VER
-  char * asctime_str = asctime(localtime(&timestamp));
+  char * asctime_str = asctime_s(localtime(&timestamp));
   #else
   struct tm time;
   char time_str[25];
