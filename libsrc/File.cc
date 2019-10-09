@@ -71,7 +71,7 @@ File::~File() {
 //
 // End ---------------------------------------------------------------------
 std::string File::ModificationDate() {
-  std::time_t timestamp = FileUtils::FileCreationTimestamp(this->FullName());
+  time_t timestamp = FileUtils::FileCreationTimestamp(this->FullName());
 
   auto modTime = std::string(std::asctime(std::localtime(&timestamp)));
 

@@ -27,7 +27,7 @@ public:
    * @param file_path - The file to be inspected.
    * @return Return creation timestamp of the specified file.
    */
-  static std::time_t FileCreationTimestamp(const std::string &file_path);
+  static time_t FileCreationTimestamp(const std::string &file_path);
 
   /**
  * Find the current working directory.

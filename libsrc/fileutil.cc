@@ -37,7 +37,7 @@ long FileUtils::FileSize(const std::string &file_path) {
   }
 }
 
-std::time_t FileUtils::FileCreationTimestamp(const std::string &file_path) {
+time_t FileUtils::FileCreationTimestamp(const std::string &file_path) {
   auto func_name = "FileCreationTimestamp";
   struct stat stats{};
 
