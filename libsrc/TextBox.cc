@@ -16,18 +16,14 @@
 // End ---------------------------------------------------------------------
 
 
-// Interface Declarations --------------------------------------------------
 #include "TextBox.h"
-// End Interface Declarations ----------------------------------------------
 
-// Implementation Dependencies ----------------------------------------------
 #include <cstdlib>
 #include <cstring>
 #include <cctype>
 #include <cassert>
 #include <iomanip>
 #include <vector>
-// End Implementation Dependencies -------------------------------------------
 
 
 // Summary -----------------------------------------------------------------
@@ -79,7 +75,7 @@ TextBox::TextBox(
   // Store the text message on the heap
 
   char *s, *p;
-  int line_count = 0;
+  size_t line_count = 0;
   size_t area_size = 0;
 
   for (const auto& text_line : text_lines) {
@@ -94,7 +90,7 @@ TextBox::TextBox(
   assert(s != nullptr);
 
   // Copy lines onto heap
-  for (int i = 0; i < line_count; i++) {
+  for (size_t i = 0; i < line_count; i++) {
     strcpy(p, text_lines[i].c_str());
     p += strlen(text_lines[i].c_str()) + 1;
   }
@@ -141,9 +137,9 @@ std::ostream &operator<<(std::ostream &s, const TextBox &tb) {
   size_t text_len = 0;
   char *p;
   size_t l;
-  int border_width;
-  int hgap_width;
-  int vgap_width;
+  size_t border_width;
+  size_t hgap_width;
+  size_t vgap_width;
 
   const char EOL = '\n';
   const char SPACE = ' ';
@@ -171,43 +167,43 @@ std::ostream &operator<<(std::ostream &s, const TextBox &tb) {
   }
 
   // Top border
-  for (auto j = 1; j <= border_width; j++) {
+  for (size_t j = 1; j <= border_width; j++) {
     for (size_t i = 1; i <= (text_len + 2 * border_width + 2 * hgap_width); i++) {
       s << tb.box_char;
     }
     s << EOL;
   }
   // Top gap
-  for (auto j = 1; j <= vgap_width; j++) {
-    for (auto i = 1; i <= border_width; i++) { s << tb.box_char; }
+  for (size_t j = 1; j <= vgap_width; j++) {
+    for (size_t i = 1; i <= border_width; i++) { s << tb.box_char; }
     for (size_t i = 1; i <= text_len + 2 * hgap_width; i++) { s << SPACE; }
-    for (auto i = 1; i <= border_width; i++) { s << tb.box_char; }
+    for (size_t i = 1; i <= border_width; i++) { s << tb.box_char; }
     s << EOL;
   }
 
   // Output each line of the text message
   for (l = 0, p = tb.text; l < tb.num_lines; l++, p += strlen(p) + 1) {
-    for (auto i = 1; i <= border_width; i++) { s << tb.box_char; }
-    for (auto i = 1; i <= hgap_width; i++) { s << SPACE; }
+    for (size_t i = 1; i <= border_width; i++) { s << tb.box_char; }
+    for (size_t i = 1; i <= hgap_width; i++) { s << SPACE; }
 
     // Output this line of the text left justified in a field
     // big enough to take the longest line in the TextBox.
     s << std::setw(static_cast<int>(text_len)) << std::setiosflags(std::ios::left) << p;
 
-    for (auto i = 1; i <= hgap_width; i++) { s << SPACE; }
-    for (auto i = 1; i <= border_width; i++) { s << tb.box_char; }
+    for (size_t i = 1; i <= hgap_width; i++) { s << SPACE; }
+    for (size_t i = 1; i <= border_width; i++) { s << tb.box_char; }
     s << EOL;
   }
 
   // Bottom gap
-  for (auto j = 1; j <= vgap_width; j++) {
-    for (auto i = 1; i <= border_width; i++) { s << tb.box_char; }
+  for (size_t j = 1; j <= vgap_width; j++) {
+    for (size_t i = 1; i <= border_width; i++) { s << tb.box_char; }
     for (size_t i = 1; i <= text_len + 2 * hgap_width; i++) { s << SPACE; }
-    for (auto i = 1; i <= border_width; i++) { s << tb.box_char; }
+    for (size_t i = 1; i <= border_width; i++) { s << tb.box_char; }
     s << EOL;
   }
   // Bottom border
-  for (auto j = 1; j <= border_width; j++) {
+  for (size_t j = 1; j <= border_width; j++) {
     for (size_t i = 1; i <= (text_len + 2 * border_width + 2 * hgap_width); i++) {
       s << tb.box_char;
     }

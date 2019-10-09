@@ -46,7 +46,7 @@ public:
   };
 protected:
   char *text;
-  int num_lines;
+  size_t num_lines;
   char box_char;
   box_style box_type;
 public:
