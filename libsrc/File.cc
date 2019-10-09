@@ -73,7 +73,9 @@ File::~File() {
 std::string File::ModificationDate() {
   time_t timestamp = FileUtils::FileCreationTimestamp(this->FullName());
 
-  auto modTime = std::string(std::asctime(std::localtime(&timestamp)));
+  struct tm time;
+  char time_str[25];
+  auto modTime = std::string(asctime_r(localtime_r(&timestamp, &time), time_str));
 
   // Clean any non-printable characters.
   for (size_t i = 0; i < modTime.length(); i++) {
