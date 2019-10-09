@@ -5,10 +5,11 @@ on: push
 strategy:
   matrix:
     os: [ 'ubuntu-latest', 'macOS-latest' ]
-name: os-${{ matrix.os }}
 
 jobs:
   build-${{ matrix.os }}:
+    name: Build-CI-${{ matrix.os }}
+    
     runs-on: ${{ matrix.os }}
     
     steps:
