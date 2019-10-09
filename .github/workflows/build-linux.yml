@@ -1,11 +1,11 @@
-name: Build-Linux-CI
+name: Build-MacOS-CI
 
 on: push
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     
     steps:
     - uses: actions/checkout@v1
