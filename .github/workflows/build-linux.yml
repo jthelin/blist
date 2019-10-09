@@ -1,11 +1,15 @@
-name: Build-MacOS-CI
+name: Build-CI
 
 on: push
 
-jobs:
-  build:
+strategy:
+  matrix:
+    os: [ 'ubuntu-latest', 'macOS-latest' ]
+name: os-${{ matrix.os }}
 
-    runs-on: macOS-latest
+jobs:
+  build-${{ matrix.os }}:
+    runs-on: ${{ matrix.os }}
     
     steps:
     - uses: actions/checkout@v1
