@@ -4,4 +4,4 @@ BLD_DIR=build
 
 pushd "${BLD_DIR}" || return
 
-ctest --output-on-failure --extra-verbose "$@"
+ctest --output-on-failure "$@"
