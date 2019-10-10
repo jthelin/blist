@@ -32,4 +32,4 @@ jobs:
     - name: cmake build
       run: bash ./build.sh
     - name: run tests
-      run: bash ./test.sh
+      run: bash -c "./test.sh --verbose"

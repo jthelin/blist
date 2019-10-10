@@ -30,6 +30,11 @@ public:
   static time_t FileCreationTimestamp(const std::string &file_path);
 
   /**
+   * Return a string containing the modification date of a File.
+   */
+  static std::string GetModificationDate(const std::string &file_path);
+
+  /**
  * Find the current working directory.
  * @return Current directory.
  */
