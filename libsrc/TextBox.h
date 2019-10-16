@@ -1,22 +1,9 @@
 #ifndef _TEXTBOX_H
 #define _TEXTBOX_H
 
-//
-// Class TextBox
-//
-// Contents ----------------------------------------------------------------
-//
-//	Contains the class declaration for the TextBox class
-//
-// End ---------------------------------------------------------------------
-
-
-// Interface Dependencies ---------------------------------------------------
 #include <iostream>
 #include <string>
 #include <vector>
-// End Interface Dependencies ------------------------------------------------
-
 
 // Description -------------------------------------------------------------
 //
@@ -52,14 +39,21 @@ protected:
 public:
   explicit TextBox(
       const std::string &text,
-      box_style box_type = TextBox::STANDARD,
+      box_style box_type = STANDARD,
       char box_char = '*');
 
   explicit TextBox(
       const std::vector<std::string> &text_lines,
-      box_style box_type = TextBox::STANDARD,
+      box_style box_type = STANDARD,
       char box_char = '*');
 
+  // Copy constructors.
+  TextBox(const TextBox&) = default;
+  TextBox& operator=(const TextBox&) = default;
+  // Move constructors.
+  TextBox(TextBox&&) = default;
+  TextBox& operator=(TextBox&&) = default;
+	
   ~TextBox();
 
   friend std::ostream &operator<<(std::ostream &s, const TextBox &tb);
@@ -86,4 +80,4 @@ Date          | Name  | Description
 07-May-96       NJT     v1.2 - Moved box_style enum into class TextBox.
 ******************************************************************************/
 
-#endif // ifndef _TEXTBOX_H //
+#endif // _TEXTBOX_H

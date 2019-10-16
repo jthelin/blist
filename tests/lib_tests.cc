@@ -43,11 +43,11 @@ TEST(lib_tests, TraceLevelOverride) {
 TEST(lib_tests, File) {
   TraceEntryExit t("lib_tests", "File", true);
 
-  File none("no-file.non", false);  // Non-existent file
+  const File none("no-file.non", false);  // Non-existent file
   EXPECT_FALSE(none.Exists()) << none.to_string() << " should not exist.";
   std::cout << none.FName() << std::endl << none << std::endl;
 
-  File file("cmake_install.cmake");
+  const File file("cmake_install.cmake");
   EXPECT_TRUE(file.Exists()) << file.to_string() << " should exist.";
   std::cout << file.FullName() << std::endl << file << std::endl;
 }
@@ -55,11 +55,11 @@ TEST(lib_tests, File) {
 TEST(lib_tests, FilePath_Exists) {
   TraceEntryExit t("lib_tests", "FilePath_Exists", true);
 
-  FilePath none("no-file.non");  // Non-existent file
+  const FilePath none("no-file.non");  // Non-existent file
   std::cout << "none : " << none << " Exists = " << none.Exists() << std::endl;
   EXPECT_FALSE(none.Exists()) << none.to_string() << " should not exist.";
 
-  FilePath file("cmake_install.cmake");
+  const FilePath file("cmake_install.cmake");
   std::cout << "file : " << file << " Exists = " << file.Exists() << std::endl;
   EXPECT_TRUE(file.Exists()) << file.to_string() << " should exist.";
 }
@@ -67,11 +67,11 @@ TEST(lib_tests, FilePath_Exists) {
 TEST(lib_tests, FilePath_Split) {
   TraceEntryExit t("lib_tests", "FilePath_Split", true);
 
-  auto current_dir = FileUtils::GetCurrentDirectory();
+  const auto current_dir = FileUtils::GetCurrentDirectory();
 
-  std::string file_name = "./FileName.cc";
+  const std::string file_name = "./FileName.cc";
 
-  auto file_path = FilePath(file_name);
+  const auto file_path = FilePath(file_name);
   EXPECT_EQ(file_path.FName(), "FileName.cc");
   EXPECT_EQ(file_path.DirName(), current_dir);
 }
@@ -79,25 +79,25 @@ TEST(lib_tests, FilePath_Split) {
 TEST(lib_tests, FilePath_Absolute) {
   TraceEntryExit t("lib_tests", "FilePath_Absolute", true);
 
-  auto current_dir = FileUtils::GetCurrentDirectory();
+  const auto current_dir = FileUtils::GetCurrentDirectory();
   std::cout << "Current directory = " << current_dir << std::endl;
 
-  std::string file_name = current_dir + "/FileName.cc";
+  const std::string file_name = current_dir + "/FileName.cc";
   std::cout << "File = " << file_name << std::endl;
 
-  auto file_path = FilePath(file_name);
+  const auto file_path = FilePath(file_name);
   EXPECT_EQ(file_path.FName(), "FileName.cc");
   EXPECT_EQ(file_path.DirName(), current_dir);
 }
 
 TEST(lib_tests, FilePath_Absolute_NotFound) {
-  std::string file_name = "/aa/bcdef/gg.txt";
+	const std::string file_name = "/aa/bcdef/gg.txt";
 
   TraceEntryExit t("lib_tests", "FilePath_Absolute_NotFound", file_name, true);
 
   std::cout << std::endl << "File = " << file_name << std::endl;
 
-  auto file_path = FilePath(file_name);
+	const auto file_path = FilePath(file_name);
   EXPECT_FALSE(file_path.Exists()) << "File " << file_path.to_string() << " should not exist.";
 
   EXPECT_EQ(file_path.FName(), "gg.txt");
@@ -107,7 +107,7 @@ TEST(lib_tests, FilePath_Absolute_NotFound) {
 TEST(lib_tests, TextBox) {
   TraceEntryExit t("lib_tests", "TextBox", true);
 
-  std::vector<std::string> multi_line = {"Multiple lines", "Line1", "Line2", "Line3", "Last Line"};
+  const std::vector<std::string> multi_line = {"Multiple lines", "Line1", "Line2", "Line3", "Last Line"};
 
   std::cout << TextBox("Text in a box", TextBox::BASIC);
 

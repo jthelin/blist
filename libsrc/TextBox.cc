@@ -1,7 +1,3 @@
-//
-// Implementation of Class TextBox
-//
-
 // Contents ----------------------------------------------------------------
 //
 //      TextBox::TextBox
@@ -29,7 +25,7 @@
 // Summary -----------------------------------------------------------------
 //
 // Constructor for TextBox object
-//	Initialises the object data & stores the text message on the heap.
+//	Initialise the object data & stores the text message on the heap.
 //
 // End ---------------------------------------------------------------------
 TextBox::TextBox(
@@ -38,7 +34,7 @@ TextBox::TextBox(
     char box_char) {
   // Store the text message on the heap
 
-  char *s = (char *) malloc(strlen(text.c_str()) + 1);
+  char *s = static_cast<char *>(malloc(strlen(text.c_str()) + 1));
 
   assert(s != nullptr);
 
@@ -64,17 +60,16 @@ TextBox::TextBox(
 // Summary -----------------------------------------------------------------
 //
 // Constructor for TextBox object
-//	Initialises the object data & stores the multi-line text message on
+//	Initialise the object data & stores the multi-line text message on
 //	 the heap.
 //
 // End ---------------------------------------------------------------------
 TextBox::TextBox(
     const std::vector<std::string> &text_lines,
-    box_style box_type,
-    char box_char) {
+    const box_style box_type,
+    const char box_char) {
   // Store the text message on the heap
 
-  char *s, *p;
   size_t line_count = 0;
   size_t area_size = 0;
 
@@ -85,11 +80,12 @@ TextBox::TextBox(
 
   assert (line_count >= 0);
 
-  p = s = (char *) malloc(area_size + 1);   // allow for final /0
+  char* s = static_cast<char *>(malloc(area_size + 1));  // allow for final /0
 
   assert(s != nullptr);
 
   // Copy lines onto heap
+  char* p = s;
   for (size_t i = 0; i < line_count; i++) {
     strcpy(p, text_lines[i].c_str());
     p += strlen(text_lines[i].c_str()) + 1;
@@ -135,14 +131,13 @@ TextBox::~TextBox() {
 // End ---------------------------------------------------------------------
 std::ostream &operator<<(std::ostream &s, const TextBox &tb) {
   size_t text_len = 0;
-  char *p;
   size_t l;
   size_t border_width;
   size_t hgap_width;
   size_t vgap_width;
 
-  const char EOL = '\n';
-  const char SPACE = ' ';
+  static const char EOL = '\n';
+  static const char SPACE = ' ';
 
   // Decide border and gap widths
   if (tb.box_type == TextBox::DOUBLE) {
@@ -159,7 +154,8 @@ std::ostream &operator<<(std::ostream &s, const TextBox &tb) {
     vgap_width = 1;
   }
 
-  // Decide on the length of the longest line in the textbox.
+  // Decide on the length of the longest line in the text box.
+  char *p;
   for (l = 0, p = tb.text; l < tb.num_lines; l++, p += strlen(p) + 1) {
     if (text_len < strlen(p)) {
       text_len = strlen(p);

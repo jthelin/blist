@@ -20,14 +20,14 @@
 void ShowUsage() {
   std::cerr
       << "Usage: " << ProgInfo::Name
-      << " [-t tabsize]"
+      << " [-t tab_size]"
       << " [-F]"
       << " [-D]"
       << " files ......"
       << std::endl;
   std::cerr
       << std::endl
-      << "  -t tabsize      = Set TAB expansion size." << std::endl
+      << "  -t tab_size     = Set TAB expansion size." << std::endl
       << "                    (Not yet implemented)" << std::endl
       << "  -F              = Set Form Feed mode on." << std::endl
       << "  -D              = Set debug mode on." << std::endl
@@ -135,7 +135,7 @@ int blist_main(int argc, char **argv) {
 
   // Parameter values
   blist_params params{};
-  bool args_ok = ParseArguments(argc, argv, params);
+  const bool args_ok = ParseArguments(argc, argv, params);
   if (!args_ok) {
     // Show usage summary
     ShowUsage();
@@ -163,8 +163,7 @@ int blist_main(int argc, char **argv) {
 }
 
 int main(int argc, char *argv[]) {
-  int rc = blist_main(argc, argv);
-  return rc;
+  return blist_main(argc, argv);
 }
 
 /******************************************************************************
