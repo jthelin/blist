@@ -12,17 +12,17 @@
 #error Requires C++ for use of these facilities
 #endif
 
-#include <string>
 #include <cstdarg>
 #include <iostream>
+#include <string>
 
-extern bool _debug;   // Debugging flag - usually define in main
+extern bool _debug; // Debugging flag - usually define in main
 
 /*****************************************************************************/
 /* General debugging messages                                                */
 /*****************************************************************************/
 
-extern void do_debug(std::string &format, va_list args);
+extern void do_debug(std::string& format, va_list args);
 
 //void inline debug(std::string &fmt, ...) {
 //  va_list args;
@@ -56,19 +56,17 @@ extern ofstream errlog;
 
 /* PRECONDITIONS : REQUIRE(b) */
 /* -------------------------- */
-#define	REQUIRE(b) \
-  if (!(b)) \
-    errlog	<< "PRECONDITION (REQUIRE) failed at " \
-      << __FILE__ << " line " << __LINE__ << endl \
-      << "Check was [ #b ]" << endl
+#define REQUIRE(b)                                                                                                     \
+  if (!(b))                                                                                                            \
+  errlog << "PRECONDITION (REQUIRE) failed at " << __FILE__ << " line " << __LINE__ << endl                            \
+         << "Check was [ #b ]" << endl
 
 /* POSTCONDITIONS : ENSURE(b) */
 /* -------------------------- */
-#define	ENSURE(b) \
-  if (!(b)) \
-    errlog	<< "POSTCONDITION (ENSURE) failed at " \
-      << __FILE__ << " line " << __LINE__ << endl \
-      << "Check was [ #b ]" << endl
+#define ENSURE(b)                                                                                                      \
+  if (!(b))                                                                                                            \
+  errlog << "POSTCONDITION (ENSURE) failed at " << __FILE__ << " line " << __LINE__ << endl                            \
+         << "Check was [ #b ]" << endl
 
 #else
 /* No debugging */
@@ -96,7 +94,6 @@ extern ofstream errlog;
 /*****************************************************************************/
 /* Function Entry and Exit tracing                                           */
 /*****************************************************************************/
-
 
 /* Original RCS change records from DOS version: */
 /******************************************************************************

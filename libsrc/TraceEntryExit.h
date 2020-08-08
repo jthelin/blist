@@ -3,8 +3,7 @@
 
 #include <string>
 
-static const char *BLANK = "";
-static const std::string BLANK_STR = std::string(BLANK);
+static const std::string BLANK_STR = std::string();
 
 /**
  * Class: TraceLevelOverride
@@ -49,8 +48,8 @@ class TraceEntryExit {
   bool alwaysLog = false;
 
 public:
-  constexpr static const char *EntryPrefix = ">>>> Enter ";
-  constexpr static const char *Exit_Prefix = "<<<< Exit_ ";
+  constexpr static std::string_view EntryPrefix = ">>>> Enter ";
+  constexpr static std::string_view Exit_Prefix = "<<<< Exit_ ";
 
   // Copy constructors for File object.
   TraceEntryExit(const TraceEntryExit&) = default;
@@ -65,10 +64,7 @@ public:
    * @param function_name - Function name.
    * @param always_log - Override the logEntryExists flag for this trace object.
    */
-  TraceEntryExit(
-      const std::string &class_name,
-      const std::string &function_name,
-      bool always_log = false);
+  TraceEntryExit(const std::string& class_name, const std::string& function_name, bool always_log = false);
 
   /**
    * Constructor: TraceEntryExit
@@ -77,11 +73,7 @@ public:
    * @param arguments - Function arguments info, if any.
    * @param always_log - Override the logEntryExists flag for this trace object.
    */
-  TraceEntryExit(
-	  std::string class_name,
-	  std::string function_name,
-	  std::string arguments,
-      bool always_log = false);
+  TraceEntryExit(std::string class_name, std::string function_name, std::string arguments, bool always_log = false);
 
   /**
    * Constructor: TraceEntryExit
@@ -89,10 +81,7 @@ public:
    * @param function_name - Function name.
    * @param always_log - Override the logEntryExists flag for this trace object.
    */
-  TraceEntryExit(
-      const char *class_name,
-      const char *function_name,
-      bool always_log = false);
+  TraceEntryExit(const char* class_name, const char* function_name, bool always_log = false);
 
   /**
    * Constructor: TraceEntryExit
@@ -101,11 +90,7 @@ public:
    * @param arguments - Function arguments info, if any.
    * @param always_log - Override the logEntryExists flag for this trace object.
    */
-  TraceEntryExit(
-      const char *class_name,
-      const char *function_name,
-      const char *arguments,
-      bool always_log = false);
+  TraceEntryExit(const char* class_name, const char* function_name, const char* arguments, bool always_log = false);
 
   /**
    * Destructor: ~TraceEntryExit

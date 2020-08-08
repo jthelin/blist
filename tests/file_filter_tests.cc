@@ -1,34 +1,31 @@
 #if defined(__clang__)
 #pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-err58-cpp"
+#pragma ide diagnostic   ignored "cert-err58-cpp"
 #endif
 
 #include "gtest/gtest.h"
 
-#include <iostream>
 #include <fstream>
 
-#include "../libsrc/filter.h"
 #include "../libsrc/FilePath.h"
-#include "../libsrc/proginfo.h"
 #include "../libsrc/TraceEntryExit.h"
+#include "../libsrc/filter.h"
+#include "../libsrc/proginfo.h"
 
-class file_filter_tests : public ::testing::Test
-{
+class file_filter_tests : public ::testing::Test {
 public:
-  file_filter_tests() {
-    ProgInfo::Name = "file_filter_tests";
-  }
+  file_filter_tests() { ProgInfo::Name = "file_filter_tests"; }
 };
 
-TEST(file_filter_tests, ReadLines) {
+TEST(file_filter_tests, ReadLines)
+{
   TraceEntryExit t("file_filter_tests", "ReadLines", true);
 
   FilePath file("cmake_install.cmake");
   EXPECT_TRUE(file.Exists()) << file.to_string() << " should exist.";
 
   auto file_reader = std::make_unique<std::ifstream>(file.FullName());
-  auto counter = std::make_unique<LineCounter>(*file_reader);
+  auto counter     = std::make_unique<LineCounter>(*file_reader);
 
   int rc = counter->main_loop();
 
@@ -38,14 +35,15 @@ TEST(file_filter_tests, ReadLines) {
   EXPECT_NE(rc, 0) << "Should not have got zero result code.";
 }
 
-TEST(file_filter_tests, ReadChars) {
+TEST(file_filter_tests, ReadChars)
+{
   TraceEntryExit t("file_filter_tests", "ReadChars", true);
 
   FilePath file("cmake_install.cmake");
   EXPECT_TRUE(file.Exists()) << file.to_string() << " should exist.";
 
   auto file_reader = std::make_unique<std::ifstream>(file.FullName());
-  auto counter = std::make_unique<CharCounter>(*file_reader);
+  auto counter     = std::make_unique<CharCounter>(*file_reader);
 
   int rc = counter->main_loop();
 

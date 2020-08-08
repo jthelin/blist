@@ -27,26 +27,26 @@ extern void fatal(std::string& message);
 /*  then save the message and print later.                              */
 /************************************************************************/
 
-extern void message(std::string &format, const std::string &arg1, const std::string &arg2, ...);
+extern void message(std::string& format, const std::string& arg1, const std::string& arg2, ...);
 
 /************************************************************************/
 /* malloc a block of memory,                                            */
 /* with fatal error message if we can't do it.                          */
 /************************************************************************/
 
-extern void *xmalloc(unsigned size);
+extern void* xmalloc(unsigned size);
 
 /************************************************************************/
 /* realloc a block of memory,                                           */
 /* with fatal error message if we can't do it.                          */
 /************************************************************************/
 
-extern void *xrealloc(void *old, unsigned int size);
+extern void* xrealloc(void* old, unsigned int size);
 
 /************************************************************************/
 /* Concatenate three strings, returning a newly malloc'd string.        */
 /************************************************************************/
 
-extern std::string concat(char *s1, char *s2, char *s3);
+extern std::string concat(char* s1, char* s2, char* s3);
 
 #endif

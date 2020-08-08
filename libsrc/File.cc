@@ -6,27 +6,20 @@
 
 #include "File.h"
 
-#include <cassert>
-#include <chrono>
-#include <ctime>
-#include <iostream>
 #include <fstream>
 #include <sstream>
-#include <vector>
 
-#include "filter.h"
-#include "fileutil.h"
 #include "TraceEntryExit.h"
+#include "fileutil.h"
+#include "filter.h"
 
 class FilePrinter : public ILineStreamFilter {
 public:
-  FilePrinter(std::ifstream &ii, std::ostream &oo)
-      : ILineStreamFilter(ii, oo) {}
+  FilePrinter(std::ifstream& ii, std::ostream& oo) : ILineStreamFilter(ii, oo) {}
 
-  void compute() override { /* pass through */ };
+  void compute() override{/* pass through */};
 };
 // End class FilePrinter
-
 
 // Summary -----------------------------------------------------------------
 //
@@ -35,21 +28,19 @@ public:
 //	exist if log_failures is false.
 //
 // End ---------------------------------------------------------------------
-File::File(const std::string &filename, bool log_failures)
-    : FilePath(filename) {
+File::File(const std::string& filename, bool log_failures) : FilePath(filename)
+{
   TraceEntryExit t("File", "<constructor>", filename);
 
   if (!Exists()) {
     // File does not exist
     if (log_failures) {
       std::cerr << "**** ERROR:"
-                << " File " << filename << " does not exist."
-                << std::endl;
+                << " File " << filename << " does not exist." << std::endl;
     }
   }
 }
 // End File constructor //
-
 
 // Summary -----------------------------------------------------------------
 //
@@ -57,11 +48,11 @@ File::File(const std::string &filename, bool log_failures)
 //	Closes the input stream if it is open.
 //
 // End ---------------------------------------------------------------------
-File::~File() {
+File::~File()
+{
   TraceEntryExit t("File", "<destructor>", this->FullName());
 }
 // End File Destructor //
-
 
 // Summary -----------------------------------------------------------------
 //
@@ -69,11 +60,11 @@ File::~File() {
 //	Return a string containing the modification date of a File.
 //
 // End ---------------------------------------------------------------------
-std::string File::ModificationDate() const {
+std::string File::ModificationDate() const
+{
   return FileUtils::GetModificationDate(this->FullName());
 }
 // End Member function ModificationDate
-
 
 // Summary -----------------------------------------------------------------
 //
@@ -86,7 +77,6 @@ long File::FileSize() const
   return FileUtils::FileSize(this->FullName());
 }
 // End Member function Size
-
 
 // Summary -----------------------------------------------------------------
 //
@@ -114,29 +104,29 @@ std::vector<std::string> File::FileInfo() const
 }
 // End Member function FileInfo
 
-
 // Summary -----------------------------------------------------------------
 //
 // Member Function PrintOn
 //       Outputs the file to the specified output stream.
 //
 // End ---------------------------------------------------------------------
-void File::PrintOn(std::ostream &s) {
+void File::PrintOn(std::ostream& s)
+{
   TraceEntryExit t("File", "PrintOn");
 
-  assert (s);   // Output stream should always be open
+  assert(s); // Output stream should always be open
 
   if (this->Exists()) {
     // Copy file contents to output stream
     std::ifstream file_reader(this->FullName());
-    FilePrinter pr(file_reader, s);
+    FilePrinter   pr(file_reader, s);
     pr.main_loop(); /* Iterate */
-  } else {
+  }
+  else {
     std::cerr << "File " << this->FullName() << " does not exist, so no output." << std::endl;
   }
 }
 // End Stream output Function operator << //
-
 
 /* Original RCS change records from DOS version: */
 /*****************************************************************************

@@ -8,12 +8,10 @@
 //
 // End ---------------------------------------------------------------------
 
-
-#include <string>
-#include <iostream>
-#include <vector>
 #include "FilePath.h"
-
+#include <iostream>
+#include <string>
+#include <vector>
 
 // Description -------------------------------------------------------------
 //
@@ -24,7 +22,7 @@
 //
 // Constructor: File
 //	Creates an object representing the file with the specified (path) name.
-//	No failure or warning messages will be logged if the file does not 
+//	No failure or warning messages will be logged if the file does not
 //	 actually exist if log_failures is false.
 //
 // Destructor: ~File
@@ -53,26 +51,27 @@
 
 class File : public FilePath {
 public:
-  explicit File(const std::string &filename, bool log_failures = true);
+  explicit File(const std::string& filename, bool log_failures = true);
 
-  virtual ~File();
+  ~File() override;
 
   // Copy constructors for File object.
   File(const File&) = default;
   File& operator=(const File&) = default;
   // Move constructors for File object.
-  File(File&&) = default;
+  File(File&&)  = default;
   File& operator=(File&&) = default;
 
-  virtual void PrintOn(std::ostream &s);
+  virtual void PrintOn(std::ostream& s);
 
-  std::string ModificationDate() const;
+  [[nodiscard]] std::string ModificationDate() const;
 
-  long FileSize() const;
+  [[nodiscard]] long FileSize() const;
 
-  std::vector<std::string> FileInfo() const;
+  [[nodiscard]] std::vector<std::string> FileInfo() const;
 
-  friend std::ostream &operator<<(std::ostream &s, File f) {
+  friend std::ostream& operator<<(std::ostream& s, File f)
+  {
     f.PrintOn(s);
     return s;
   };

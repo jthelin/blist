@@ -7,8 +7,7 @@
 #include "proginfo.h"
 #include "utilmsg.h"
 
-const std::string ERROR_PREFIX = "**** ERROR";
-
+constexpr std::string_view ERROR_PREFIX = "**** ERROR";
 
 /******************** START COMMENTED OUT SECTION ***********************/
 
@@ -39,16 +38,16 @@ void  pfatal_with_name( char *text )
 
 /******************* END COMMENTED OUT SECTION **************************/
 
-
 /************************************************************************/
 /* Print an error message.                                              */
 /************************************************************************/
 
-void error(const std::string& message) {
+void error(const std::string& message)
+{
   const std::string& ProgName = ProgInfo::Name;
 
   fprintf(stderr, "\n%s: ", ProgName.c_str());
-  fprintf(stderr, ERROR_PREFIX.c_str(), " ");
+  fprintf(stderr, ERROR_PREFIX.data(), " ");
   fprintf(stderr, "%s", message.c_str());
   fprintf(stderr, "\n");
 }
@@ -75,24 +74,25 @@ void error(const std::string &format, ...) {
 /* Print an error message containing the string TEXT, then exit.        */
 /************************************************************************/
 
-void fatal(const std::string &message) {
-/**************************
+void fatal(const std::string& message)
+{
+  /**************************
 	print_message_queue();
 **************************/
   // error(message);
-  fprintf(stderr, "%s %s", ERROR_PREFIX.c_str(), message.c_str());
-  fflush(stderr);  /* Probably not strictly necessary, but safest */
+  fprintf(stderr, "%s %s", ERROR_PREFIX.data(), message.c_str());
+  fflush(stderr); /* Probably not strictly necessary, but safest */
   exit(2);
 }
-
 
 /************************************************************************/
 /* Like printf, except if paginate_flag is set                          */
 /*      then save the message and print later.                          */
 /************************************************************************/
 
-void message(const std::string &format, const std::string &arg1, const std::string &arg2, ...) {
-/*
+void message(const std::string& format, const std::string& arg1, const std::string& arg2, ...)
+{
+  /*
   if (paginate_flag) {
     struct msg *
     new = (struct msg *) xmalloc(sizeof(struct msg));
@@ -110,9 +110,8 @@ void message(const std::string &format, const std::string &arg1, const std::stri
     new->next = NULL;
   } else
 */
-    printf(format.c_str(), arg1.c_str(), arg2.c_str());
+  printf(format.c_str(), arg1.c_str(), arg2.c_str());
 }
-
 
 /******************** START COMMENTED OUT SECTION ***********************/
 
@@ -129,7 +128,6 @@ void  print_message_queue( void )
 }
 */
 /******************* END COMMENTED OUT SECTION **************************/
-
 
 /************************************************************************/
 /* malloc a block of memory,                                            */

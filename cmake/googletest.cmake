@@ -11,25 +11,25 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 INCLUDE(FetchContent)
 
 FetchContent_Declare(googletest
-  URL         https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-  URL_HASH    SHA256=9dc9157a9a1551ec7a7e43daea9a694a0bb5fb8bec81235d8a1e6ef64c716dcb
-  SOURCE_DIR  googletest-src
-)
+        URL https://github.com/google/googletest/archive/release-1.10.0.tar.gz
+        URL_HASH SHA256=9dc9157a9a1551ec7a7e43daea9a694a0bb5fb8bec81235d8a1e6ef64c716dcb
+        SOURCE_DIR googletest-src
+        )
 
 FetchContent_GetProperties(googletest)
-if(NOT googletest_POPULATED)
-  FetchContent_Populate(googletest)
+if (NOT googletest_POPULATED)
+    FetchContent_Populate(googletest)
 
-  # Add googletest directly to our build.
-  # This defines the gtest and gtest_main targets.
-  add_subdirectory(${googletest_SOURCE_DIR}
-    ${googletest_BINARY_DIR}
-    EXCLUDE_FROM_ALL)
+    # Add googletest directly to our build.
+    # This defines the gtest and gtest_main targets.
+    add_subdirectory(${googletest_SOURCE_DIR}
+            ${googletest_BINARY_DIR}
+            EXCLUDE_FROM_ALL)
 
-  # The gtest/gtest_main targets carry header search path
-  # dependencies automatically when using CMake 2.8.11 or
-  # later. Otherwise we have to add them here ourselves.
-  if (CMAKE_VERSION VERSION_LESS 2.8.11)
-    include_directories(${gtest_SOURCE_DIR}/include)
-  endif()
-endif()
+    # The gtest/gtest_main targets carry header search path
+    # dependencies automatically when using CMake 2.8.11 or
+    # later. Otherwise we have to add them here ourselves.
+    if (CMAKE_VERSION VERSION_LESS 2.8.11)
+        include_directories(${gtest_SOURCE_DIR}/include)
+    endif ()
+endif ()

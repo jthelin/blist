@@ -15,32 +15,33 @@ static  char  near trace_buffer[MAX_BUFFER_SIZE];
 
 void  set_debug_destination( ostream& ostr )
 {
-        // Flush any remaining output
-        if (!debug_dest)  debug_dest.flush();
+    // Flush any remaining output
+    if (!debug_dest)  debug_dest.flush();
 
-        // Set new output destination
-        debug_dest = ostr;
-
+    // Set new output destination
+    debug_dest = ostr;
 }
 
 void  dump_debug_buffer( void )
 {
-        std::clog << debug_dest;
+    std::clog << debug_dest;
 }
  ***************************************** commented out ends *************/
-
 
 /************************************************************************/
 /* Function: do_debug                                                   */
 /* Print an error message from the format-string FORMAT                 */
 /*      with optional extra args as with printf.                        */
 /************************************************************************/
-void do_debug(std::string &format, va_list args) {
+void do_debug(std::string& format, va_list args)
+{
   static char line_buffer[MAX_LINE_SIZE];
-/*
-	if (debug_dest)
-		// Debugging output destination not set up
-		set_debug_destination(clog);
+  /*
+  if (debug_dest)
+  {
+    // Debugging output destination not set up
+    set_debug_destination(clog);
+  }
 */
 
   vsprintf(line_buffer, format.c_str(), args);
@@ -48,7 +49,6 @@ void do_debug(std::string &format, va_list args) {
   /*debug_dest*/
   std::clog << line_buffer << std::endl;
 }
-
 
 /******************************************************************************
  Change History

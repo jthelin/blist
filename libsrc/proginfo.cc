@@ -1,5 +1,5 @@
-#include <string>
 #include <iostream>
+#include <string>
 
 /*******************************************************************************
 *
@@ -17,12 +17,12 @@
 
 #include "proginfo.h"
 
-std::ostream& ModuleSignOn(
-    const std::string &progName,
-    const std::string &progVer,
-    const std::string &progReleaseStatus,
-    const std::string &progAuthor,
-    const std::string &progDate) {
+std::ostream& ModuleSignOn(const std::string& progName,
+                           const std::string& progVer,
+                           const std::string& progReleaseStatus,
+                           const std::string& progAuthor,
+                           const std::string& progDate)
+{
   std::ostream& out = std::cerr;
 
   out << progName << " v" << progVer;

@@ -1,49 +1,47 @@
 #if defined(__clang__)
 #pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-err58-cpp"
+#pragma ide diagnostic   ignored "cert-err58-cpp"
 #endif
 
 #include "gtest/gtest.h"
 
-#include "../libsrc/proginfo.h"
 #include "../libsrc/File.h"
-#include "../libsrc/FilePath.h"
 #include "../libsrc/TextBox.h"
 #include "../libsrc/TraceEntryExit.h"
 #include "../libsrc/fileutil.h"
+#include "../libsrc/proginfo.h"
 
 #define DEBUG
 
-class lib_tests : public ::testing::Test
-{
+class lib_tests : public ::testing::Test {
 public:
-  lib_tests() {
-    ProgInfo::Name = "lib_tests";
-  }
+  lib_tests() { ProgInfo::Name = "lib_tests"; }
 };
 
-TEST(lib_tests, TraceLevelOverride) {
+TEST(lib_tests, TraceLevelOverride)
+{
   TraceEntryExit t("lib_tests", "TraceLevelOverride", true);
 
   // Begin scope #1
   {
-    auto trace_override = TraceLevelOverride::SetLogging(true);
+    auto           trace_override = TraceLevelOverride::SetLogging(true);
     TraceEntryExit t1("lib_tests", "TraceEntryExit_test_on");
   }
   // End scope #1
 
   // Begin scope #2
   {
-    auto trace_override = TraceLevelOverride::SetLogging(false);
+    auto           trace_override = TraceLevelOverride::SetLogging(false);
     TraceEntryExit t2("lib_tests", "TraceEntryExit_test_off");
   }
   // End scope #2
 }
 
-TEST(lib_tests, File) {
+TEST(lib_tests, File)
+{
   TraceEntryExit t("lib_tests", "File", true);
 
-  const File none("no-file.non", false);  // Non-existent file
+  const File none("no-file.non", false); // Non-existent file
   EXPECT_FALSE(none.Exists()) << none.to_string() << " should not exist.";
   std::cout << none.FName() << std::endl << none << std::endl;
 
@@ -52,10 +50,11 @@ TEST(lib_tests, File) {
   std::cout << file.FullName() << std::endl << file << std::endl;
 }
 
-TEST(lib_tests, FilePath_Exists) {
+TEST(lib_tests, FilePath_Exists)
+{
   TraceEntryExit t("lib_tests", "FilePath_Exists", true);
 
-  const FilePath none("no-file.non");  // Non-existent file
+  const FilePath none("no-file.non"); // Non-existent file
   std::cout << "none : " << none << " Exists = " << none.Exists() << std::endl;
   EXPECT_FALSE(none.Exists()) << none.to_string() << " should not exist.";
 
@@ -64,7 +63,8 @@ TEST(lib_tests, FilePath_Exists) {
   EXPECT_TRUE(file.Exists()) << file.to_string() << " should exist.";
 }
 
-TEST(lib_tests, FilePath_Split) {
+TEST(lib_tests, FilePath_Split)
+{
   TraceEntryExit t("lib_tests", "FilePath_Split", true);
 
   const auto current_dir = FileUtils::GetCurrentDirectory();
@@ -76,7 +76,8 @@ TEST(lib_tests, FilePath_Split) {
   EXPECT_EQ(file_path.DirName(), current_dir);
 }
 
-TEST(lib_tests, FilePath_Absolute) {
+TEST(lib_tests, FilePath_Absolute)
+{
   TraceEntryExit t("lib_tests", "FilePath_Absolute", true);
 
   const auto current_dir = FileUtils::GetCurrentDirectory();
@@ -90,21 +91,23 @@ TEST(lib_tests, FilePath_Absolute) {
   EXPECT_EQ(file_path.DirName(), current_dir);
 }
 
-TEST(lib_tests, FilePath_Absolute_NotFound) {
-	const std::string file_name = "/aa/bcdef/gg.txt";
+TEST(lib_tests, FilePath_Absolute_NotFound)
+{
+  const std::string file_name = "/aa/bcdef/gg.txt";
 
   TraceEntryExit t("lib_tests", "FilePath_Absolute_NotFound", file_name, true);
 
   std::cout << std::endl << "File = " << file_name << std::endl;
 
-	const auto file_path = FilePath(file_name);
+  const auto file_path = FilePath(file_name);
   EXPECT_FALSE(file_path.Exists()) << "File " << file_path.to_string() << " should not exist.";
 
   EXPECT_EQ(file_path.FName(), "gg.txt");
   EXPECT_EQ(file_path.DirName(), "/aa/bcdef");
 }
 
-TEST(lib_tests, TextBox) {
+TEST(lib_tests, TextBox)
+{
   TraceEntryExit t("lib_tests", "TextBox", true);
 
   const std::vector<std::string> multi_line = {"Multiple lines", "Line1", "Line2", "Line3", "Last Line"};

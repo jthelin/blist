@@ -13,26 +13,26 @@ public:
    * @param file_path - The file to be inspected.
    * @return Return TRUE if specified file exists and is readable.
    */
-  static bool IsFileReadable(const std::string &file_path);
+  static bool IsFileReadable(const std::string& file_path);
 
   /**
    * Function: FileSize
    * @param file_path - The file to be inspected.
    * @return Return size of specified file (in bytes)
    */
-  static long FileSize(const std::string &file_path);
+  static long FileSize(const std::string& file_path);
 
   /**
    * Function: FileCreationTimestamp
    * @param file_path - The file to be inspected.
    * @return Return creation timestamp of the specified file.
    */
-  static time_t FileCreationTimestamp(const std::string &file_path);
+  static time_t FileCreationTimestamp(const std::string& file_path);
 
   /**
    * Return a string containing the modification date of a File.
    */
-  static std::string GetModificationDate(const std::string &file_path);
+  static std::string GetModificationDate(const std::string& file_path);
 
   /**
  * Find the current working directory.
@@ -40,16 +40,17 @@ public:
  */
   static std::string GetCurrentDirectory();
 
-  static std::string basename(const std::string &file_path);
-  static std::string dirname(const std::string &file_path);
+  static std::string basename(const std::string& file_path);
+  static std::string dirname(const std::string& file_path);
 
-  static std::string DirSeparator() {
+  static std::string_view DirSeparator()
+  {
 #if defined(_WIN32)
     // Windows
-    return std::string("\\");
+    return "\\";
 #else
     // Linux / UNIX / MacOS
-    return std::string("/");
+    return "/";
 #endif
   }
 };
