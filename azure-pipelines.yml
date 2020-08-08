@@ -3,7 +3,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+  - master
 
 variables:
   buildConfiguration: 'Release'
@@ -16,36 +16,36 @@ jobs:
 
     steps:
 
-    # Build with the CMake cross-platform build system
-    - task: CMake@1
-      inputs:
-        cmakeArgs: --version
-      displayName: 'CMake Version'
-    - task: CMake@1
-      inputs:
-        workingDirectory: $(Build.ArtifactStagingDirectory)
-        cmakeArgs: -S $(Build.SourcesDirectory)
-      displayName: 'CMake Build Generation'
-    - task: CMake@1
-      inputs:
-        cmakeArgs: --build $(Build.ArtifactStagingDirectory) --config $(buildConfiguration)
-      displayName: 'CMake Build'
-    - script: |
-        dir /s $(Build.BinariesDirectory)
-        dir /s $(Build.ArtifactStagingDirectory)
-        dir /s $(Build.SourcesDirectory)
-        set
-      displayName: 'List build files and environment'
-    - script: |
-        cd $(Build.ArtifactStagingDirectory) && ctest.exe --output-on-failure --extra-verbose
-      displayName: 'Run Tests'
-    - task: CMake@1
-      inputs:
-        cmakeArgs: --install $(Build.ArtifactStagingDirectory) --prefix $(Build.BinariesDirectory) --config $(buildConfiguration)
-      displayName: 'CMake Install'
-    - script: |
-        $(Build.BinariesDirectory)/bin/blist.exe blist.h
-      displayName: 'Test program execution'
+      # Build with the CMake cross-platform build system
+      - task: CMake@1
+        inputs:
+          cmakeArgs: --version
+        displayName: 'CMake Version'
+      - task: CMake@1
+        inputs:
+          workingDirectory: $(Build.ArtifactStagingDirectory)
+          cmakeArgs: -S $(Build.SourcesDirectory)
+        displayName: 'CMake Build Generation'
+      - task: CMake@1
+        inputs:
+          cmakeArgs: --build $(Build.ArtifactStagingDirectory) --config $(buildConfiguration)
+        displayName: 'CMake Build'
+      - script: |
+          dir /s $(Build.BinariesDirectory)
+          dir /s $(Build.ArtifactStagingDirectory)
+          dir /s $(Build.SourcesDirectory)
+          set
+        displayName: 'List build files and environment'
+      - script: |
+          cd $(Build.ArtifactStagingDirectory) && ctest.exe --output-on-failure --extra-verbose
+        displayName: 'Run Tests'
+      - task: CMake@1
+        inputs:
+          cmakeArgs: --install $(Build.ArtifactStagingDirectory) --prefix $(Build.BinariesDirectory) --config $(buildConfiguration)
+        displayName: 'CMake Install'
+      - script: |
+          $(Build.BinariesDirectory)/bin/blist.exe blist.h
+        displayName: 'Test program execution'
 
 
   - job: 'linux'
@@ -55,31 +55,31 @@ jobs:
 
     steps:
 
-    # Build with the CMake cross-platform build system
-    - task: CMake@1
-      inputs:
-        cmakeArgs: --version
-      displayName: 'CMake Version'
-    - task: CMake@1
-      inputs:
-        workingDirectory: $(Build.ArtifactStagingDirectory)
-        cmakeArgs: -S $(Build.SourcesDirectory)
-      displayName: 'CMake Build Generation'
-    - task: CMake@1
-      inputs:
-        cmakeArgs: --build $(Build.ArtifactStagingDirectory)
-      displayName: 'CMake Build'
+      # Build with the CMake cross-platform build system
+      - task: CMake@1
+        inputs:
+          cmakeArgs: --version
+        displayName: 'CMake Version'
+      - task: CMake@1
+        inputs:
+          workingDirectory: $(Build.ArtifactStagingDirectory)
+          cmakeArgs: -S $(Build.SourcesDirectory)
+        displayName: 'CMake Build Generation'
+      - task: CMake@1
+        inputs:
+          cmakeArgs: --build $(Build.ArtifactStagingDirectory)
+        displayName: 'CMake Build'
 
-    - script: |
-        ls -lhR $(Build.BinariesDirectory)
-        ls -lhR $(Build.ArtifactStagingDirectory)
-        ls -lhR $(Build.SourcesDirectory)
-      displayName: 'List build files'
+      - script: |
+          ls -lhR $(Build.BinariesDirectory)
+          ls -lhR $(Build.ArtifactStagingDirectory)
+          ls -lhR $(Build.SourcesDirectory)
+        displayName: 'List build files'
 
-    - script: |
-        cd $(Build.ArtifactStagingDirectory) && ctest --output-on-failure --extra-verbose
-      displayName: 'Run Tests'
+      - script: |
+          cd $(Build.ArtifactStagingDirectory) && ctest --output-on-failure --extra-verbose
+        displayName: 'Run Tests'
 
-    - script: |
-        $(Build.ArtifactStagingDirectory)/blist blist.h
-      displayName: 'Test program execution'
+      - script: |
+          $(Build.ArtifactStagingDirectory)/blist blist.h
+        displayName: 'Test program execution'
