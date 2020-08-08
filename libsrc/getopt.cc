@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstring>
+#include <cstdint>
 
 #include "getopt.h"
 
@@ -43,7 +44,8 @@ int getopt(int nargc, char* const nargv[], const char* ostr)
     }
   }
   /* option letter okay? */
-  if ((optopt = static_cast<u_int8_t>(*place++)) == static_cast<u_int8_t>(':') || !((oli = strchr(ostr, optopt)))) {
+  if ((optopt = static_cast<std::uint8_t>(*place++)) == static_cast<std::uint8_t>(':')
+      || !((oli = strchr(ostr, optopt)))) {
     /* if the user didn't specify '-' as an option, assume it means -1. */
     if (optopt == static_cast<int>('-')) {
       return -1;
