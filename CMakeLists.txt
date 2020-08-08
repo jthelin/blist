@@ -40,7 +40,7 @@ ADD_EXECUTABLE(file_filter
         ${lib_HDRS})
 TARGET_LINK_LIBRARIES(file_filter mylib)
 
-include(CppCheckTargets)
+include(CppcheckTargets)
 add_cppcheck(${PROJECT_NAME} UNUSED_FUNCTIONS STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
 add_cppcheck(file_filter UNUSED_FUNCTIONS STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
 

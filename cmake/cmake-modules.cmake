@@ -20,7 +20,7 @@ if (result)
     message(FATAL_ERROR "Build step for ${PKG} failed: ${result}")
 endif ()
 
-LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR}/cmake-modules)
+LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR}/${PKG})
 
 message(STATUS "CMAKE_MODULE_PATH = ${CMAKE_MODULE_PATH}")
 
