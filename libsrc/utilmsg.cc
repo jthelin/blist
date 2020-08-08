@@ -46,10 +46,7 @@ void error(const std::string& message)
 {
   const std::string& ProgName = ProgInfo::Name;
 
-  fprintf(stderr, "\n%s: ", ProgName.c_str());
-  fprintf(stderr, ERROR_PREFIX.data(), " ");
-  fprintf(stderr, "%s", message.c_str());
-  fprintf(stderr, "\n");
+  fprintf(stderr, "\n%s: %s %s\n", ProgName.c_str(), ERROR_PREFIX.data(), message.c_str());
 }
 
 /************************************************************************/
