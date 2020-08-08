@@ -28,24 +28,18 @@
 // End ---------------------------------------------------------------------
 class TextBox {
 public:
-  enum box_style {
-    BASIC, STANDARD, DOUBLE
-  };
-protected:
-  char *text;
-  size_t num_lines;
-  char box_char;
-  box_style box_type;
-public:
-  explicit TextBox(
-      const std::string &text,
-      box_style box_type = STANDARD,
-      char box_char = '*');
+  enum box_style { BASIC, STANDARD, DOUBLE };
 
-  explicit TextBox(
-      const std::vector<std::string> &text_lines,
-      box_style box_type = STANDARD,
-      char box_char = '*');
+protected:
+  char*     text;
+  size_t    num_lines;
+  char      box_char;
+  box_style box_type;
+
+public:
+  explicit TextBox(const std::string& text, box_style box_type = STANDARD, char box_char = '*');
+
+  explicit TextBox(const std::vector<std::string>& text_lines, box_style box_type = STANDARD, char box_char = '*');
 
   // Copy constructors.
   TextBox(const TextBox&) = default;
@@ -53,12 +47,11 @@ public:
   // Move constructors.
   TextBox(TextBox&&) = default;
   TextBox& operator=(TextBox&&) = default;
-	
+
   ~TextBox();
 
-  friend std::ostream &operator<<(std::ostream &s, const TextBox &tb);
+  friend std::ostream& operator<<(std::ostream& s, const TextBox& tb);
 };
-
 
 /* Original RCS change records from DOS version: */
 /*****************************************************************************

@@ -6,38 +6,37 @@
  * Function main_loop (using Exceptions unless _LIBCPP_NO_EXCEPTIONS is defined)
  * @return
  */
-int IFilter::main_loop() {
-  IFilter *p = this;
+int IFilter::main_loop()
+{
+  IFilter* p = this;
 
-  for (;;)  // Loop forever, until breakout condition is hit.
+  for (;;) // Loop forever, until breakout condition is hit.
   {
-
 #if !defined(_LIBCPP_NO_EXCEPTIONS)
-	try {
+    try {
 #endif
-
       p->start();
       while (p->read()) {
         p->compute();
         p->write();
       }
-      return p->result();  // Exit loop
+      return p->result(); // Exit loop
 
 #if !defined(_LIBCPP_NO_EXCEPTIONS)
-	}
-    catch (IFilter::ERetry &m) {
+    }
+    catch (IFilter::ERetry& m) {
       std::cerr << m.message() << std::endl;
       int i = p->retry();
       if (i) {
-        return -i;  // Exit loop
+        return -i; // Exit loop
       }
     }
     catch (...) {
       std::cerr << "ERROR: Fatal filter error" << std::endl;
-      return -10;  // Exit loop
+      return -10; // Exit loop
     }
 #endif
 
   } // End forever loop
-  // Not reached.
+    // Not reached.
 }

@@ -10,21 +10,22 @@
  */
 class FilePath {
 protected:
-  bool fileExists;
+  bool        fileExists;
   std::string fileName;
   std::string dirName;
+
 public:
   /**
    * Constructor for FilePath object.
    * @param file_path - The path location for this file.
    */
-  explicit FilePath(const std::string &file_path);
+  explicit FilePath(const std::string& file_path);
 
   /**
    * Constructor for FilePath object.
    * @param file_path - The path location for this file.
    */
-  explicit FilePath(const char *file_path);
+  explicit FilePath(const char* file_path);
 
   // Copy constructors for FilePath object.
   FilePath(const FilePath&) = default;
@@ -41,26 +42,27 @@ public:
   /**
    * @return Returns true if this file path exists in the file system.
    */
-  bool Exists() const { return fileExists; };
+  [[nodiscard]] bool Exists() const { return fileExists; };
 
   /**
    * @return Return the directory name (including drive, if applicable) for this file.
    */
-  std::string DirName() const { return dirName; };
+  [[nodiscard]] std::string DirName() const { return dirName; };
 
   /**
    * @return Return the terminal file name of this file, including file extension (if applicable).
    */
-  std::string FName() const { return fileName; };
+  [[nodiscard]] std::string FName() const { return fileName; };
 
   /**
    * @return Return the full path name of this file.
    */
-  std::string FullName() const;
+  [[nodiscard]] std::string FullName() const;
 
-  std::string to_string() const { return this->FullName(); };
+  [[nodiscard]] std::string to_string() const { return this->FullName(); };
 
-  friend std::ostream &operator<<(std::ostream &s, const FilePath &path_name) {
+  friend std::ostream& operator<<(std::ostream& s, const FilePath& path_name)
+  {
     s << path_name.FullName();
     return s;
   };

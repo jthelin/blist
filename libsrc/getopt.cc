@@ -1,31 +1,33 @@
-#include <cstring>
 #include <cstdio>
+#include <cstring>
+#include <cstdint>
 
 #include "getopt.h"
 
 // Based on: https://stackoverflow.com/questions/10404448/getopt-h-compiling-linux-c-code-in-windows
 
-int opterr = 1,  /* if error message should be printed */
-    optind = 1,  /* index into parent argv vector */
-    optopt,      /* character checked for validity */
-    optreset;    /* reset getopt */
+int opterr = 1, /* if error message should be printed */
+  optind   = 1, /* index into parent argv vector */
+  optopt,       /* character checked for validity */
+  optreset;     /* reset getopt */
 
-char *optarg;    /* argument associated with option */
+char* optarg; /* argument associated with option */
 
-constexpr int BADCH = '?';
-constexpr int BADARG = ':';
+constexpr int         BADCH     = '?';
+constexpr int         BADARG    = ':';
 constexpr const char* BLANK_MSG = "";
 
 /*
 * getopt --
 *      Parse argc/argv argument vector.
 */
-int getopt(int nargc, char *const nargv[], const char *ostr) {
+int getopt(int nargc, char* const nargv[], const char* ostr)
+{
   /* option letter processing */
-  static char *place = const_cast<char*>(BLANK_MSG);
-	
+  static char* place = const_cast<char*>(BLANK_MSG);
+
   /* option letter list index */
-  const char *oli;
+  const char* oli;
 
   if (optreset || !*place) {
     /* update scanning pointer */
@@ -42,8 +44,8 @@ int getopt(int nargc, char *const nargv[], const char *ostr) {
     }
   }
   /* option letter okay? */
-  if ((optopt = static_cast<int>(*place++)) == static_cast<int>(':')
-	  || !( (oli = strchr(ostr, optopt)) )) {
+  if ((optopt = static_cast<std::uint8_t>(*place++)) == static_cast<std::uint8_t>(':')
+      || !((oli = strchr(ostr, optopt)))) {
     /* if the user didn't specify '-' as an option, assume it means -1. */
     if (optopt == static_cast<int>('-')) {
       return -1;
@@ -62,7 +64,8 @@ int getopt(int nargc, char *const nargv[], const char *ostr) {
     if (!*place) {
       ++optind;
     }
-  } else {
+  }
+  else {
     /* need an argument */
     if (*place) {
       /* no white space */
@@ -78,12 +81,13 @@ int getopt(int nargc, char *const nargv[], const char *ostr) {
         (void) printf("option requires an argument -- %c\n", optopt);
       }
       return BADCH;
-    } else {
+    }
+    else {
       /* white space */
       optarg = nargv[optind];
     }
     place = const_cast<char*>(BLANK_MSG);
     ++optind;
   }
-  return optopt;  /* dump back option letter */
+  return optopt; /* dump back option letter */
 }

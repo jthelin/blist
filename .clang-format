@@ -1,0 +1,41 @@
+BasedOnStyle: LLVM
+IndentWidth: 2
+UseTab: Never
+BreakBeforeBraces: Stroustrup
+
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AllowShortIfStatementsOnASingleLine: Never
+IndentCaseLabels: false
+BinPackArguments: false
+BinPackParameters: false
+AlignTrailingComments: true
+AllowShortBlocksOnASingleLine: Never
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortFunctionsOnASingleLine: InlineOnly
+AlwaysBreakTemplateDeclarations: Yes
+ColumnLimit: 120
+MaxEmptyLinesToKeep: 1
+KeepEmptyLinesAtTheStartOfBlocks: false
+ContinuationIndentWidth: 2
+PointerAlignment: Left
+ReflowComments: false
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+SpacesInAngles: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+Standard: c++17
+
+SortIncludes: true
+
+FixNamespaceComments: true
+BreakBeforeBinaryOperators: NonAssignment
+SpaceAfterTemplateKeyword: false
+AlignAfterOpenBracket: Align
+AlignOperands: AlignAfterOperator
+BreakConstructorInitializers: AfterColon
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+SpaceAfterCStyleCast: true
+BreakBeforeTernaryOperators: true

@@ -22,12 +22,12 @@
  * Program Information variables to be defined in the main program module.
  */
 struct ProgInfo {
-  static std::string Name;           /* Program Name */
-  static std::string Desc;           /* Program Description */
-  static std::string Version;        /* Program Version */
-  static std::string Author;         /* Program Author */
-  static std::string ReleaseDate;    /* Program Release Date */
-  static std::string ReleaseStatus;  /* Program Release Status eg. Beta, Released */
+  static std::string Name;          /* Program Name */
+  static std::string Desc;          /* Program Description */
+  static std::string Version;       /* Program Version */
+  static std::string Author;        /* Program Author */
+  static std::string ReleaseDate;   /* Program Release Date */
+  static std::string ReleaseStatus; /* Program Release Status eg. Beta, Released */
 };
 
 /**
@@ -38,13 +38,11 @@ struct ProgInfo {
  * @param progAuthor - Program author. (Optional)
  * @param progDate - Program date stamp. (Optional)
  */
-extern std::ostream& ModuleSignOn(
-    const std::string &progName,
-    const std::string &progVer,
-    const std::string &progReleaseStatus = nullptr,
-    const std::string &progAuthor = nullptr,
-    const std::string &progDate = nullptr
-);
+extern std::ostream& ModuleSignOn(const std::string& progName,
+                                  const std::string& progVer,
+                                  const std::string& progReleaseStatus = nullptr,
+                                  const std::string& progAuthor        = nullptr,
+                                  const std::string& progDate          = nullptr);
 
 /**
  * Function:	ProgramSignOn
@@ -52,13 +50,10 @@ extern std::ostream& ModuleSignOn(
  * ProgName, ProgVer, ProgReleaseStatus, ProgAuthor, and ProgDate,
  * which should be defined by the main program.
  */
-inline std::ostream& ProgramSignOn() {
+inline std::ostream& ProgramSignOn()
+{
   return ModuleSignOn(
-      ProgInfo::Name,
-      ProgInfo::Version,
-      ProgInfo::ReleaseStatus,
-      ProgInfo::Author,
-      ProgInfo::ReleaseDate);
+    ProgInfo::Name, ProgInfo::Version, ProgInfo::ReleaseStatus, ProgInfo::Author, ProgInfo::ReleaseDate);
 }
 
 #endif // _PROGINFO_H
