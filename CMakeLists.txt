@@ -15,6 +15,9 @@ string(TIMESTAMP BUILD_TIMESTAMP "%Y-%m-%d_%H:%M:%S")
 # Google Test Framework
 include(cmake/googletest.cmake)
 
+# Cmake Modules
+include(cmake/cmake-modules.cmake)
+
 # Application
 
 # Burn version info into app header file.
@@ -36,6 +39,14 @@ ADD_EXECUTABLE(file_filter
         file_filter.cc
         ${lib_HDRS})
 TARGET_LINK_LIBRARIES(file_filter mylib)
+
+include(CppCheckTargets)
+add_cppcheck(${PROJECT_NAME} UNUSED_FUNCTIONS STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
+add_cppcheck(file_filter UNUSED_FUNCTIONS STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
+
+# Enable Address Sanitizer in Debug builds
+string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address")
+string(APPEND CMAKE_LINKER_FLAGS_DEBUG " -fsanitize=address")
 
 # Testing
 
