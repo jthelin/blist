@@ -10,7 +10,7 @@ bool TraceEntryExit::logEntryExits = false;
 /** Log function entry message. */
 #define TRACE_ENTER(class_name, function_name, args)                                                                   \
   {                                                                                                                    \
-    std::clog << EntryPrefix << (class_name) << "::" << (function_name);                                               \
+    std::clog << EntryPrefix.data() << (class_name) << "::" << (function_name);                                        \
     if (!(args).empty()) {                                                                                             \
       std::clog << " - " << (args);                                                                                    \
     }                                                                                                                  \
@@ -20,7 +20,7 @@ bool TraceEntryExit::logEntryExits = false;
 /** Log function exit message. */
 #define TRACE_EXIT(class_name, function_name, args)                                                                    \
   {                                                                                                                    \
-    std::clog << Exit_Prefix << (class_name) << "::" << (function_name);                                               \
+    std::clog << Exit_Prefix.data() << (class_name) << "::" << (function_name);                                        \
     if (!(args).empty()) {                                                                                             \
       std::clog << " - " << (args);                                                                                    \
     }                                                                                                                  \
