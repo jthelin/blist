@@ -6,6 +6,7 @@
 
 #include "File.h"
 
+#include <cassert>
 #include <fstream>
 #include <sstream>
 
