@@ -43,7 +43,7 @@ public:
   static std::string basename(const std::string& file_path);
   static std::string dirname(const std::string& file_path);
 
-  static std::string_view DirSeparator()
+  static std::string DirSeparator()
   {
 #if defined(_WIN32)
     // Windows
