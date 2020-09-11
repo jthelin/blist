@@ -1,5 +1,4 @@
-#ifndef _UTILMSG_H
-#define _UTILMSG_H
+#pragma once
 
 /*  UTILMSG.H  */
 
@@ -48,5 +47,3 @@ extern void* xrealloc(void* old, unsigned int size);
 /************************************************************************/
 
 extern std::string concat(char* s1, char* s2, char* s3);
-
-#endif

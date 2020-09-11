@@ -1,5 +1,4 @@
-#ifndef _BLIST_VERSION_H
-#define _BLIST_VERSION_H
+#pragma once
 
 #include <string>
 
@@ -14,5 +13,3 @@ std::string ProgInfo::Author        = "J.Thelin";
 std::string ProgInfo::Version       = "@PROJECT_VERSION@";
 std::string ProgInfo::ReleaseDate   = "@BUILD_DATE@";
 std::string ProgInfo::ReleaseStatus = "";
-
-#endif // _BLIST_VERSION_H

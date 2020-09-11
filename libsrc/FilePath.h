@@ -1,5 +1,4 @@
-#ifndef FILE_PATH_h
-#define FILE_PATH_h
+#pragma once
 
 #include <string>
 
@@ -67,5 +66,3 @@ public:
     return s;
   };
 };
-
-#endif // FILE_PATH_h

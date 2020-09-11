@@ -1,5 +1,4 @@
-#ifndef _FILEUTIL_H
-#define _FILEUTIL_H
+#pragma once
 
 #include <cstring>
 
@@ -54,5 +53,3 @@ public:
 #endif
   }
 };
-
-#endif // _FILEUTIL_H

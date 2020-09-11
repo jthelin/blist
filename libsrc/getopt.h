@@ -1,5 +1,4 @@
-#ifndef _GETOPT_H
-#define _GETOPT_H
+#pragma once
 
 extern int opterr, /* if error message should be printed */
   optind,          /* index into parent argv vector */
@@ -13,5 +12,3 @@ extern char* optarg; /* argument associated with option */
 *      Parse argc/argv argument vector.
 */
 extern int getopt(int nargc, char* const nargv[], const char* ostr);
-
-#endif // _GETOPT_H

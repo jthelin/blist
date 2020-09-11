@@ -1,5 +1,4 @@
-#ifndef FILE_h
-#define FILE_h
+#pragma once
 
 // Contents ----------------------------------------------------------------
 //
@@ -189,5 +188,3 @@ Date          | Name  | Description
 02-May-96       NJT     v1.2 - Removed all file iterator functionality from class File.
                                Class FileIterator is not working properly yet.
 ******************************************************************************/
-
-#endif // FILE_h

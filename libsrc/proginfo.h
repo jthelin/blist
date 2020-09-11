@@ -1,5 +1,4 @@
-#ifndef _PROGINFO_H
-#define _PROGINFO_H
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -55,5 +54,3 @@ inline std::ostream& ProgramSignOn()
   return ModuleSignOn(
     ProgInfo::Name, ProgInfo::Version, ProgInfo::ReleaseStatus, ProgInfo::Author, ProgInfo::ReleaseDate);
 }
-
-#endif // _PROGINFO_H

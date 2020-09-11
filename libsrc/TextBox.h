@@ -1,5 +1,4 @@
-#ifndef _TEXTBOX_H
-#define _TEXTBOX_H
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -72,5 +71,3 @@ Date          | Name  | Description
 25-Apr-96       NJT     v1.1 - Initial UNIX version under SCCS control.
 07-May-96       NJT     v1.2 - Moved box_style enum into class TextBox.
 ******************************************************************************/
-
-#endif // _TEXTBOX_H
