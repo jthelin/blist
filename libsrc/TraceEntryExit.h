@@ -1,5 +1,4 @@
-#ifndef TRACE_ENTRY_EXIT_H
-#define TRACE_ENTRY_EXIT_H
+#pragma once
 
 #include <string>
 
@@ -102,5 +101,3 @@ public:
 
   static bool SetLogging(bool new_trace_level);
 };
-
-#endif //TRACE_ENTRY_EXIT_H

@@ -1,5 +1,4 @@
-#ifndef _FILTER_H
-#define _FILTER_H
+#pragma once
 
 #ifndef __cplusplus
 #error Requires C++ for use of these facilities
@@ -94,7 +93,7 @@ protected:
   static constexpr int  MAX_LINE_SIZE = 1024;
   std::istream&         is;
   std::ostream&         os;
-  char                  buff[MAX_LINE_SIZE + 1];
+  char                  buff[MAX_LINE_SIZE + 1]{};
   bool                  bWriteOutput;
 
 public:
@@ -166,5 +165,3 @@ Date          | Name  | Description
 				action on each line / char but not produce any 
 				output until the end of processing.
 *******************************************************************************/
-
-#endif // _FILTER_H

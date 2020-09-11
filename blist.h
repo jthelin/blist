@@ -1,5 +1,4 @@
-#ifndef _BLIST_H
-#define _BLIST_H
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -34,5 +33,3 @@ inline std::ostream& FF(std::ostream& s)
 {
   return (s.put('\f'));
 }
-
-#endif // _BLIST_H

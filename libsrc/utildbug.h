@@ -1,5 +1,4 @@
-#ifndef _UTILDBUG_H
-#define _UTILDBUG_H
+#pragma once
 
 // Contents ----------------------------------------------------------------
 //
@@ -116,5 +115,3 @@ Date          | Name  | Description
 04-Sep-96       NJT     v2.2 - Moved TraceEntryExit ctor/dtor from inline to .C
                                file as it does not cope well with cfront inlining.
 ******************************************************************************/
-
-#endif /* _UTILDBUG_H */
