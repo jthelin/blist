@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-BLD_DIR=build
+CMD_DIR=$(dirname "$0")
 
-pushd "${BLD_DIR}" || return
+BLD_DIR=${CMD_DIR}/cmake-build
+
+pushd "${BLD_DIR}" || exit 1
 
 ctest --output-on-failure "$@"

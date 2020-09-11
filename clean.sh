@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
-BLD_DIR=build
+CMD_DIR=$(dirname "$0")
+
+BLD_DIR=${CMD_DIR}/cmake-build
 
 rm -fR "${BLD_DIR}"
