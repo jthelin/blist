@@ -1,11 +1,15 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.16)
-SET(CMAKE_CXX_STANDARD 17)
 
 PROJECT(blist
         VERSION 2.1.0
         DESCRIPTION "Bulk list contents of text file(s) to stdout (for redirection), preceded by a header block with file info"
+        HOMEPAGE_URL "https://github.com/jthelin/blist"
+        LANGUAGES CXX
         )
-## HOMEPAGE_URL "https://github.com/jthelin/blist"
+set(PROJECT_AUTHOR "J.Thelin")
+set(PROJECT_STATUS "")
+
+SET(CMAKE_CXX_STANDARD 17)
 
 set(LIB_NAME ${PROJECT_NAME}_lib)
 
@@ -47,8 +51,10 @@ add_cppcheck(${PROJECT_NAME} UNUSED_FUNCTIONS STYLE POSSIBLE_ERROR FAIL_ON_WARNI
 add_cppcheck(file_filter UNUSED_FUNCTIONS STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
 
 # Enable Address Sanitizer in Debug builds
-string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address")
-string(APPEND CMAKE_LINKER_FLAGS_DEBUG " -fsanitize=address")
+if (NOT(WIN32))
+    string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address")
+    string(APPEND CMAKE_LINKER_FLAGS_DEBUG " -fsanitize=address")
+endif()
 
 # Testing
 

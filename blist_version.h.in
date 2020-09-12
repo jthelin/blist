@@ -8,9 +8,10 @@
 #pragma comment(compiler)
 
 [[maybe_unused]] static const ProgInfo PROGRAM_INFO =
-  ProgInfo{.Name          = "blist",
-           .Desc          = "Bulk list text file contents and file info to stdout",
-           .Version       = "@PROJECT_VERSION@",
-           .Author        = "J.Thelin",
-           .ReleaseDate   = "@BUILD_DATE@",
-           .ReleaseStatus = ""};
+  ProgInfo{
+    /* .Name = */ "@PROJECT_NAME@",
+    /* .Desc = */ "@PROJECT_DESCRIPTION@",
+    /* .Version = */ "@PROJECT_VERSION@",
+    /* .Author = */ "@PROJECT_AUTHOR@",
+    /* .ReleaseDate = */ "@BUILD_DATE@",
+    /* .ReleaseStatus = */ "@PROJECT_STATUS@"};
