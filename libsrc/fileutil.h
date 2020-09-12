@@ -31,11 +31,14 @@ public:
    */
   static time_t FileCreationTimestamp(const std::filesystem::path& file_path)
   {
-    using system_clock = std::chrono::system_clock;
-
     std::filesystem::file_time_type tm = std::filesystem::last_write_time(file_path);
-    return system_clock::to_time_t(system_clock::time_point{tm.time_since_epoch()});
-    // return decltype(tm)::clock::to_time_t(tm);
+
+#if defined(__APPLE__)
+    return decltype(tm)::clock::to_time_t(tm);
+#else
+    auto time_point = std::chrono::system_clock::time_point{tm.time_since_epoch()};
+    return std::chrono::system_clock::to_time_t(time_point);
+#endif
   }
 
   /**
