@@ -40,7 +40,7 @@ public:
   [[nodiscard]] std::string ModificationDate() const;
 
   /*! FileSize - Return a File's size in bytes. */
-  [[nodiscard]] long FileSize() const { return std::filesystem::file_size(_file); }
+  [[nodiscard]] size_t FileSize() const { return std::filesystem::file_size(_file); }
 
   /*! FileInfo - Return list of strings containing the file info details. */
   [[nodiscard]] std::vector<std::string> FileInfo() const;
