@@ -4,40 +4,35 @@
 #include <string>
 #include <vector>
 
-// Description -------------------------------------------------------------
-//
-// Class: TextBox
-//	A message to be output surrounded by a box of text characters,
-//	 using a specified box character, and using a variety of box styles.
-//
-// Constructor:
-//	TextBox
-//		Stores the message to be output later in the heap.
-//
-// Destructor:
-//	~TextBox
-//
-// Stream output functions:
-//	operator <<
-//		Puts the TextBox out to the specified output stream.
-//
-// Inherited Members
-//	None.
-//
-// End ---------------------------------------------------------------------
+/*!
+ * TextBox - A message to be output surrounded by a box of text characters,
+ * using a specified box character, and using a variety of box styles.
+ */
 class TextBox {
 public:
-  enum box_style { BASIC, STANDARD, DOUBLE };
+  enum BoxStyle { BASIC, STANDARD, DOUBLE };
 
 protected:
   std::vector<std::string> _text;
   char                     _box_char;
-  box_style                _box_type;
+  BoxStyle                 _box_type;
 
 public:
-  explicit TextBox(const std::string& text, box_style box_type = STANDARD, char box_char = '*');
+  /*!
+   * Constructor for TextBox object with a single-line text message.
+   * @param text_line - The line of test to be included in this TextBox.
+   * @param box_type - The style of box outline and padding to use.
+   * @param box_char - The box outline character to use.
+   */
+  explicit TextBox(const std::string& text_line, BoxStyle box_type = STANDARD, char box_char = '*');
 
-  explicit TextBox(std::vector<std::string>  text_lines, box_style box_type = STANDARD, char box_char = '*');
+  /*!
+   * Constructor for TextBox object with a multi-line text message.
+   * @param text_lines - The lines of test to be included in this TextBox.
+   * @param box_type - The style of box outline and padding to use.
+   * @param box_char - The box outline character to use.
+   */
+  explicit TextBox(std::vector<std::string> text_lines, BoxStyle box_type = STANDARD, char box_char = '*');
 
   // Copy constructors.
   TextBox(const TextBox&) = default;
@@ -52,18 +47,12 @@ public:
   void PrintTo(std::ostream& s) const;
 
   // Stream output Function operator <<
-  friend std::ostream& operator<<(std::ostream& s, const TextBox& tb);
+  friend std::ostream& operator<<(std::ostream& s, const TextBox& tb)
+  {
+    tb.PrintTo(s);
+    return s;
+  }
 };
-
-/* Original RCS change records from DOS version: */
-/*****************************************************************************
- * $Log$
- * Revision 1.1  1996/05/07 14:29:35  njt
- * Initial revision
- *
- * Revision 1.1  91/02/09  17:50:06  njt
- * Initial revision
- ****************************************************************************/
 
 /******************************************************************************
  Change History
@@ -71,6 +60,7 @@ public:
 
 Date          | Name  | Description
 --------------+-------+-------------------------------------------------------
+09-Feb-91       NJT     v1.0 - Initial MS-DOS version.
 25-Apr-96       NJT     v1.1 - Initial UNIX version under SCCS control.
 07-May-96       NJT     v1.2 - Moved box_style enum into class TextBox.
 ******************************************************************************/

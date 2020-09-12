@@ -4,7 +4,7 @@
 
 std::string FileUtils::GetModificationDate(const std::filesystem::path& file_path)
 {
-  std::time_t timestamp = FileUtils::FileCreationTimestamp(file_path);
+  time_t timestamp = FileUtils::FileCreationTimestamp(file_path);
 
   struct tm time {
   };

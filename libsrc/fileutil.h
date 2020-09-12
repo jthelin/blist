@@ -29,7 +29,7 @@ public:
    * @param file_path - The file to be inspected.
    * @return Return creation timestamp of the specified file.
    */
-  static std::time_t FileCreationTimestamp(const std::string& file_path)
+  static time_t FileCreationTimestamp(const std::filesystem::path& file_path)
   {
     auto tm = std::filesystem::last_write_time(file_path);
     return decltype(tm)::clock::to_time_t(tm);
@@ -52,7 +52,7 @@ public:
       return "";
     }
     else {
-      return file_name.lexically_normal();
+      return file_name.lexically_normal().generic_string();
     }
   }
   static std::string dirname(const std::filesystem::path& file_path)
@@ -65,7 +65,7 @@ public:
       return ".";
     }
     else {
-      return dir_path.lexically_normal();
+      return dir_path.lexically_normal().generic_string();
     }
   }
 };

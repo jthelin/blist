@@ -13,33 +13,14 @@
 
 #include "TextBox.h"
 
-#include <cassert>
-#include <cctype>
-#include <cstdlib>
 #include <iomanip>
-#include <string>
-#include <utility>
-#include <vector>
 
-// Summary -----------------------------------------------------------------
-//
-// Constructor for TextBox object
-//	Initialise the object data & stores the text message on the heap.
-//
-// End ---------------------------------------------------------------------
-TextBox::TextBox(const std::string& text, box_style box_type, char box_char) :
-    TextBox(std::vector<std::string>{text}, box_type, box_char)
+TextBox::TextBox(const std::string& text_line, BoxStyle box_type, char box_char) :
+    TextBox(std::vector<std::string>{text_line}, box_type, box_char)
 {
 }
 
-// Summary -----------------------------------------------------------------
-//
-// Constructor for TextBox object
-//	Initialise the object data & stores the multi-line text message on
-//	 the heap.
-//
-// End ---------------------------------------------------------------------
-TextBox::TextBox(std::vector<std::string> text_lines, const box_style box_type, const char box_char) :
+TextBox::TextBox(std::vector<std::string> text_lines, const BoxStyle box_type, const char box_char) :
     _text(std::move(text_lines)), _box_type(box_type), _box_char(box_char)
 {
   if (!isprint(_box_char)) {
@@ -48,14 +29,6 @@ TextBox::TextBox(std::vector<std::string> text_lines, const box_style box_type, 
     _box_char = '*';
   }
 }
-// End TextBox constructor //
-
-// Summary -----------------------------------------------------------------
-//
-// Stream output Function operator <<
-//	Outputs the specified TextBox object to the specified output stream.
-//
-// End ---------------------------------------------------------------------
 
 void TextBox::PrintTo(std::ostream& s) const
 {
@@ -156,29 +129,13 @@ void TextBox::PrintTo(std::ostream& s) const
   }
 }
 
-std::ostream& operator<<(std::ostream& s, const TextBox& tb)
-{
-  tb.PrintTo(s);
-  return s;
-}
-
-/* Original RCS change records from DOS version: */
-/*****************************************************************************
- * $Log$
- * Revision 1.1  1996/05/07 14:29:38  njt
- * Initial revision
- *
- * Revision 1.1  91/02/09  17:46:43  njt
- * Initial revision
- *
- *****************************************************************************/
-
 /******************************************************************************
  Change History
  ==============
 
 Date          | Name  | Description
 --------------+-------+-------------------------------------------------------
+09-Feb-91       NJT     v1.0 - Initial MS-DOS version.
 25-Apr-96       NJT     v1.1 - Initial UNIX version under SCCS control.
 07-May-96       NJT     v1.2 - Moved box_style into class TextBox.
 ******************************************************************************/
