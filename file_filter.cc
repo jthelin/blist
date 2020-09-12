@@ -40,7 +40,7 @@ int filter_file(const std::filesystem::path& input_file, bool count_lines = true
   std::cerr.flush();
   std::cout.flush();
 
-  const int rc = counter->main_loop();
+  int count = counter->main_loop();
 
   std::cout.flush();
 
@@ -51,9 +51,9 @@ int filter_file(const std::filesystem::path& input_file, bool count_lines = true
     std::cout << "Read " << counter->result() << " chars from " << source << std::endl;
   }
 
-  std::cerr << "Main loop completed with rc = " << rc << std::endl;
+  std::cerr << "Main loop completed with count = " << count << std::endl;
 
-  return rc;
+  return count;
 }
 
 int file_filter_main(int argc, char** argv)
@@ -65,7 +65,9 @@ int file_filter_main(int argc, char** argv)
     input_file = argv[1];
   }
 
-  return filter_file(input_file, count_lines);
+  auto num_lines = filter_file(input_file, count_lines);
+
+  return num_lines > 0 ? 0 : num_lines;
 } // End function file_filter_main
 
 int main(int argc, char* argv[])
