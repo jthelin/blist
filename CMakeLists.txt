@@ -1,11 +1,13 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.17)
 SET(CMAKE_CXX_STANDARD 17)
 
 PROJECT(blist
-        VERSION 2.0.8
-        DESCRIPTION "Bulk list contents of text file(s) to stdout (for redirection), preceded by a header block with file info."
+        VERSION 2.1.0
+        DESCRIPTION "Bulk list contents of text file(s) to stdout (for redirection), preceded by a header block with file info"
         )
 ## HOMEPAGE_URL "https://github.com/jthelin/blist"
+
+set(LIB_NAME ${PROJECT_NAME}_lib)
 
 INCLUDE(GNUInstallDirs)
 
@@ -30,15 +32,15 @@ FILE(GLOB lib_HDRS CONFIGURE_DEPENDS "libsrc/*.h")
 
 SET(blist_SRCS blist.cc blist.h ${PROJECT_NAME}_version.h)
 
-ADD_LIBRARY(mylib STATIC ${lib_HDRS} ${lib_SRCS})
+ADD_LIBRARY(${LIB_NAME} STATIC ${lib_HDRS} ${lib_SRCS})
 
 ADD_EXECUTABLE(${PROJECT_NAME} ${blist_SRCS} ${lib_HDRS})
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} mylib)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${LIB_NAME})
 
 ADD_EXECUTABLE(file_filter
         file_filter.cc
         ${lib_HDRS})
-TARGET_LINK_LIBRARIES(file_filter mylib)
+TARGET_LINK_LIBRARIES(file_filter ${LIB_NAME})
 
 include(CppcheckTargets)
 add_cppcheck(${PROJECT_NAME} UNUSED_FUNCTIONS STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
@@ -57,7 +59,7 @@ FILE(GLOB test_SRCS CONFIGURE_DEPENDS "tests/*.cc")
 # Now simply link against gtest or gtest_main as needed.
 ADD_EXECUTABLE(blist_test ${test_SRCS} ${lib_HDRS})
 TARGET_LINK_LIBRARIES(blist_test gtest_main)
-TARGET_LINK_LIBRARIES(blist_test mylib)
+TARGET_LINK_LIBRARIES(blist_test ${LIB_NAME})
 
 ADD_TEST(run_blist_tests blist_test)
 
