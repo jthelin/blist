@@ -30,15 +30,14 @@ public:
   enum box_style { BASIC, STANDARD, DOUBLE };
 
 protected:
-  char*     text;
-  size_t    num_lines;
-  char      box_char;
-  box_style box_type;
+  std::vector<std::string> _text;
+  char                     _box_char;
+  box_style                _box_type;
 
 public:
   explicit TextBox(const std::string& text, box_style box_type = STANDARD, char box_char = '*');
 
-  explicit TextBox(const std::vector<std::string>& text_lines, box_style box_type = STANDARD, char box_char = '*');
+  explicit TextBox(std::vector<std::string>  text_lines, box_style box_type = STANDARD, char box_char = '*');
 
   // Copy constructors.
   TextBox(const TextBox&) = default;
@@ -47,8 +46,12 @@ public:
   TextBox(TextBox&&) = default;
   TextBox& operator=(TextBox&&) = default;
 
-  ~TextBox();
+  ~TextBox() = default;
 
+  // PrintTo - Outputs this TextBox object to the specified output stream.
+  void PrintTo(std::ostream& s) const;
+
+  // Stream output Function operator <<
   friend std::ostream& operator<<(std::ostream& s, const TextBox& tb);
 };
 

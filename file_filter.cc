@@ -1,5 +1,4 @@
 
-#include "libsrc/FilePath.h"
 #include "libsrc/filter.h"
 
 #include <exception>
@@ -7,26 +6,25 @@
 #include <iostream>
 #include <memory>
 
-std::string prog_name = "file_filter";
+static constexpr std::string_view prog_name = "file_filter";
 
-int file_filter_main(int argc, char** argv)
+int filter_file(const std::filesystem::path& input_file, bool count_lines = true)
 {
-  bool          count_lines = true; // Temp HACK
   std::string   source;
   std::istream* p_input_stream;
-  if (argc < 1) {
+  std::ifstream ifs;
+  if (input_file.empty()) {
     p_input_stream = &(std::cin);
     source         = "stdin stream";
   }
   else {
-    const std::string file_name = argv[1];
-    const FilePath    input_file(file_name);
-    if (!input_file.Exists()) {
-      std::cerr << prog_name << ": ERROR: Input file not found '" << input_file.FullName() << "'." << std::endl;
+    if (!std::filesystem::exists(input_file)) {
+      std::cerr << prog_name << ": ERROR: Input file not found '" << input_file.generic_string() << "'." << std::endl;
       return -1;
     }
-    p_input_stream = std::make_unique<std::ifstream>(input_file.FullName()).get();
-    source         = "file '" + input_file.FullName() + "'";
+    ifs = std::ifstream(input_file);
+    p_input_stream = &ifs;
+    source         = "file '" + input_file.generic_string() + "'";
   }
 
   std::unique_ptr<IFilter> counter;
@@ -56,22 +54,29 @@ int file_filter_main(int argc, char** argv)
 
   return rc;
 }
-// End function main
+
+int file_filter_main(int argc, char** argv)
+{
+  std::filesystem::path input_file;
+  bool                  count_lines = true; // Temp HACK
+
+  if (argc >= 1) {
+    input_file = argv[1];
+  }
+
+  return filter_file(input_file, count_lines);
+} // End function file_filter_main
 
 int main(int argc, char* argv[])
 {
   int rc = -1;
-#ifndef _LIBCPP_NO_EXCEPTIONS
   try {
-#endif
     rc = file_filter_main(argc, argv);
-#ifndef _LIBCPP_NO_EXCEPTIONS
   }
   catch (std::exception& e) {
     std::cerr << prog_name << ": ERROR:"
               << " Exception thrown during program execution."
               << " " << e.what() << std::endl;
   }
-#endif
   return rc;
-}
+} // End function main

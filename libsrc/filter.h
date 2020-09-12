@@ -4,6 +4,7 @@
 #error Requires C++ for use of these facilities
 #endif
 
+#include <array>
 #include <cstring>
 #include <iostream>
 
@@ -54,8 +55,8 @@ Adapted from The C++ Programming Language (2nd Ed), Section 13.7, Page 455-6
 class ICharStreamFilter : public IFilter {
 protected:
   std::istream& is;
-  std::ostream& os;
-  char          c = ' ';
+  std::ostream& os = std::clog;
+  char          c  = ' ';
   bool          bWriteOutput;
 
 public:
@@ -76,7 +77,7 @@ public:
 
   ICharStreamFilter(std::istream& ii, std::ostream& oo) : is(ii), os(oo), bWriteOutput(true){};
 
-  explicit ICharStreamFilter(std::istream& ii) : is(ii), os(std::clog), bWriteOutput(false){};
+  explicit ICharStreamFilter(std::istream& ii) : is(ii), bWriteOutput(false){};
 };
 // End class ICharStreamFilter
 
@@ -89,63 +90,61 @@ Adapted from The C++ Programming Language (2nd Ed), Section 13.7, Page 455-6
 *******************************************************************************/
 class ILineStreamFilter : public IFilter {
 protected:
-  static constexpr char EOL           = '\n';
-  static constexpr int  MAX_LINE_SIZE = 1024;
-  std::istream&         is;
-  std::ostream&         os;
-  char                  buff[MAX_LINE_SIZE + 1]{};
-  bool                  bWriteOutput;
+  static constexpr char               EOL           = '\n';
+  static constexpr int                MAX_LINE_SIZE = 1024;
+  std::istream&                       is;
+  std::ostream&                       os = std::clog;
+  std::array<char, MAX_LINE_SIZE + 1> buff{};
+  bool                                bWriteOutput;
 
 public:
   void compute() override = 0; // Pure virtual function - sub-class must implement.
 
   int read() override
   {
-    is.getline(buff, MAX_LINE_SIZE, EOL);
+    is.getline(buff.data(), MAX_LINE_SIZE, EOL);
     return is.good();
   };
 
   void write() override
   {
     if (bWriteOutput) {
-      os << buff << EOL;
+      os << buff.data() << EOL;
     }
   };
 
-  ILineStreamFilter(std::istream& ii, std::ostream& oo) : is(ii), os(oo)
+  ILineStreamFilter(std::istream& ii, std::ostream& oo) : is(ii), os(oo), bWriteOutput(true)
   {
-    bWriteOutput = true;
-    memset(buff, '\0', MAX_LINE_SIZE + 1);
+    std::memset(buff.data(), '\0', buff.size());
   };
 
-  explicit ILineStreamFilter(std::istream& ii) : is(ii), os(std::clog)
+  explicit ILineStreamFilter(std::istream& ii) : is(ii), bWriteOutput(false)
   {
-    bWriteOutput = false;
-    memset(buff, '\0', MAX_LINE_SIZE + 1);
+    std::memset(buff.data(), '\0', buff.size());
   };
 };
 // End class ILineStreamFilter
 
 class LineCounter : public ILineStreamFilter {
-  int num_lines;
+  int num_lines = 0;
 
 public:
   void compute() override { num_lines++; };
 
   int result() override { return num_lines; };
 
-  explicit LineCounter(std::istream& ii) : ILineStreamFilter(ii), num_lines(0) {}
+  explicit LineCounter(std::istream& ii) : ILineStreamFilter(ii) {}
 };
 
 class CharCounter : public ICharStreamFilter {
-  int num_chars;
+  int num_chars = 0;
 
 public:
   void compute() override { num_chars++; };
 
   int result() override { return num_chars; };
 
-  explicit CharCounter(std::istream& ii) : ICharStreamFilter(ii), num_chars(0) {}
+  explicit CharCounter(std::istream& ii) : ICharStreamFilter(ii) {}
 };
 
 /*******************************************************************************

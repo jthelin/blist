@@ -75,23 +75,6 @@ public:
   TraceEntryExit(std::string class_name, std::string function_name, std::string arguments, bool always_log = false);
 
   /**
-   * Constructor: TraceEntryExit
-   * @param class_name - Class name.
-   * @param function_name - Function name.
-   * @param always_log - Override the logEntryExists flag for this trace object.
-   */
-  TraceEntryExit(const char* class_name, const char* function_name, bool always_log = false);
-
-  /**
-   * Constructor: TraceEntryExit
-   * @param class_name - Class name.
-   * @param function_name - Function name.
-   * @param arguments - Function arguments info, if any.
-   * @param always_log - Override the logEntryExists flag for this trace object.
-   */
-  TraceEntryExit(const char* class_name, const char* function_name, const char* arguments, bool always_log = false);
-
-  /**
    * Destructor: ~TraceEntryExit
    * Destroys the object,
    *  and may or may not display the exit message,

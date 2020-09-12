@@ -7,25 +7,21 @@
 
 #include <fstream>
 
-#include "../libsrc/FilePath.h"
+#include "../libsrc/File.h"
 #include "../libsrc/TraceEntryExit.h"
 #include "../libsrc/filter.h"
-#include "../libsrc/proginfo.h"
 
-class file_filter_tests : public ::testing::Test {
-public:
-  file_filter_tests() { ProgInfo::Name = "file_filter_tests"; }
-};
+static const std::string prog_name = "file_filter_tests";
 
 TEST(file_filter_tests, ReadLines)
 {
-  TraceEntryExit t("file_filter_tests", "ReadLines", true);
+  TraceEntryExit t(prog_name, "ReadLines", true);
 
-  FilePath file("cmake_install.cmake");
-  EXPECT_TRUE(file.Exists()) << file.to_string() << " should exist.";
+  auto file = File("cmake_install.cmake");
+  EXPECT_TRUE(file.Exists()) << file.FullName() << " should exist.";
 
-  auto file_reader = std::make_unique<std::ifstream>(file.FullName());
-  auto counter     = std::make_unique<LineCounter>(*file_reader);
+  auto file_reader = std::ifstream(file.FullName());
+  auto counter     = std::make_unique<LineCounter>(file_reader);
 
   int rc = counter->main_loop();
 
@@ -37,13 +33,13 @@ TEST(file_filter_tests, ReadLines)
 
 TEST(file_filter_tests, ReadChars)
 {
-  TraceEntryExit t("file_filter_tests", "ReadChars", true);
+  TraceEntryExit t(prog_name, "ReadChars", true);
 
-  FilePath file("cmake_install.cmake");
-  EXPECT_TRUE(file.Exists()) << file.to_string() << " should exist.";
+  auto file = File("cmake_install.cmake");
+  EXPECT_TRUE(file.Exists()) << file.FullName() << " should exist.";
 
-  auto file_reader = std::make_unique<std::ifstream>(file.FullName());
-  auto counter     = std::make_unique<CharCounter>(*file_reader);
+  auto file_reader = std::ifstream(file.FullName());
+  auto counter     = std::make_unique<CharCounter>(file_reader);
 
   int rc = counter->main_loop();
 

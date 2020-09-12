@@ -46,35 +46,15 @@ TraceEntryExit::TraceEntryExit(std::string class_name,
   }
 }
 
-TraceEntryExit::TraceEntryExit(const char* class_name, const char* function_name, bool always_log) :
-    TraceEntryExit(class_name, function_name, BLANK_STR, always_log)
-{
-}
-
-TraceEntryExit::TraceEntryExit(const char* class_name,
-                               const char* function_name,
-                               const char* arguments,
-                               bool        always_log) :
-    TraceEntryExit(*(std::make_unique<std::string>(class_name).get()),
-                   *(std::make_unique<std::string>(function_name).get()),
-                   *(std::make_unique<std::string>(arguments).get()),
-                   always_log)
-{
-}
-
 TraceEntryExit::~TraceEntryExit()
 {
   if (alwaysLog || logEntryExits) {
-#if !defined(_LIBCPP_NO_EXCEPTIONS)
     try {
-#endif
       TRACE_EXIT(this->className, this->functionName, this->args)
-#if !defined(_LIBCPP_NO_EXCEPTIONS)
     }
     catch (...) {
       std::cerr << "ERROR during TRACE_EXIT" << std::endl;
     }
-#endif
   }
 }
 

@@ -9,106 +9,61 @@
 #include "../libsrc/TextBox.h"
 #include "../libsrc/TraceEntryExit.h"
 #include "../libsrc/fileutil.h"
-#include "../libsrc/proginfo.h"
 
 #define DEBUG
 
-class lib_tests : public ::testing::Test {
-public:
-  lib_tests() { ProgInfo::Name = "lib_tests"; }
-};
+static const std::string prog_name = "file_filter_tests";
 
 TEST(lib_tests, TraceLevelOverride)
 {
-  TraceEntryExit t("lib_tests", "TraceLevelOverride", true);
+  TraceEntryExit t(prog_name, "TraceLevelOverride", true);
 
   // Begin scope #1
   {
-    auto           trace_override = TraceLevelOverride::SetLogging(true);
-    TraceEntryExit t1("lib_tests", "TraceEntryExit_test_on");
+    auto trace_override = TraceLevelOverride::SetLogging(true);
+
+    TraceEntryExit t1(prog_name, "TraceEntryExit_test_on");
   }
   // End scope #1
 
   // Begin scope #2
   {
-    auto           trace_override = TraceLevelOverride::SetLogging(false);
-    TraceEntryExit t2("lib_tests", "TraceEntryExit_test_off");
+    auto trace_override = TraceLevelOverride::SetLogging(false);
+
+    TraceEntryExit t2(prog_name, "TraceEntryExit_test_off");
   }
   // End scope #2
 }
 
-TEST(lib_tests, File)
+TEST(lib_tests, File_Exists)
 {
-  TraceEntryExit t("lib_tests", "File", true);
+  TraceEntryExit t(prog_name, "File_Exists", true);
 
-  const File none("no-file.non", false); // Non-existent file
-  EXPECT_FALSE(none.Exists()) << none.to_string() << " should not exist.";
-  std::cout << none.FName() << std::endl << none << std::endl;
+  auto file = File("no-file.non", false); // Non-existent file
+  EXPECT_FALSE(file.Exists()) << file.FullName() << " should not exist.";
+  EXPECT_FALSE(FileUtils::IsFileReadable(file.FullName())) << file.FullName() << " should be readable.";
 
-  const File file("cmake_install.cmake");
-  EXPECT_TRUE(file.Exists()) << file.to_string() << " should exist.";
+  file = File("cmake_install.cmake");
+  EXPECT_TRUE(file.Exists()) << file.FullName() << " should exist.";
+  EXPECT_TRUE(FileUtils::IsFileReadable(file.FullName())) << file.FullName() << " should be readable.";
+}
+
+TEST(lib_tests, File_PrintTo)
+{
+  TraceEntryExit t(prog_name, "File_PrintTo", true);
+
+  auto none = File("no-file.non", false); // Non-existent file
+  EXPECT_FALSE(none.Exists()) << none.FullName() << " should not exist.";
+  std::cout << none.FullName() << std::endl << none << std::endl;
+
+  auto file = File("cmake_install.cmake");
+  EXPECT_TRUE(file.Exists()) << file.FullName() << " should exist.";
   std::cout << file.FullName() << std::endl << file << std::endl;
-}
-
-TEST(lib_tests, FilePath_Exists)
-{
-  TraceEntryExit t("lib_tests", "FilePath_Exists", true);
-
-  const FilePath none("no-file.non"); // Non-existent file
-  std::cout << "none : " << none << " Exists = " << none.Exists() << std::endl;
-  EXPECT_FALSE(none.Exists()) << none.to_string() << " should not exist.";
-
-  const FilePath file("cmake_install.cmake");
-  std::cout << "file : " << file << " Exists = " << file.Exists() << std::endl;
-  EXPECT_TRUE(file.Exists()) << file.to_string() << " should exist.";
-}
-
-TEST(lib_tests, FilePath_Split)
-{
-  TraceEntryExit t("lib_tests", "FilePath_Split", true);
-
-  const auto current_dir = FileUtils::GetCurrentDirectory();
-
-  const std::string file_name = "./FileName.cc";
-
-  const auto file_path = FilePath(file_name);
-  EXPECT_EQ(file_path.FName(), "FileName.cc");
-  EXPECT_EQ(file_path.DirName(), current_dir);
-}
-
-TEST(lib_tests, FilePath_Absolute)
-{
-  TraceEntryExit t("lib_tests", "FilePath_Absolute", true);
-
-  const auto current_dir = FileUtils::GetCurrentDirectory();
-  std::cout << "Current directory = " << current_dir << std::endl;
-
-  const std::string file_name = current_dir + "/FileName.cc";
-  std::cout << "File = " << file_name << std::endl;
-
-  const auto file_path = FilePath(file_name);
-  EXPECT_EQ(file_path.FName(), "FileName.cc");
-  EXPECT_EQ(file_path.DirName(), current_dir);
-}
-
-TEST(lib_tests, FilePath_Absolute_NotFound)
-{
-  const std::string file_name = "/aa/bcdef/gg.txt";
-
-  TraceEntryExit t("lib_tests", "FilePath_Absolute_NotFound", file_name, true);
-
-  std::cout << std::endl << "File = " << file_name << std::endl;
-
-  const auto file_path = FilePath(file_name);
-  EXPECT_FALSE(file_path.Exists()) << "File " << file_path.to_string() << " should not exist.";
-
-  EXPECT_EQ(file_path.FName(), "gg.txt");
-  EXPECT_EQ(file_path.DirName(), "/aa/bcdef");
 }
 
 TEST(lib_tests, TextBox)
 {
-  TraceEntryExit t("lib_tests", "TextBox", true);
+  TraceEntryExit t(prog_name, "TextBox", true);
 
   const std::vector<std::string> multi_line = {"Multiple lines", "Line1", "Line2", "Line3", "Last Line"};
 
@@ -126,14 +81,16 @@ TEST(lib_tests, file_utils_basename)
   EXPECT_EQ(FileUtils::basename(""), "");
   EXPECT_EQ(FileUtils::basename("no_path"), "no_path");
   EXPECT_EQ(FileUtils::basename("with.ext"), "with.ext");
-  EXPECT_EQ(FileUtils::basename("/no_filename/"), "no_filename");
-  EXPECT_EQ(FileUtils::basename("no_filename/"), "no_filename");
-  EXPECT_EQ(FileUtils::basename("/no/filename/"), "filename");
+  EXPECT_EQ(FileUtils::basename("/no_filename/"), "");
+  EXPECT_EQ(FileUtils::basename("no_filename/"), "");
+  EXPECT_EQ(FileUtils::basename("/no/filename/"), "");
   EXPECT_EQ(FileUtils::basename("/absolute/file.ext"), "file.ext");
   EXPECT_EQ(FileUtils::basename("../relative/file.ext"), "file.ext");
-  EXPECT_EQ(FileUtils::basename("/"), "/");
+  EXPECT_EQ(FileUtils::basename("/"), "");
+#if defined(_WIN32)
   EXPECT_EQ(FileUtils::basename("c:\\windows\\path.ext"), "path.ext");
   EXPECT_EQ(FileUtils::basename("c:\\windows\\no_filename\\"), "no_filename");
+#endif
 }
 
 TEST(lib_tests, file_utils_dirname)
@@ -141,14 +98,16 @@ TEST(lib_tests, file_utils_dirname)
   EXPECT_EQ(FileUtils::dirname(""), ".");
   EXPECT_EQ(FileUtils::dirname("no_path"), ".");
   EXPECT_EQ(FileUtils::dirname("with.ext"), ".");
-  EXPECT_EQ(FileUtils::dirname("/no_filename/"), "/no_filename");
-  EXPECT_EQ(FileUtils::dirname("no_filename/"), "no_filename");
-  EXPECT_EQ(FileUtils::dirname("/no/filename/"), "/no/filename");
-  EXPECT_EQ(FileUtils::dirname("/absolute/file.ext"), "/absolute");
-  EXPECT_EQ(FileUtils::dirname("../relative/file.ext"), "../relative");
+  EXPECT_EQ(FileUtils::dirname("/no_filename/"), "/no_filename/");
+  EXPECT_EQ(FileUtils::dirname("no_filename/"), "no_filename/");
+  EXPECT_EQ(FileUtils::dirname("/no/filename/"), "/no/filename/");
+  EXPECT_EQ(FileUtils::dirname("/absolute/file.ext"), "/absolute/");
+  EXPECT_EQ(FileUtils::dirname("../relative/file.ext"), "../relative/");
   EXPECT_EQ(FileUtils::dirname("/"), "/");
+#if defined(_WIN32)
   EXPECT_EQ(FileUtils::dirname("c:\\windows\\path.ext"), "c:\\windows");
   EXPECT_EQ(FileUtils::dirname("c:\\windows\\no_filename\\"), "c:\\windows\\no_filename");
+#endif
 }
 
 #if defined(__clang__)

@@ -7,52 +7,27 @@
 //
 // End ---------------------------------------------------------------------
 
-#include "FilePath.h"
+#include <filesystem>
 #include <iostream>
 #include <string>
 #include <vector>
 
-// Description -------------------------------------------------------------
-//
-// Class File
-// ==========
-//
-//	An object representing a DOS (text) file, including its contents.
-//
-// Constructor: File
-//	Creates an object representing the file with the specified (path) name.
-//	No failure or warning messages will be logged if the file does not
-//	 actually exist if log_failures is false.
-//
-// Destructor: ~File
-//
-// Member functions:
-//	printOn
-//		Print the contents of this file on the specified output stream.
-//	ModificationDate
-//	FileSize
-//
-// Stream output functions:
-//	operator <<
-//		Puts the File contents out to the specified output stream.
-//
-// Inherited Members:
-//	<from FilePath>
-//
-// Private Members:
-//	None
-//
-// Protected Members:
-//	istrm
-//		The input file stream connected to this file.
-//
-// End ---------------------------------------------------------------------
-
-class File : public FilePath {
+/*!
+ * An object representing a DOS (text) file, including its contents.
+ */
+class File {
 public:
-  explicit File(const std::string& filename, bool log_failures = true);
+  /*!
+   * Constructor - Creates an object representing the file with the specified (path) name.
+   * @param file_path - The location of the file on disk.
+   * @param log_failures - If false. then no failure or warning messages will be logged if the file does not exist.
+   */
+  explicit File(const std::string& file_path, bool log_failures = true);
 
-  ~File() override;
+  /*!
+   * Destructor for File object
+   */
+  ~File();
 
   // Copy constructors for File object.
   File(const File&) = default;
@@ -61,19 +36,36 @@ public:
   File(File&&)  = default;
   File& operator=(File&&) = default;
 
-  virtual void PrintOn(std::ostream& s);
-
+  /*! ModificationDate - Return a string containing the modification date of a File. */
   [[nodiscard]] std::string ModificationDate() const;
 
-  [[nodiscard]] long FileSize() const;
+  /*! FileSize - Return a File's size in bytes. */
+  [[nodiscard]] long FileSize() const { return std::filesystem::file_size(_file); }
 
+  /*! FileInfo - Return list of strings containing the file info details. */
   [[nodiscard]] std::vector<std::string> FileInfo() const;
 
+  /*! Return true if this file exists on disk. */
+  [[nodiscard]] bool Exists() const
+  {
+    return std::filesystem::exists(_file) && std::filesystem::is_regular_file(_file);
+  }
+
+  /*! Return the full path name of this file. */
+  [[nodiscard]] std::string FullName() const { return _file.generic_string(); }
+
+  /*! PrintTo - Outputs the contents of the file to the specified output stream. */
+  virtual void PrintTo(std::ostream& s);
+
+  /*! Puts the File contents out to the specified output stream. */
   friend std::ostream& operator<<(std::ostream& s, File f)
   {
-    f.PrintOn(s);
+    f.PrintTo(s);
     return s;
   };
+
+private:
+  std::filesystem::path _file;
 };
 
 // Description -------------------------------------------------------------

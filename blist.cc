@@ -19,7 +19,7 @@
  */
 void ShowUsage()
 {
-  std::cerr << "Usage: " << ProgInfo::Name << " [-t tab_size]"
+  std::cerr << "Usage: " << PROGRAM_INFO.Name << " [-t tab_size]"
             << " [-F]"
             << " [-D]"
             << " files ......" << std::endl;
@@ -41,7 +41,7 @@ void ShowUsage()
  */
 bool ParseArguments(int argc, char* const* argv, blist_params& params)
 {
-  const std::string& ProgName = ProgInfo::Name;
+  const std::string& ProgName = PROGRAM_INFO.Name;
 
   // Check arguments
   int arg_error_count = 0;
@@ -111,7 +111,7 @@ void ProcessFile(File& f, const blist_params& params, std::ostream& out = std::c
   out << NL; // Blank line
 
   // Output file contents
-  f.PrintOn(out);
+  f.PrintTo(out);
 
   if (params.useFormFeed) {
     out << FF; // Start new page
@@ -128,9 +128,7 @@ void ProcessFile(File& f, const blist_params& params, std::ostream& out = std::c
 int blist_main(int argc, char** argv)
 {
   // Sign-on message
-  auto& announce = ProgramSignOn();
-  announce << ProgInfo::Name << " - " << ProgInfo::Desc << std::endl << std::endl;
-  announce.flush();
+  ProgramSignOn(PROGRAM_INFO, true);
 
   // Parameter values
   blist_params params{};
@@ -147,7 +145,7 @@ int blist_main(int argc, char** argv)
       std::cerr << "Processing file '" << file_name << "'\n";
     }
 
-    File f(file_name, true /* log_failures */);
+    auto f = File(file_name, true /* log_failures */);
 
     if (f.Exists()) {
       // List this file

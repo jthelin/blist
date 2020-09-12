@@ -12,17 +12,13 @@ int IFilter::main_loop()
 
   for (;;) // Loop forever, until breakout condition is hit.
   {
-#if !defined(_LIBCPP_NO_EXCEPTIONS)
     try {
-#endif
       p->start();
       while (p->read()) {
         p->compute();
         p->write();
       }
       return p->result(); // Exit loop
-
-#if !defined(_LIBCPP_NO_EXCEPTIONS)
     }
     catch (IFilter::ERetry& m) {
       std::cerr << m.message() << std::endl;
@@ -35,8 +31,7 @@ int IFilter::main_loop()
       std::cerr << "ERROR: Fatal filter error" << std::endl;
       return -10; // Exit loop
     }
-#endif
-
   } // End forever loop
-    // Not reached.
+
+  // Not reached.
 }

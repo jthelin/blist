@@ -1,14 +1,9 @@
-// Contents ----------------------------------------------------------------
-//
-//	Contains the implementation for the File class
-//
-// End ---------------------------------------------------------------------
-
 #include "File.h"
 
 #include <cassert>
 #include <fstream>
 #include <sstream>
+#include <utility>
 
 #include "TraceEntryExit.h"
 #include "fileutil.h"
@@ -16,75 +11,37 @@
 
 class FilePrinter : public ILineStreamFilter {
 public:
-  FilePrinter(std::ifstream& ii, std::ostream& oo) : ILineStreamFilter(ii, oo) {}
+  FilePrinter(std::istream& ii, std::ostream& oo) :
+      ILineStreamFilter(ii, oo)
+  {
+  }
 
   void compute() override{/* pass through */};
 };
-// End class FilePrinter
 
-// Summary -----------------------------------------------------------------
-//
-// Constructor for File object
-//	No failure or warning messages will be logged if the file does not
-//	exist if log_failures is false.
-//
-// End ---------------------------------------------------------------------
-File::File(const std::string& filename, bool log_failures) : FilePath(filename)
+File::File(const std::string& file_path, bool log_failures) : _file(std::filesystem::path(file_path))
 {
-  TraceEntryExit t("File", "<constructor>", filename);
+  TraceEntryExit t("File", "<constructor>", _file.generic_string());
 
-  if (!Exists()) {
+  if (!std::filesystem::exists(_file)) {
     // File does not exist
     if (log_failures) {
       std::cerr << "**** ERROR:"
-                << " File " << filename << " does not exist." << std::endl;
+                << " File " << file_path << " does not exist." << std::endl;
     }
   }
 }
-// End File constructor //
 
-// Summary -----------------------------------------------------------------
-//
-// Destructor for File object
-//	Closes the input stream if it is open.
-//
-// End ---------------------------------------------------------------------
 File::~File()
 {
-  TraceEntryExit t("File", "<destructor>", this->FullName());
+  TraceEntryExit t("File", "<destructor>", _file.generic_string());
 }
-// End File Destructor //
 
-// Summary -----------------------------------------------------------------
-//
-// Member Function ModificationDate
-//	Return a string containing the modification date of a File.
-//
-// End ---------------------------------------------------------------------
 std::string File::ModificationDate() const
 {
-  return FileUtils::GetModificationDate(this->FullName());
+  return FileUtils::GetModificationDate(_file);
 }
-// End Member function ModificationDate
 
-// Summary -----------------------------------------------------------------
-//
-// Member Function FileSize
-//	Return a File's size in bytes.
-//
-// End ---------------------------------------------------------------------
-long File::FileSize() const
-{
-  return FileUtils::FileSize(this->FullName());
-}
-// End Member function Size
-
-// Summary -----------------------------------------------------------------
-//
-// Member Function FileInfo
-//	Return a (static) string array of file info details
-//
-// End ---------------------------------------------------------------------
 std::vector<std::string> File::FileInfo() const
 {
   auto file_info = std::vector<std::string>();
@@ -103,31 +60,23 @@ std::vector<std::string> File::FileInfo() const
 
   return file_info;
 }
-// End Member function FileInfo
 
-// Summary -----------------------------------------------------------------
-//
-// Member Function PrintOn
-//       Outputs the file to the specified output stream.
-//
-// End ---------------------------------------------------------------------
-void File::PrintOn(std::ostream& s)
+void File::PrintTo(std::ostream& s)
 {
-  TraceEntryExit t("File", "PrintOn");
+  TraceEntryExit t("File", "PrintTo", _file.generic_string());
 
   assert(s); // Output stream should always be open
 
   if (this->Exists()) {
     // Copy file contents to output stream
-    std::ifstream file_reader(this->FullName());
-    FilePrinter   pr(file_reader, s);
-    pr.main_loop(); /* Iterate */
+    auto file_reader  = std::ifstream(_file);
+    auto file_printer = FilePrinter(file_reader, s);
+    file_printer.main_loop(); /* Iterate */
   }
   else {
     std::cerr << "File " << this->FullName() << " does not exist, so no output." << std::endl;
   }
 }
-// End Stream output Function operator << //
 
 /* Original RCS change records from DOS version: */
 /*****************************************************************************
