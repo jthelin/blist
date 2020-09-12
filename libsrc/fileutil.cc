@@ -10,7 +10,7 @@ std::string FileUtils::GetModificationDate(const std::filesystem::path& file_pat
   };
   char time_str[26];
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER)
   localtime_s(&time, &timestamp);
   asctime_s(time_str, sizeof time_str, &time);
 #else
@@ -25,7 +25,7 @@ std::string FileUtils::GetModificationDate(const std::filesystem::path& file_pat
     }
   }
   auto modTime = std::string(time_str);
-#ifdef EXTRA_DEBUG
+#if defined(EXTRA_DEBUG)
   std::cerr << "[" << modTime << "]"
             << " c='" << modTime[modTime.length() - 1] << "'"
             << " len = " << modTime.length() << std::endl;
