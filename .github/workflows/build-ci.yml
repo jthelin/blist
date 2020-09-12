@@ -22,9 +22,9 @@ jobs:
       - name: cmake version
         run: |
           cmake --version
-          gcc --version
-          clang-9 --version
-          clang-10 --version
+          which gcc && echo gcc && gcc --version
+          which clang-9 && echo clang-9 && clang-9 --version
+          which clang-10 && echo clang-10 && clang-10 --version
           c++ --version
       - name: List build files
         run: |
