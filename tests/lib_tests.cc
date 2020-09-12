@@ -89,7 +89,7 @@ TEST(lib_tests, file_utils_basename)
   EXPECT_EQ(FileUtils::basename("/"), "");
 #if defined(_WIN32)
   EXPECT_EQ(FileUtils::basename("c:\\windows\\path.ext"), "path.ext");
-  EXPECT_EQ(FileUtils::basename("c:\\windows\\no_filename\\"), "no_filename");
+  EXPECT_EQ(FileUtils::basename("c:\\windows\\no_filename\\"), "");
 #endif
 }
 
@@ -105,8 +105,8 @@ TEST(lib_tests, file_utils_dirname)
   EXPECT_EQ(FileUtils::dirname("../relative/file.ext"), "../relative/");
   EXPECT_EQ(FileUtils::dirname("/"), "/");
 #if defined(_WIN32)
-  EXPECT_EQ(FileUtils::dirname("c:\\windows\\path.ext"), "c:\\windows");
-  EXPECT_EQ(FileUtils::dirname("c:\\windows\\no_filename\\"), "c:\\windows\\no_filename");
+  EXPECT_EQ(FileUtils::dirname("c:\\windows\\path.ext"), "c:/windows/");
+  EXPECT_EQ(FileUtils::dirname("c:\\windows\\no_filename\\"), "c:/windows/no_filename/");
 #endif
 }
 
