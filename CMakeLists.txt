@@ -60,14 +60,16 @@ endif()
 
 ENABLE_TESTING()
 
+set(TEST_EXE ${PROJECT_NAME}_test)
+
 FILE(GLOB test_SRCS CONFIGURE_DEPENDS "tests/*.cc")
 
 # Now simply link against gtest or gtest_main as needed.
-ADD_EXECUTABLE(blist_test ${test_SRCS} ${lib_HDRS})
-TARGET_LINK_LIBRARIES(blist_test gtest_main)
-TARGET_LINK_LIBRARIES(blist_test ${LIB_NAME})
+ADD_EXECUTABLE(${TEST_EXE} ${test_SRCS} ${lib_HDRS})
+TARGET_LINK_LIBRARIES(${TEST_EXE} gtest_main)
+TARGET_LINK_LIBRARIES(${TEST_EXE} ${LIB_NAME})
 
-ADD_TEST(run_blist_tests blist_test)
+ADD_TEST(run_blist_tests ${TEST_EXE})
 
 ADD_TEST(run_blist_exe blist "${PROJECT_SOURCE_DIR}/${PROJECT_NAME}_version.h")
 

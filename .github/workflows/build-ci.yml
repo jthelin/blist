@@ -5,6 +5,7 @@ on: push
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         os: [ macOS-latest, ubuntu-latest ]
 
@@ -21,8 +22,10 @@ jobs:
       - name: cmake version
         run: |
           cmake --version
-          cmake --help
           gcc --version
+          clang-9 --version
+          clang-10 --version
+          c++ --version
       - name: List build files
         run: |
           echo "Current User" && id
