@@ -1,14 +1,14 @@
 #pragma once
 
-extern int opterr, /* if error message should be printed */
-  optind,          /* index into parent argv vector */
-  optopt,          /* character checked for validity */
-  optreset;        /* reset getopt */
+extern int opt_err, /* if error message should be printed */
+  opt_ind,          /* index into parent argv vector */
+  opt_opt,          /* character checked for validity */
+  opt_reset;        /* reset getopt */
 
-extern char* optarg; /* argument associated with option */
+extern char* opt_arg; /* argument associated with option */
 
 /*
 * getopt --
 *      Parse argc/argv argument vector.
 */
-extern int getopt(int nargc, char* const nargv[], const char* ostr);
+extern int getopt(int argc, char* const argv[], const char* ostr);

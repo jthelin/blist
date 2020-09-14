@@ -46,7 +46,6 @@ class TraceEntryExit {
   bool alwaysLog = false;
 
 public:
-  constexpr static std::string_view BLANK_STR   = "";
   constexpr static std::string_view EntryPrefix = ">>>> Enter ";
   constexpr static std::string_view Exit_Prefix = "<<<< Exit_ ";
 

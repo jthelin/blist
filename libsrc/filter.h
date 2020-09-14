@@ -75,7 +75,7 @@ public:
     }
   };
 
-  ICharStreamFilter(std::istream& ii, std::ostream& oo) : is(ii), os(oo), bWriteOutput(true){};
+  [[maybe_unused]] ICharStreamFilter(std::istream& ii, std::ostream& oo) : is(ii), os(oo), bWriteOutput(true){};
 
   explicit ICharStreamFilter(std::istream& ii) : is(ii), bWriteOutput(false){};
 };

@@ -1,11 +1,8 @@
 
 #include "libsrc/filter.h"
 
-#include <exception>
 #include <filesystem>
 #include <fstream>
-#include <iostream>
-#include <memory>
 
 static constexpr std::string_view prog_name = "file_filter";
 

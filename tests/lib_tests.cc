@@ -10,8 +10,6 @@
 #include "../libsrc/TraceEntryExit.h"
 #include "../libsrc/fileutil.h"
 
-#define DEBUG
-
 static const std::string prog_name = "file_filter_tests";
 
 TEST(lib_tests, TraceLevelOverride)

@@ -4,7 +4,6 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <string>
 
 #include "libsrc/File.h"
 #include "libsrc/TextBox.h"
@@ -55,7 +54,7 @@ bool ParseArguments(int argc, char* const* argv, blist_params& params)
     switch (c) {
     case 't':
       /* Tab size */
-      params.tab_size = atoi(optarg);
+      params.tab_size = atoi(opt_arg);
       std::cerr << ProgName << ":"
                 << " Tab size set to " << params.tab_size << std::endl;
       break;
@@ -80,7 +79,7 @@ bool ParseArguments(int argc, char* const* argv, blist_params& params)
   }
 
   // Gather file names
-  for (auto i = optind; i < argc; i++) {
+  for (auto i = opt_ind; i < argc; i++) {
     char* file_name = argv[i];
     if (params._debug) {
       std::cerr << "File argument '" << file_name << "'\n";
