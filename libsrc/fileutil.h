@@ -1,6 +1,9 @@
 #pragma once
 
-#include <cstring>
+#include <chrono>
+#include <ctime>
+#include <filesystem>
+#include <string>
 
 /**
  * Standalone, low-level file utilities.
@@ -12,44 +15,63 @@ public:
    * @param file_path - The file to be inspected.
    * @return Return TRUE if specified file exists and is readable.
    */
-  static bool IsFileReadable(const std::string& file_path);
-
-  /**
-   * Function: FileSize
-   * @param file_path - The file to be inspected.
-   * @return Return size of specified file (in bytes)
-   */
-  static long FileSize(const std::string& file_path);
+  static bool IsFileReadable(const std::filesystem::path& file_path)
+  {
+    if (!std::filesystem::exists(file_path)) {
+      return false;
+    }
+    auto status = std::filesystem::status(file_path);
+    return (status.permissions() & std::filesystem::perms::owner_read) != std::filesystem::perms::none;
+  }
 
   /**
    * Function: FileCreationTimestamp
    * @param file_path - The file to be inspected.
    * @return Return creation timestamp of the specified file.
    */
-  static time_t FileCreationTimestamp(const std::string& file_path);
-
-  /**
-   * Return a string containing the modification date of a File.
-   */
-  static std::string GetModificationDate(const std::string& file_path);
-
-  /**
- * Find the current working directory.
- * @return Current directory.
- */
-  static std::string GetCurrentDirectory();
-
-  static std::string basename(const std::string& file_path);
-  static std::string dirname(const std::string& file_path);
-
-  static std::string DirSeparator()
+  static time_t FileCreationTimestamp(const std::filesystem::path& file_path)
   {
-#if defined(_WIN32)
-    // Windows
-    return "\\";
+    std::filesystem::file_time_type tm = std::filesystem::last_write_time(file_path);
+
+#if defined(__APPLE__)
+    return decltype(tm)::clock::to_time_t(tm);
 #else
-    // Linux / UNIX / MacOS
-    return "/";
+    auto time_point = std::chrono::system_clock::time_point{tm.time_since_epoch()};
+    return std::chrono::system_clock::to_time_t(time_point);
 #endif
+  }
+
+  /**
+   * Get a printable string containing the modification date of a file.
+   * @param file_path - The file to be inspected.
+   * @return Return a string containing the modification date of a file.
+   */
+  static std::string GetModificationDate(const std::filesystem::path& file_path);
+
+  static std::string basename(const std::filesystem::path& file_path)
+  {
+    std::filesystem::path file_name;
+    if (!file_path.empty()) {
+      file_name = file_path.filename();
+    }
+    if (file_name.empty()) {
+      return "";
+    }
+    else {
+      return file_name.lexically_normal().generic_string();
+    }
+  }
+  static std::string dirname(const std::filesystem::path& file_path)
+  {
+    std::filesystem::path dir_path;
+    if (!file_path.empty()) {
+      dir_path = std::filesystem::path{file_path}.remove_filename();
+    }
+    if (dir_path.empty()) {
+      return ".";
+    }
+    else {
+      return dir_path.lexically_normal().generic_string();
+    }
   }
 };

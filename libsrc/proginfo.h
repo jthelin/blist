@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <sstream>
 #include <string>
 
 /*******************************************************************************
@@ -21,36 +22,59 @@
  * Program Information variables to be defined in the main program module.
  */
 struct ProgInfo {
-  static std::string Name;          /* Program Name */
-  static std::string Desc;          /* Program Description */
-  static std::string Version;       /* Program Version */
-  static std::string Author;        /* Program Author */
-  static std::string ReleaseDate;   /* Program Release Date */
-  static std::string ReleaseStatus; /* Program Release Status eg. Beta, Released */
+  std::string Name;          /* Program Name */
+  std::string Desc;          /* Program Description */
+  std::string Version;       /* Program Version */
+  std::string Author;        /* Program Author */
+  std::string ReleaseDate;   /* Program Release Date */
+  std::string ReleaseStatus; /* Program Release Status eg. Beta, Released */
 };
 
 /**
- * Output sign-on message to stderr, based on the contents of the parameters.
+ * ModuleSignOn - Output sign-on message to stderr, based on the contents of the parameters.
  * @param progName - Program name.
  * @param progVer - Program version.
  * @param progReleaseStatus - Program release status. (Optional)
  * @param progAuthor - Program author. (Optional)
  * @param progDate - Program date stamp. (Optional)
  */
-extern std::ostream& ModuleSignOn(const std::string& progName,
+inline std::ostream& ModuleSignOn(const std::string& progName,
                                   const std::string& progVer,
                                   const std::string& progReleaseStatus = nullptr,
                                   const std::string& progAuthor        = nullptr,
-                                  const std::string& progDate          = nullptr);
+                                  const std::string& progDate          = nullptr)
+{
+  std::stringstream out;
+
+  out << progName << " v" << progVer;
+
+  if (!progReleaseStatus.empty()) {
+    out << ".[" << progReleaseStatus << "]";
+  }
+  if (!progAuthor.empty()) {
+    out << " (" << progAuthor << ")";
+  }
+  if (!progDate.empty()) {
+    out << " " << progDate;
+  }
+
+  return std::cerr << out.str() << std::endl;
+}
 
 /**
- * Function:	ProgramSignOn
- * Output sign-on message for the program, based on the contents of the variables:
+ * ProgramSignOn - Output sign-on message for the program, based on the contents of the variables:
  * ProgName, ProgVer, ProgReleaseStatus, ProgAuthor, and ProgDate,
  * which should be defined by the main program.
  */
-inline std::ostream& ProgramSignOn()
+inline std::ostream& ProgramSignOn(const ProgInfo& program_info, bool announce = false)
 {
-  return ModuleSignOn(
-    ProgInfo::Name, ProgInfo::Version, ProgInfo::ReleaseStatus, ProgInfo::Author, ProgInfo::ReleaseDate);
+  auto& out = ModuleSignOn(
+    program_info.Name, program_info.Version, program_info.ReleaseStatus, program_info.Author, program_info.ReleaseDate);
+
+  if (announce) {
+    out << program_info.Name << " - " << program_info.Desc << std::endl << std::endl;
+    out.flush();
+  }
+
+  return out;
 }

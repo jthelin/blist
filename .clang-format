@@ -34,7 +34,7 @@ FixNamespaceComments: true
 BreakBeforeBinaryOperators: NonAssignment
 SpaceAfterTemplateKeyword: false
 AlignAfterOpenBracket: Align
-AlignOperands: AlignAfterOperator
+AlignOperands: true
 BreakConstructorInitializers: AfterColon
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 SpaceAfterCStyleCast: true

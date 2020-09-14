@@ -6,7 +6,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 set(PKG cmake-modules)
 
 # Download and unpack package sources at cmake-configuration time
-configure_file(${CMAKE_CURRENT_LIST_DIR}/${PKG}-download.in ${CMAKE_CURRENT_BINARY_DIR}/${PKG}-build/CMakeLists.txt)
+configure_file(${CMAKE_CURRENT_LIST_DIR}/${PKG}.download.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${PKG}-build/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
         RESULT_VARIABLE result
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${PKG}-build)

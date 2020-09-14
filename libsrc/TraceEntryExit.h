@@ -1,8 +1,7 @@
 #pragma once
 
 #include <string>
-
-static const std::string BLANK_STR = std::string();
+#include <string_view>
 
 /**
  * Class: TraceLevelOverride
@@ -47,6 +46,7 @@ class TraceEntryExit {
   bool alwaysLog = false;
 
 public:
+  constexpr static std::string_view BLANK_STR   = "";
   constexpr static std::string_view EntryPrefix = ">>>> Enter ";
   constexpr static std::string_view Exit_Prefix = "<<<< Exit_ ";
 
@@ -73,23 +73,6 @@ public:
    * @param always_log - Override the logEntryExists flag for this trace object.
    */
   TraceEntryExit(std::string class_name, std::string function_name, std::string arguments, bool always_log = false);
-
-  /**
-   * Constructor: TraceEntryExit
-   * @param class_name - Class name.
-   * @param function_name - Function name.
-   * @param always_log - Override the logEntryExists flag for this trace object.
-   */
-  TraceEntryExit(const char* class_name, const char* function_name, bool always_log = false);
-
-  /**
-   * Constructor: TraceEntryExit
-   * @param class_name - Class name.
-   * @param function_name - Function name.
-   * @param arguments - Function arguments info, if any.
-   * @param always_log - Override the logEntryExists flag for this trace object.
-   */
-  TraceEntryExit(const char* class_name, const char* function_name, const char* arguments, bool always_log = false);
 
   /**
    * Destructor: ~TraceEntryExit

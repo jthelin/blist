@@ -6,12 +6,6 @@
 #include "gtest/gtest.h"
 
 #include "../blist.h"
-#include "../libsrc/proginfo.h"
-
-class blist_tests : public ::testing::Test {
-public:
-  blist_tests() { ProgInfo::Name = "blist_tests"; }
-};
 
 TEST(blist_tests, Params)
 {
