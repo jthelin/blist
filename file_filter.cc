@@ -16,7 +16,7 @@ static int filter_file(const std::filesystem::path& input_file, bool count_lines
     source         = "stdin stream";
   }
   else {
-    const std::string file_name = input_file.generic_string();
+    const std::string file_name = std::filesystem::absolute(input_file).lexically_normal().generic_string();
     if (!std::filesystem::exists(input_file)) {
       std::cerr << prog_name << ": ERROR: Input file not found '" << file_name << "'." << std::endl;
       return -1;
