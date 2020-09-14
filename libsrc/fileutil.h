@@ -34,6 +34,7 @@ public:
     std::filesystem::file_time_type tm = std::filesystem::last_write_time(file_path);
 
 #if defined(__APPLE__)
+    static_assert(std::is_same_v<decltype(tm)::clock, std::filesystem::_FilesystemClock>);
     return decltype(tm)::clock::to_time_t(tm);
 #else
     auto time_point = std::chrono::system_clock::time_point{tm.time_since_epoch()};

@@ -1,7 +1,6 @@
 #include "TraceEntryExit.h"
 
 #include <iostream>
-#include <utility>
 
 /*  Initialise static data members of class TraceEntryExit */
 bool TraceEntryExit::logEntryExits = false;
@@ -26,8 +25,10 @@ bool TraceEntryExit::logEntryExits = false;
     std::clog << "\n"; /* Stream flush not required, so don't use std::endl */                                         \
   }
 
+static const std::string BLANK_STR;
+
 TraceEntryExit::TraceEntryExit(const std::string& class_name, const std::string& function_name, bool always_log) :
-    TraceEntryExit(class_name, function_name, BLANK_STR.data(), always_log)
+    TraceEntryExit(class_name, function_name, BLANK_STR, always_log)
 {
 }
 

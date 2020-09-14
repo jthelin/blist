@@ -2,6 +2,10 @@
 
 // #define EXTRA_DEBUG
 
+#if defined(EXTRA_DEBUG)
+#include <iostream>
+#endif
+
 std::string FileUtils::GetModificationDate(const std::filesystem::path& file_path)
 {
   time_t timestamp = FileUtils::FileCreationTimestamp(file_path);
@@ -27,9 +31,9 @@ std::string FileUtils::GetModificationDate(const std::filesystem::path& file_pat
   auto modTime = std::string(time_str);
 #if defined(EXTRA_DEBUG)
   std::cerr << "[" << modTime << "]"
-            << " c='" << modTime[modTime.length() - 1] << "'"
-            << " len = " << modTime.length() << std::endl;
+            << " c='" << modTime[modTime.size() - 1] << "'"
+            << " len = " << modTime.size() << std::endl;
 #endif
-  return modTime;
+  return std::move(modTime);
 }
 // End Member function ModificationDate
