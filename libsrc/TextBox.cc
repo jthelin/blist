@@ -58,8 +58,7 @@ void TextBox::PrintTo(std::ostream& s) const
   }
 
   // Decide on the length of the longest line in the text box.
-  for (auto& line : _text)
-  {
+  for (auto& line : _text) {
     text_len = std::max(text_len, line.size());
   }
 
@@ -85,8 +84,7 @@ void TextBox::PrintTo(std::ostream& s) const
   }
 
   // Output each line of the text message
-  for (auto& line : _text)
-  {
+  for (auto& line : _text) {
     for (size_t i = 1; i <= border_width; i++) {
       s << _box_char;
     }

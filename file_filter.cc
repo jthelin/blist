@@ -9,7 +9,7 @@
 
 static constexpr std::string_view prog_name = "file_filter";
 
-int filter_file(const std::filesystem::path& input_file, bool count_lines = true)
+static int filter_file(const std::filesystem::path& input_file, bool count_lines = true)
 {
   std::string   source;
   std::istream* p_input_stream;
@@ -19,13 +19,14 @@ int filter_file(const std::filesystem::path& input_file, bool count_lines = true
     source         = "stdin stream";
   }
   else {
+    const std::string file_name = input_file.generic_string();
     if (!std::filesystem::exists(input_file)) {
-      std::cerr << prog_name << ": ERROR: Input file not found '" << input_file.generic_string() << "'." << std::endl;
+      std::cerr << prog_name << ": ERROR: Input file not found '" << file_name << "'." << std::endl;
       return -1;
     }
-    ifs = std::ifstream(input_file);
+    ifs            = std::ifstream(input_file);
     p_input_stream = &ifs;
-    source         = "file '" + input_file.generic_string() + "'";
+    source         = std::string("file '" + file_name + "'");
   }
 
   std::unique_ptr<IFilter> counter;
@@ -40,15 +41,17 @@ int filter_file(const std::filesystem::path& input_file, bool count_lines = true
   std::cerr.flush();
   std::cout.flush();
 
-  int count = counter->main_loop();
+  auto count = counter->main_loop();
 
   std::cout.flush();
 
   if (count_lines) {
-    std::cout << "Read " << counter->result() << " lines from " << source << std::endl;
+    auto num_lines = counter->result();
+    std::cout << "Read " << num_lines << " lines from " << source << std::endl;
   }
   else {
-    std::cout << "Read " << counter->result() << " chars from " << source << std::endl;
+    auto num_chars = counter->result();
+    std::cout << "Read " << num_chars << " chars from " << source << std::endl;
   }
 
   std::cerr << "Main loop completed with count = " << count << std::endl;
@@ -56,7 +59,7 @@ int filter_file(const std::filesystem::path& input_file, bool count_lines = true
   return count;
 }
 
-int file_filter_main(int argc, char** argv)
+static int file_filter_main(int argc, char** argv)
 {
   std::filesystem::path input_file;
   bool                  count_lines = true; // Temp HACK

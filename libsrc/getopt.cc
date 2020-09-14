@@ -1,6 +1,6 @@
+#include <cstdint>
 #include <cstdio>
 #include <cstring>
-#include <cstdint>
 
 #include "getopt.h"
 

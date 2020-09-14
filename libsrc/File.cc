@@ -11,10 +11,7 @@
 
 class FilePrinter : public ILineStreamFilter {
 public:
-  FilePrinter(std::istream& ii, std::ostream& oo) :
-      ILineStreamFilter(ii, oo)
-  {
-  }
+  FilePrinter(std::ifstream& ii, std::ostream& oo) : ILineStreamFilter(ii, oo) {}
 
   void compute() override{/* pass through */};
 };
