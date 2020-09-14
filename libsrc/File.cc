@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
 #include "TraceEntryExit.h"
 #include "fileutil.h"
@@ -60,7 +61,9 @@ void File::PrintTo(std::ostream& s)
 {
   TraceEntryExit t("File", "PrintTo", _file.generic_string());
 
-  assert(s); // Output stream should always be open
+  if (!s.good()) {
+    throw std::invalid_argument("Output stream should always be open");
+  }
 
   if (this->Exists()) {
     // Copy file contents to output stream
