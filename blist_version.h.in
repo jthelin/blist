@@ -15,5 +15,4 @@
 
 #if defined(_WIN32)
 #pragma comment(compiler)
-#pragma comment(user, PROGRAM_INFO_GENERATED)
 #endif
