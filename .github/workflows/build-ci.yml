@@ -38,5 +38,7 @@ jobs:
         shell: bash
       - name: cmake build
         run: bash ./build.sh
-      - name: run tests
+      - name: Run tests
         run: bash -c "./test.sh --verbose"
+      - name: Test program execution
+        run: ./cmake-build/blist blist_version.h

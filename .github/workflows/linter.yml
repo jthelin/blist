@@ -3,14 +3,8 @@ name: Lint Code Base
 
 # https://github.com/marketplace/actions/super-linter
 
-# Start the job on all push
-on:
-  push:
-    branches-ignore:
-      - "master"
-  pull_request:
-    branches:
-      - master
+# Run the linter job for all pull requests
+on: pull_request
 
 jobs:
   build:
