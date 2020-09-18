@@ -18,6 +18,8 @@ INCLUDE(GNUInstallDirs)
 STRING(TIMESTAMP BUILD_DATE "%Y-%m-%d")
 STRING(TIMESTAMP BUILD_TIMESTAMP "%Y-%m-%d_%H:%M:%S")
 
+MESSAGE(STATUS "-- Build ${PROJECT_NAME} with build config = ${CMAKE_BUILD_TYPE}")
+
 # Google Test Framework
 INCLUDE(cmake/googletest.cmake)
 

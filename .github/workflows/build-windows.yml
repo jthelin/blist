@@ -1,0 +1,48 @@
+name: Build-Windows
+
+on: push
+
+env:
+  Build_Configuration: Release
+  Build_Directory: cmake-build
+  Install_Directory: cmake-install
+
+jobs:
+  build-windows:
+    name: Build-Windows
+
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: 'Prepare'
+        shell: cmd
+        run: |
+          mkdir ${{ env.Build_Directory }}
+          mkdir ${{ env.Install_Directory }}
+      - name: 'cmake generate'
+        shell: cmd
+        working-directory: ${{ env.Build_Directory }}
+        run: |
+          cmake --version
+          cmake .. -DCMAKE_BUILD_TYPE=${{ env.Build_Configuration }}
+      - name: 'cmake build'
+        shell: cmd
+        run: |
+          cmake --build ${{ env.Build_Directory }} --config ${{ env.Build_Configuration }}
+          dir /s ${{ env.Build_Directory }}\${{ env.Build_Configuration }}
+      - name: 'Run tests'
+        shell: cmd
+        working-directory: ${{ env.Build_Directory }}
+        run: |
+          ctest --config ${{ env.Build_Configuration }} --output-on-failure
+      - name: 'cmake install'
+        shell: cmd
+        run: |
+          cmake --install ${{ env.Build_Directory }} --config ${{ env.Build_Configuration }} --prefix ${{ env.Install_Directory }}
+          dir /s ${{ env.Install_Directory }}
+      - name: 'Test program execution'
+        shell: cmd
+        run: |
+          echo -- Run blist.exe
+          ${{ env.Install_Directory }}\bin\blist.exe blist_version.h
