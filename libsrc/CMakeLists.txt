@@ -6,3 +6,6 @@ FILE(GLOB lib_HDRS CONFIGURE_DEPENDS "*.h")
 ADD_LIBRARY(${PROJECT_NAME}_lib STATIC
     ${lib_HDRS}
     ${lib_SRCS})
+
+install(FILES ${lib_HDRS} DESTINATION include)
+install(TARGETS ${PROJECT_NAME}_lib DESTINATION lib)
