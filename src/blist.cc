@@ -2,16 +2,16 @@
 //
 // Output a text file to stdout (for redirection) preceded by a header identifying the file.
 
-#include <cstdlib>
-#include <iostream>
-
-#include "libsrc/File.h"
-#include "libsrc/TextBox.h"
-#include "libsrc/TraceEntryExit.h"
-#include "libsrc/getopt.h"
-
 #include "blist.h"
 #include "blist_version.h"
+
+#include <File.h>
+#include <TextBox.h>
+#include <TraceEntryExit.h>
+#include <getopt.h>
+
+#include <cstdlib>
+#include <iostream>
 
 /**
  * Show program usage message

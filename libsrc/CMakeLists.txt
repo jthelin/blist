@@ -1,0 +1,8 @@
+# Library
+
+FILE(GLOB lib_SRCS CONFIGURE_DEPENDS "*.cc")
+FILE(GLOB lib_HDRS CONFIGURE_DEPENDS "*.h")
+
+ADD_LIBRARY(${PROJECT_NAME}_lib STATIC
+    ${lib_HDRS}
+    ${lib_SRCS})

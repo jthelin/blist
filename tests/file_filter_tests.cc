@@ -45,7 +45,7 @@ TEST(file_filter_tests, ReadChars)
 
   std::cout << counter->result() << " characters read." << std::endl;
 
-  EXPECT_GE(counter->result(), 1000) << "Should have read some data.";
+  EXPECT_GE(counter->result(), 500) << "Should have read some data.";
   EXPECT_NE(rc, 0) << "Should not have got zero result code.";
 }
 

@@ -3,15 +3,13 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.12)
 SET(CMAKE_CXX_STANDARD 17)
 
 PROJECT(blist
-        VERSION 2.1.0
-        DESCRIPTION "Bulk list contents of text file(s) to stdout (for redirection), preceded by header block with file info"
-        HOMEPAGE_URL "https://github.com/jthelin/blist"
-        LANGUAGES CXX
-        )
+    VERSION 2.1.1
+    DESCRIPTION "Bulk list contents of text file(s) to stdout (for redirection), preceded by header block with file info"
+    HOMEPAGE_URL "https://github.com/jthelin/blist"
+    LANGUAGES CXX
+    )
 SET(PROJECT_AUTHOR "J.Thelin")
 SET(PROJECT_STATUS "")
-
-SET(LIB_NAME ${PROJECT_NAME}_lib)
 
 INCLUDE(GNUInstallDirs)
 
@@ -27,79 +25,34 @@ INCLUDE(cmake/googletest.cmake)
 INCLUDE(cmake/cmake-modules.cmake)
 
 # Enable Address Sanitizer in Debug builds
-IF (NOT (MSVC))
+IF(NOT (MSVC))
     string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address")
     string(APPEND CMAKE_LINKER_FLAGS_DEBUG " -fsanitize=address")
-ENDIF ()
-
-# Library
-
-FILE(GLOB lib_SRCS CONFIGURE_DEPENDS "libsrc/*.cc")
-FILE(GLOB lib_HDRS CONFIGURE_DEPENDS "libsrc/*.h")
-
-ADD_LIBRARY(${LIB_NAME} STATIC
-        ${lib_HDRS}
-        ${lib_SRCS})
-
-IF (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    ## string(APPEND CMAKE_CXX_FLAGS_DEBUG " -std=c++${CMAKE_CXX_STANDARD}")
-ENDIF ()
-
-# Applications
+ENDIF()
 
 # Burn version info into app header file.
 CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}_version.h.in
-        ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}_version.h)
+    ${CMAKE_CURRENT_SOURCE_DIR}/tmpl_version.h.in
+    ${PROJECT_SOURCE_DIR}/src/${PROJECT_NAME}_version.h)
 
-ADD_EXECUTABLE(${PROJECT_NAME}
-        blist.cc
-        blist.h
-        blist_version.h
-        ${lib_HDRS})
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${LIB_NAME})
-
-ADD_EXECUTABLE(file_filter
-        file_filter.cc
-        ${lib_HDRS})
-TARGET_LINK_LIBRARIES(file_filter ${LIB_NAME})
-
-INCLUDE(CppcheckTargets)
-add_cppcheck(${PROJECT_NAME} UNUSED_FUNCTIONS STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
-add_cppcheck(file_filter UNUSED_FUNCTIONS STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
+ADD_SUBDIRECTORY(libsrc)
+ADD_SUBDIRECTORY(src)
 
 # Testing
-
 ENABLE_TESTING()
-
-SET(TEST_EXE ${PROJECT_NAME}_test)
-
-FILE(GLOB test_SRCS CONFIGURE_DEPENDS "tests/*.cc")
-
-# Now simply link against gtest or gtest_main as needed.
-ADD_EXECUTABLE(${TEST_EXE} ${test_SRCS} ${lib_HDRS})
-TARGET_LINK_LIBRARIES(${TEST_EXE} gtest_main)
-TARGET_LINK_LIBRARIES(${TEST_EXE} ${LIB_NAME})
-
-ADD_TEST(run_blist_tests ${TEST_EXE})
-
-ADD_TEST(run_blist_exe blist "${PROJECT_SOURCE_DIR}/${PROJECT_NAME}_version.h")
-
-ADD_TEST(run_filter_exe file_filter "${PROJECT_SOURCE_DIR}/${PROJECT_NAME}_version.h")
+ADD_SUBDIRECTORY(tests)
 
 # Install
 
 INCLUDE(CMakePackageConfigHelpers)
 WRITE_BASIC_PACKAGE_VERSION_FILE("${PROJECT_NAME}ConfigVersion.cmake"
-        VERSION ${PROJECT_VERSION}
-        COMPATIBILITY SameMajorVersion)
-
-SET(INSTALL_TARGETS ${PROJECT_NAME} file_filter)
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion)
 
 # locations are provided by GNUInstallDirs
 INSTALL(TARGETS ${INSTALL_TARGETS}
-        EXPORT ${PROJECT_NAME}_Targets
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        )
+    EXPORT ${PROJECT_NAME}_Targets
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
