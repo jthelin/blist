@@ -16,10 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: List environment
+        shell: bash
         run: |
           echo "Runtime Environment" && env | sort
-        shell: bash
       - name: cmake version
+        shell: bash
         run: |
           cmake --version
           which gcc && echo gcc && gcc --version
@@ -31,14 +32,21 @@ jobs:
           which clang-10 && echo clang-10 && clang-10 --version
           which c++ && c++ --version
       - name: List build files
+        shell: bash
         run: |
           echo "Current User" && id
           echo "Current Directory" && pwd
           echo "Directory Listing - Current Directory" && ls -lhR ${PWD}
-        shell: bash
       - name: cmake build
-        run: bash ./build.sh
+        shell: bash
+        run: |
+          ./build.sh
+          ls -lhR ./cmake-build/_install
       - name: Run tests
-        run: bash -c "./test.sh --verbose"
+        shell: bash
+        run: |
+          ./test.sh --verbose
       - name: Test program execution
-        run: ./cmake-build/src/blist src/blist_version.h
+        shell: bash
+        run: |
+          ./cmake-build/_install/bin/blist src/blist_version.h

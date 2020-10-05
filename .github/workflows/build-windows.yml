@@ -30,7 +30,7 @@ jobs:
         shell: cmd
         run: |
           cmake --build ${{ env.Build_Directory }} --config ${{ env.Build_Configuration }}
-          dir /s ${{ env.Build_Directory }}\${{ env.Build_Configuration }}
+          dir /s ${{ env.Build_Directory }}\src\${{ env.Build_Configuration }}
       - name: 'Run tests'
         shell: cmd
         working-directory: ${{ env.Build_Directory }}
@@ -46,5 +46,4 @@ jobs:
         run: |
           echo -- Run blist.exe
           dir /s ${{ env.Build_Directory }}\bin
-          dir /s ${{ env.Build_Directory }}\src\${{ env.Build_Configuration }}
-          ${{ env.Build_Directory }}\src\${{ env.Build_Configuration }}\blist.exe src\blist_version.h
+          ${{ env.Install_Directory }}\blist.exe src\blist_version.h

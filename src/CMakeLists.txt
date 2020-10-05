@@ -30,7 +30,9 @@ ADD_TEST(run_filter_exe file_filter "${CMAKE_CURRENT_SOURCE_DIR}/blist_version.h
 
 # Install
 
-SET(INSTALL_TARGETS ${PROJECT_NAME}
+SET(INSTALL_TARGETS
     blist
     file_filter
     )
+
+install(TARGETS ${INSTALL_TARGETS} DESTINATION bin)
