@@ -5,7 +5,7 @@
 
 #include "gtest/gtest.h"
 
-#include "../blist.h"
+#include "../src/blist.h"
 
 TEST(blist_tests, Params)
 {
