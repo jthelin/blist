@@ -46,6 +46,5 @@ jobs:
         run: |
           echo -- Run blist.exe
           dir /s ${{ env.Build_Directory }}\bin
-          dir ${{ env.Build_Directory }}\src\
-          dir ${{ env.Build_Directory }}\src\Release\
-          ${{ env.Build_Directory }}\src\Release\blist.exe src\blist_version.h
+          dir /s ${{ env.Build_Directory }}\src\${{ env.Build_Configuration }}
+          ${{ env.Build_Directory }}\src\${{ env.Build_Configuration }}\blist.exe src\blist_version.h
