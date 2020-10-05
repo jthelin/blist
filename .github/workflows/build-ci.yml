@@ -41,4 +41,4 @@ jobs:
       - name: Run tests
         run: bash -c "./test.sh --verbose"
       - name: Test program execution
-        run: ./cmake-build/blist blist_version.h
+        run: ./cmake-build/src/blist src/blist_version.h
