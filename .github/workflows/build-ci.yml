@@ -49,4 +49,4 @@ jobs:
       - name: Test program execution
         shell: bash
         run: |
-          ./cmake-build/_install/bin/blist src/blist_version.h
+          ./cmake-build/_install/bin/blist  src/blist_version.h
