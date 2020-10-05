@@ -24,11 +24,13 @@ add_cppcheck(file_filter UNUSED_FUNCTIONS STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
 
 ENABLE_TESTING()
 
-ADD_TEST(run_blist_exe blist "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}_version.h")
+ADD_TEST(run_blist_exe blist "${CMAKE_CURRENT_SOURCE_DIR}/blist_version.h")
 
-ADD_TEST(run_filter_exe file_filter "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}_version.h")
+ADD_TEST(run_filter_exe file_filter "${CMAKE_CURRENT_SOURCE_DIR}/blist_version.h")
 
 # Install
 
-SET(INSTALL_TARGETS ${PROJECT_NAME} blist)
-SET(INSTALL_TARGETS ${PROJECT_NAME} file_filter)
+SET(INSTALL_TARGETS ${PROJECT_NAME}
+    blist
+    file_filter
+    )
