@@ -1,5 +1,7 @@
 #include "fileutil.h"
 
+#include <array>
+
 // #define EXTRA_DEBUG
 
 #if defined(EXTRA_DEBUG)
@@ -12,14 +14,14 @@ std::string FileUtils::GetModificationDate(const std::filesystem::path& file_pat
 
   struct tm time {
   };
-  char time_str[26];
+  auto time_str = std::array<char, 26>();
 
 #if defined(_MSC_VER)
   localtime_s(&time, &timestamp);
-  asctime_s(time_str, sizeof time_str, &time);
+  asctime_s(time_str.data(), time_str.size(), &time);
 #else
   localtime_r(&timestamp, &time);
-  asctime_r(&time, time_str);
+  asctime_r(&time, time_str.data());
 #endif
 
   // Clean any non-printable characters.
@@ -28,7 +30,7 @@ std::string FileUtils::GetModificationDate(const std::filesystem::path& file_pat
       time_str[i] = ' ';
     }
   }
-  auto modTime = std::string(time_str);
+  auto modTime = std::string(time_str.data(), time_str.size());
 #if defined(EXTRA_DEBUG)
   std::cerr << "[" << modTime << "]"
             << " c='" << modTime[modTime.size() - 1] << "'"
