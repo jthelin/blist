@@ -20,6 +20,6 @@ TARGET_LINK_LIBRARIES(${TEST_EXE}
     ${LIB_NAME}
     )
 
-ADD_TEST(NAME run_blist_tests
+ADD_TEST(NAME ${LIB_NAME}_tests
         COMMAND $<TARGET_FILE:${TEST_EXE}>
 )

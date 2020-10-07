@@ -10,7 +10,7 @@
 #include "../libsrc/TraceEntryExit.h"
 #include "../libsrc/fileutil.h"
 
-static const std::string prog_name = "file_filter_tests";
+static const std::string prog_name = "lib_tests";
 
 TEST(lib_tests, TraceLevelOverride)
 {
@@ -106,6 +106,17 @@ TEST(lib_tests, file_utils_dirname)
   EXPECT_EQ(FileUtils::dirname("c:\\windows\\path.ext"), "c:/windows/");
   EXPECT_EQ(FileUtils::dirname("c:\\windows\\no_filename\\"), "c:/windows/no_filename/");
 #endif
+}
+
+TEST(lib_tests, file_utils_GetModificationDate)
+{
+  std::filesystem::path file = "cmake_install.cmake";
+  EXPECT_TRUE(std::filesystem::exists(file.string()));
+
+  auto str = FileUtils::GetModificationDate(file);
+
+  std::cout << "GetModificationDate " << file << " = [" << str << "]" << std::endl;
+  EXPECT_FALSE(str.empty());
 }
 
 #if defined(__clang__)
