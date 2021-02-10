@@ -25,3 +25,5 @@ if (NOT googletest_POPULATED)
             ${googletest_BINARY_DIR}
             EXCLUDE_FROM_ALL)
 endif ()
+
+set(googletest_include ${googletest_SOURCE_DIR}/googletest/include/)

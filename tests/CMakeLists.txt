@@ -8,9 +8,16 @@ SET(LIB_NAME ${PROJECT_NAME}_lib)
 FILE(GLOB test_SRCS CONFIGURE_DEPENDS "*.cc")
 
 # Now simply link against gtest or gtest_main as needed.
-ADD_EXECUTABLE(${TEST_EXE} ${test_SRCS} ${lib_HDRS})
-TARGET_INCLUDE_DIRECTORIES(${TEST_EXE} PRIVATE ../libsrc)
-TARGET_LINK_LIBRARIES(${TEST_EXE} gtest_main)
-TARGET_LINK_LIBRARIES(${TEST_EXE} ${LIB_NAME})
+ADD_EXECUTABLE(${TEST_EXE}
+    ${test_SRCS}
+    ${lib_HDRS}
+    )
+TARGET_INCLUDE_DIRECTORIES(${TEST_EXE} PRIVATE
+    ${googletest_include}
+    )
+TARGET_LINK_LIBRARIES(${TEST_EXE}
+    gtest_main
+    ${LIB_NAME}
+    )
 
 ADD_TEST(run_blist_tests ${TEST_EXE})

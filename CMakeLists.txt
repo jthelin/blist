@@ -1,15 +1,15 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.12)
 
-SET(CMAKE_CXX_STANDARD 17)
-
 PROJECT(blist
-    VERSION 2.1.1
+    VERSION 2.1.2
     DESCRIPTION "Bulk list contents of text file(s) to stdout (for redirection), preceded by header block with file info"
     HOMEPAGE_URL "https://github.com/jthelin/blist"
     LANGUAGES CXX
     )
 SET(PROJECT_AUTHOR "J.Thelin")
 SET(PROJECT_STATUS "")
+
+SET(CMAKE_CXX_STANDARD 17)
 
 INCLUDE(GNUInstallDirs)
 
