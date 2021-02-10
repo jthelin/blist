@@ -3,6 +3,7 @@
 #include <chrono>
 #include <ctime>
 #include <filesystem>
+#include <stdexcept>
 #include <string>
 
 /**
@@ -31,6 +32,9 @@ public:
    */
   static time_t FileCreationTimestamp(const std::filesystem::path& file_path)
   {
+    if (!std::filesystem::exists(file_path)) {
+      throw std::invalid_argument("File not found: " + file_path.lexically_normal().string());
+    }
     std::filesystem::file_time_type tm = std::filesystem::last_write_time(file_path);
 
 #if defined(__APPLE__)
