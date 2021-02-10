@@ -7,6 +7,8 @@ SET(LIB_NAME ${PROJECT_NAME}_lib)
 
 FILE(GLOB test_SRCS CONFIGURE_DEPENDS "*.cc")
 
+INCLUDE(ApprovalTests)
+
 # Now simply link against gtest or gtest_main as needed.
 ADD_EXECUTABLE(${TEST_EXE}
     ${test_SRCS}
@@ -14,6 +16,7 @@ ADD_EXECUTABLE(${TEST_EXE}
     )
 TARGET_INCLUDE_DIRECTORIES(${TEST_EXE} PRIVATE
     ${googletest_include}
+    ${ApprovalTests_include}
     )
 TARGET_LINK_LIBRARIES(${TEST_EXE}
     gtest_main
