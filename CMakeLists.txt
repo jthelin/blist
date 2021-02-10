@@ -18,11 +18,13 @@ STRING(TIMESTAMP BUILD_TIMESTAMP "%Y-%m-%d_%H:%M:%S")
 
 MESSAGE(STATUS "-- Build ${PROJECT_NAME} with build config = ${CMAKE_BUILD_TYPE}")
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
 # Google Test Framework
-INCLUDE(cmake/googletest.cmake)
+INCLUDE(googletest)
 
 # Cmake Modules
-INCLUDE(cmake/cmake-modules.cmake)
+INCLUDE(cmake-modules)
 
 # Enable Address Sanitizer in Debug builds
 IF(NOT (MSVC))
