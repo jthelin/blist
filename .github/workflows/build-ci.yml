@@ -37,7 +37,7 @@ jobs:
         run: |
           echo "Current User" && id
           echo "Current Directory" && pwd
-          echo "Directory Listing - Current Directory" && ls -lhR ${PWD}
+          echo "Directory Listing - Current Directory" && ls -lhR "${PWD}"
       - name: cmake build
         shell: bash
         run: |
