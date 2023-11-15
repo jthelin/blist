@@ -40,9 +40,9 @@ struct ProgInfo {
  */
 inline std::ostream& ModuleSignOn(const std::string& progName,
                                   const std::string& progVer,
-                                  const std::string& progReleaseStatus = nullptr,
-                                  const std::string& progAuthor        = nullptr,
-                                  const std::string& progDate          = nullptr)
+                                  const std::string& progReleaseStatus = "",
+                                  const std::string& progAuthor        = "",
+                                  const std::string& progDate          = "")
 {
   std::stringstream out;
 
@@ -66,7 +66,7 @@ inline std::ostream& ModuleSignOn(const std::string& progName,
  * ProgName, ProgVer, ProgReleaseStatus, ProgAuthor, and ProgDate,
  * which should be defined by the main program.
  */
-inline std::ostream& ProgramSignOn(const ProgInfo& program_info, bool announce = false)
+inline std::ostream& ProgramSignOn(const ProgInfo& program_info, const bool announce = false)
 {
   auto& out = ModuleSignOn(
     program_info.Name, program_info.Version, program_info.ReleaseStatus, program_info.Author, program_info.ReleaseDate);

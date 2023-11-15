@@ -5,7 +5,6 @@
 #include <vector>
 
 struct blist_params {
-public:
   constexpr static int DEF_TAB_SIZE = 4;
 
   bool _debug = false;
@@ -25,11 +24,11 @@ int blist_main(int argc, char** argv);
 // Function: NL - Output a new line onto a stream.
 inline std::ostream& NL(std::ostream& s)
 {
-  return (s.put('\n'));
+  return s.put('\n');
 }
 
 // Function: FF - Output a form feed (new page) onto a stream.
 inline std::ostream& FF(std::ostream& s)
 {
-  return (s.put('\f'));
+  return s.put('\f');
 }
