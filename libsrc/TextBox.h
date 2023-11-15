@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -32,7 +31,7 @@ public:
    * @param box_type - The style of box outline and padding to use.
    * @param box_char - The box outline character to use.
    */
-  explicit TextBox(std::vector<std::string> text_lines, BoxStyle box_type = STANDARD, char box_char = '*');
+  explicit TextBox(const std::vector<std::string>& text_lines, BoxStyle box_type = STANDARD, char box_char = '*');
 
   // Copy constructors.
   TextBox(const TextBox&) = default;
