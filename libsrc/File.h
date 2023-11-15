@@ -8,7 +8,7 @@
 // End ---------------------------------------------------------------------
 
 #include <filesystem>
-#include <iostream>
+#include <iosfwd>
 #include <string>
 #include <vector>
 
@@ -27,7 +27,7 @@ public:
   /*!
    * Destructor for File object
    */
-  ~File();
+  virtual ~File();
 
   // Copy constructors for File object.
   File(const File&) = default;
@@ -62,7 +62,7 @@ public:
   {
     f.PrintTo(s);
     return s;
-  };
+  }
 
 private:
   std::filesystem::path _file;
