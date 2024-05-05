@@ -10,9 +10,10 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 INCLUDE(FetchContent)
 
 FetchContent_Declare(googletest
-        URL https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-        URL_HASH SHA256=9dc9157a9a1551ec7a7e43daea9a694a0bb5fb8bec81235d8a1e6ef64c716dcb
+        URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz
+        URL_HASH SHA256=8ad598c73ad796e0d8280b082cebd82a630d73e73cd3c70057938a6501bba5d7
         SOURCE_DIR googletest-src
+        DOWNLOAD_EXTRACT_TIMESTAMP True
         )
 
 FetchContent_GetProperties(googletest)
