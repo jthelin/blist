@@ -12,7 +12,15 @@ std::string FileUtils::GetModificationDate(const std::filesystem::path& file_pat
 {
   auto ftime = FileCreationTimestamp(file_path);
 
-  time_t    timestamp = decltype(ftime)::clock::to_time_t(ftime);
+  time_t timestamp;
+#if defined(__APPLE__)
+  static_assert(std::is_same_v<decltype(ftime)::clock, std::filesystem::_FilesystemClock>);
+  timestamp = decltype(ftime)::clock::to_time_t(ftime);
+#else
+  auto time_point = std::chrono::system_clock::time_point{ftime.time_since_epoch()};
+  timestamp       = std::chrono::system_clock::to_time_t(time_point);
+#endif
+
   struct tm time {};
   char      time_str[26];
 
