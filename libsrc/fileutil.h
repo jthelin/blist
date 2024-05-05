@@ -50,7 +50,7 @@ public:
     if (file_name.empty()) {
       return "";
     }
-    return file_name.lexically_normal();
+    return file_name.lexically_normal().string();
   }
   static std::string dirname(const std::filesystem::path& file_path)
   {
@@ -61,6 +61,6 @@ public:
     if (dir_path.empty()) {
       return ".";
     }
-    return dir_path.lexically_normal();
+    return dir_path.lexically_normal().string();
   }
 };
