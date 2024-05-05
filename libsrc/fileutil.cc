@@ -8,8 +8,9 @@
 
 std::string FileUtils::GetModificationDate(const std::filesystem::path& file_path)
 {
-  time_t timestamp = FileUtils::FileCreationTimestamp(file_path);
+  auto ftime = FileCreationTimestamp(file_path);
 
+  time_t    timestamp = decltype(ftime)::clock::to_time_t(ftime);
   struct tm time {};
   char      time_str[26];
 
@@ -23,11 +24,15 @@ std::string FileUtils::GetModificationDate(const std::filesystem::path& file_pat
 
   // Clean any non-printable characters.
   for (size_t i = 0; i < sizeof time_str; i++) {
+    if (time_str[i] == '\0') {
+      break;
+    }
     if (!isprint(time_str[i])) {
-      time_str[i] = '_';
+      time_str[i] = ' ';
     }
   }
-  auto modTime = std::string(time_str, sizeof time_str);
+
+  auto modTime = std::string(time_str, strnlen(time_str, sizeof time_str));
 #if defined(EXTRA_DEBUG)
   std::cerr << "[" << modTime << "]" << std::endl;
 #endif

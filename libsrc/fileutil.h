@@ -29,17 +29,9 @@ public:
    * @param file_path - The file to be inspected.
    * @return Return creation timestamp of the specified file.
    */
-  static time_t FileCreationTimestamp(const std::filesystem::path& file_path)
+  static std::filesystem::file_time_type FileCreationTimestamp(const std::filesystem::path& file_path)
   {
-    std::filesystem::file_time_type tm = std::filesystem::last_write_time(file_path);
-
-#if defined(__APPLE__)
-    static_assert(std::is_same_v<decltype(tm)::clock, std::filesystem::_FilesystemClock>);
-    return decltype(tm)::clock::to_time_t(tm);
-#else
-    auto time_point = std::chrono::system_clock::time_point{tm.time_since_epoch()};
-    return std::chrono::system_clock::to_time_t(time_point);
-#endif
+    return std::filesystem::last_write_time(file_path);
   }
 
   /**
