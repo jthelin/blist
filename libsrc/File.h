@@ -29,13 +29,6 @@ public:
    */
   virtual ~File();
 
-  // Copy constructors for File object.
-  File(const File&) = default;
-  File& operator=(const File&) = default;
-  // Move constructors for File object.
-  File(File&&)  = default;
-  File& operator=(File&&) = default;
-
   /*! ModificationDate - Return a string containing the modification date of a File. */
   [[nodiscard]] std::string ModificationDate() const;
 
@@ -52,7 +45,7 @@ public:
   }
 
   /*! Return the full path name of this file. */
-  [[nodiscard]] std::string FullName() const { return _file.generic_string(); }
+  [[nodiscard]] std::string FullName() const { return std::filesystem::absolute(_file).lexically_normal(); }
 
   /*! PrintTo - Outputs the contents of the file to the specified output stream. */
   virtual void PrintTo(std::ostream& s);

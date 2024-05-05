@@ -94,7 +94,7 @@ void TextBox::PrintTo(std::ostream& s) const
 
     // Output this line of the text left justified in a field
     // big enough to take the longest line in the TextBox.
-    s << std::setw(static_cast<int>(text_len)) << std::setiosflags(std::ios::left) << line;
+    s << std::left << std::setw(static_cast<int>(text_len)) << line;
 
     for (size_t i = 1; i <= hgap_width; i++) {
       s << SPACE;
