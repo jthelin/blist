@@ -1,5 +1,7 @@
 #include "fileutil.h"
 
+#include <string.h>
+
 // #define EXTRA_DEBUG
 
 #if defined(EXTRA_DEBUG)
