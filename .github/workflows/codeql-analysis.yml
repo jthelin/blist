@@ -3,6 +3,9 @@ name: CodeQL
 
 on: pull_request
 
+permissions:
+  actions: read
+
 jobs:
   analyze:
     name: Analyze
@@ -12,7 +15,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # We must fetch at least the immediate parents so that if this is a pull request then we can checkout the head
+          # We must fetch at least the immediate parents
+          # so that if this is a pull request then we can checkout the head
           fetch-depth: 2
 
       # If this run was triggered by a pull request event, then checkout
@@ -35,7 +39,8 @@ jobs:
       # Command-line programs to run using the OS shell.
       # https://git.io/JvXDl
 
-      # If the Autobuild fails above, remove it and uncomment the following three lines and modify them (or add more)
+      # If the Autobuild fails above, remove it
+      # and uncomment the following three lines and modify them (or add more)
       # to build your code if your project uses a compiled language.
 
       #- run: |

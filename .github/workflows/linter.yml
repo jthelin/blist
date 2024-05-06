@@ -8,6 +8,9 @@ name: Lint Code Base
 # Run the linter job for all pull requests
 on: pull_request
 
+permissions:
+  actions: read
+
 jobs:
   build:
     name: Lint Code Base

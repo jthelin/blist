@@ -3,6 +3,9 @@ name: Build-CI
 
 on: pull_request
 
+permissions:
+  actions: read
+
 jobs:
   build:
     strategy:
