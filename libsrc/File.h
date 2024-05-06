@@ -48,7 +48,7 @@ public:
 
   /*! Return the full path name of this file. */
   [[nodiscard]] std::string FullName() const {
-    return std::filesystem::absolute(_file).lexically_normal().string();
+    return std::filesystem::absolute(_file).lexically_normal().generic_string();
   }
 
   /*! PrintTo - Outputs the contents of the file to the specified output stream. */
