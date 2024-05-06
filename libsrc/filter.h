@@ -33,7 +33,7 @@ public:
 
   virtual int read() = 0; // Pure virtual function - sub-class must implement.
 
-  virtual void write() {}
+  virtual void write() {} // Default = No output.
 
   virtual void compute() {}
 
