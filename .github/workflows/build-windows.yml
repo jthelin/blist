@@ -9,10 +9,15 @@ env:
   Install_Directory: cmake-install
 
 jobs:
-  build-windows:
-    name: Build-Windows
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-2019, windows-2022 ]
 
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
+
+    name: Build-${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v4
