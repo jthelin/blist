@@ -1,6 +1,6 @@
 #include <cstdint>
 #include <cstdio>
-#include <cstring>  // For function strchr
+#include <cstring> // For function strchr
 
 #include "getopt.h"
 

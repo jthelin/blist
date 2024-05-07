@@ -10,7 +10,7 @@ int IFilter::main_loop()
 {
   IFilter* p = this;
 
-  for (;;)  // Loop forever, until breakout condition is hit.
+  for (;;) // Loop forever, until breakout condition is hit.
   {
     try {
       p->start();
@@ -18,20 +18,20 @@ int IFilter::main_loop()
         p->compute();
         p->write();
       }
-      return p->result();  // Exit loop
+      return p->result(); // Exit loop
     }
     catch (IFilter::ERetry& m) {
       std::cerr << m.message() << std::endl;
       int i = p->retry();
       if (i) {
-        return -i;  // Exit loop
+        return -i; // Exit loop
       }
     }
     catch (...) {
       std::cerr << "ERROR: Fatal filter error" << std::endl;
-      return -10;  // Exit loop
+      return -10; // Exit loop
     }
-  }  // End forever loop
+  } // End forever loop
 
   // Not reached.
 }

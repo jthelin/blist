@@ -35,11 +35,8 @@ TraceEntryExit::TraceEntryExit(const std::string& class_name, const std::string&
 TraceEntryExit::TraceEntryExit(const std::string& class_name,
                                const std::string& function_name,
                                const std::string& arguments,
-                               const bool  always_log) :
-    className(class_name),
-    functionName(function_name),
-    args(arguments),
-    alwaysLog(always_log)
+                               const bool         always_log) :
+    className(class_name), functionName(function_name), args(arguments), alwaysLog(always_log)
 {
   if (alwaysLog || logEntryExits) {
     TRACE_ENTER(this->className, this->functionName, this->args)

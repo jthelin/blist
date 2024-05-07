@@ -31,9 +31,9 @@ public:
 
   virtual int retry() { return num_retries; }
 
-  virtual int read() = 0;  // Pure virtual function - sub-class must implement.
+  virtual int read() = 0; // Pure virtual function - sub-class must implement.
 
-  virtual void write() {}  // Default = No output.
+  virtual void write() {} // Default = No output.
 
   virtual void compute() {}
 
@@ -60,7 +60,7 @@ protected:
   bool          bWriteOutput;
 
 public:
-  void compute() override = 0;  // Pure virtual function - sub-class must implement.
+  void compute() override = 0; // Pure virtual function - sub-class must implement.
 
   int read() override
   {
@@ -98,7 +98,7 @@ protected:
   bool                                bWriteOutput;
 
 public:
-  void compute() override = 0;  // Pure virtual function - sub-class must implement.
+  void compute() override = 0; // Pure virtual function - sub-class must implement.
 
   int read() override
   {

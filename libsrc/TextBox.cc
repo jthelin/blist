@@ -13,7 +13,7 @@
 
 #include "TextBox.h"
 
-#include <algorithm>  // For std::max
+#include <algorithm> // For std::max
 #include <iomanip>
 
 TextBox::TextBox(const std::string& text_line, const BoxStyle box_type, const char box_char) :
