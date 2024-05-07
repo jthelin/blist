@@ -34,10 +34,7 @@ std::string FileUtils::GetModificationDate(const std::filesystem::path& file_pat
 #endif
 
   // Clean any non-printable characters.
-  for (size_t i = 0; i < time_str_raw.size(); i++) {
-    if (time_str_raw[i] == '\0') {
-      break;
-    }
+  for (size_t i = 0; i < time_str_raw.size() && time_str_raw[i] != '\0'; i++) {
     if (!isprint(time_str_raw[i])) {
       time_str_raw[i] = ' ';
     }
