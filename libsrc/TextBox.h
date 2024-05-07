@@ -34,10 +34,10 @@ public:
   explicit TextBox(const std::vector<std::string>& text_lines, BoxStyle box_type = STANDARD, char box_char = '*');
 
   // Copy constructors.
-  TextBox(const TextBox&)            = default;
+  TextBox(const TextBox&) = default;
   TextBox& operator=(const TextBox&) = default;
   // Move constructors.
-  TextBox(TextBox&&)            = default;
+  TextBox(TextBox&&) = default;
   TextBox& operator=(TextBox&&) = default;
 
   ~TextBox() = default;
