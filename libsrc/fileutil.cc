@@ -1,13 +1,33 @@
 #include "fileutil.h"
 
 #include <array>
+#include <chrono>
 #include <cstring>
+#include <ctime>
+#include <stdexcept>
 
 // #define EXTRA_DEBUG
 
 #if defined(EXTRA_DEBUG)
 #include <iostream>
 #endif
+
+bool FileUtils::IsFileReadable(const std::filesystem::path& file_path)
+{
+  if (!std::filesystem::exists(file_path)) {
+    return false;
+  }
+  auto status = std::filesystem::status(file_path);
+  return (status.permissions() & std::filesystem::perms::owner_read) != std::filesystem::perms::none;
+}
+
+std::filesystem::file_time_type FileUtils::FileCreationTimestamp(const std::filesystem::path& file_path)
+{
+  if (!std::filesystem::exists(file_path)) {
+    throw std::invalid_argument("File not found: " + file_path.lexically_normal().string());
+  }
+  return std::filesystem::last_write_time(file_path);
+}
 
 std::string FileUtils::GetModificationDate(const std::filesystem::path& file_path)
 {
@@ -47,3 +67,26 @@ std::string FileUtils::GetModificationDate(const std::filesystem::path& file_pat
   return modTime;
 }
 // End Member function ModificationDate
+
+std::string FileUtils::basename(const std::filesystem::path& file_path)
+{
+  std::filesystem::path file_name;
+  if (!file_path.empty()) {
+    file_name = file_path.filename();
+  }
+  if (file_name.empty()) {
+    return "";
+  }
+  return file_name.lexically_normal().generic_string();
+}
+std::string FileUtils::dirname(const std::filesystem::path& file_path)
+{
+  std::filesystem::path dir_path;
+  if (!file_path.empty()) {
+    dir_path = std::filesystem::path{file_path}.remove_filename();
+  }
+  if (dir_path.empty()) {
+    return ".";
+  }
+  return dir_path.lexically_normal().generic_string();
+}
