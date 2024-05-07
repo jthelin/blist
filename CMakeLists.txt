@@ -23,7 +23,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 # Google Test Framework
 INCLUDE(googletest)
 
-# Cmake Modules
+# Cmake Modules - For add_cppcheck
 INCLUDE(cmake-modules)
 
 # Enable Address Sanitizer in Debug builds
