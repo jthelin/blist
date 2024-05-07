@@ -8,27 +8,37 @@ name: Lint Code Base
 # Run the linter job for all pull requests
 on: pull_request
 
-permissions:
-  actions: read
+permissions: { }
 
 jobs:
   build:
     name: Lint Code Base
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: read
+      # To report GitHub Actions status checks
+      statuses: write
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
 
       ################################
       # Run Linter against code base #
       ################################
       - name: Lint Code Base
-        uses: github/super-linter@v5
+        uses: github/super-linter@v6
         env:
           VALIDATE_ALL_CODEBASE: false
           # Disable cpplint checks, use clang-format only.
           VALIDATE_CPP: false
           VALIDATE_JSCPD: false
           DEFAULT_BRANCH: main
+          # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
