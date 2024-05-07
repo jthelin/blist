@@ -33,9 +33,7 @@ public:
   [[nodiscard]] std::string ModificationDate() const;
 
   /*! FileSize - Return a File's size in bytes. */
-  [[nodiscard]] size_t FileSize() const {
-    return std::filesystem::file_size(_file);
-  }
+  [[nodiscard]] size_t FileSize() const { return std::filesystem::file_size(_file); }
 
   /*! FileInfo - Return list of strings containing the file info details. */
   [[nodiscard]] std::vector<std::string> FileInfo() const;
@@ -47,7 +45,8 @@ public:
   }
 
   /*! Return the full path name of this file. */
-  [[nodiscard]] std::string FullName() const {
+  [[nodiscard]] std::string FullName() const
+  {
     return std::filesystem::absolute(_file).lexically_normal().generic_string();
   }
 

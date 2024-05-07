@@ -21,7 +21,7 @@ std::string FileUtils::GetModificationDate(const std::filesystem::path& file_pat
   timestamp       = std::chrono::system_clock::to_time_t(time_point);
 #endif
 
-  struct tm time {};
+  struct tm time = {};
   char      time_str[26];
 
 #if defined(_MSC_VER)
