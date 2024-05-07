@@ -111,12 +111,19 @@ TEST(lib_tests, file_utils_dirname)
 TEST(lib_tests, file_utils_GetModificationDate)
 {
   std::filesystem::path file = "cmake_install.cmake";
-  EXPECT_TRUE(std::filesystem::exists(file.string()));
+  EXPECT_TRUE(std::filesystem::exists(file));
 
   auto str = FileUtils::GetModificationDate(file);
 
   std::cout << "GetModificationDate " << file << " = [" << str << "]" << std::endl;
   EXPECT_FALSE(str.empty());
+}
+
+TEST(lib_tests, file_utils_GetModificationDate_file_not_found)
+{
+  std::filesystem::path file = "no-file.non";
+  EXPECT_FALSE(std::filesystem::exists(file));
+  EXPECT_THROW(FileUtils::GetModificationDate(file), std::invalid_argument);
 }
 
 #if defined(__clang__)
