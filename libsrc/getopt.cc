@@ -22,7 +22,7 @@ static constexpr const char* BLANK_MSG = "";
 * getopt --
 *      Parse argc/argv argument vector.
 */
-int getopt(int argc, char* const argv[], const char* ostr)
+int getopt(const int argc, char* const argv[], const char* ostr)
 {
   /* option letter processing */
   static char* place = const_cast<char*>(BLANK_MSG);

@@ -16,7 +16,7 @@ static int filter_file(const std::filesystem::path& input_file, bool count_lines
     source         = "stdin stream";
   }
   else {
-    const std::string file_name = std::filesystem::absolute(input_file).lexically_normal().generic_string();
+    const std::string file_name = std::filesystem::absolute(input_file).lexically_normal().string();
     if (!std::filesystem::exists(input_file)) {
       std::cerr << prog_name << ": ERROR: Input file not found '" << file_name << "'." << std::endl;
       return -1;
@@ -28,11 +28,11 @@ static int filter_file(const std::filesystem::path& input_file, bool count_lines
 
   std::unique_ptr<IFilter> counter;
   if (count_lines) {
-    std::cerr << prog_name << ": Reading from " << source << " and count lines." << std::endl;
+    std::cerr << prog_name << ": Reading from " << source << " and counting lines." << std::endl;
     counter = std::make_unique<LineCounter>(*p_input_stream);
   }
   else {
-    std::cerr << prog_name << ": Reading from " << source << " and count characters." << std::endl;
+    std::cerr << prog_name << ": Reading from " << source << " and counting characters." << std::endl;
     counter = std::make_unique<CharCounter>(*p_input_stream);
   }
   std::cerr.flush();
@@ -56,7 +56,7 @@ static int filter_file(const std::filesystem::path& input_file, bool count_lines
   return count;
 }
 
-static int file_filter_main(int argc, char** argv)
+static int file_filter_main(const int argc, char** argv)
 {
   std::filesystem::path input_file;
   bool                  count_lines = true; // Temp HACK
@@ -70,7 +70,7 @@ static int file_filter_main(int argc, char** argv)
   return num_lines > 0 ? 0 : num_lines;
 } // End function file_filter_main
 
-int main(int argc, char* argv[])
+int main(const int argc, char* argv[])
 {
   int rc = -1;
   try {

@@ -80,14 +80,14 @@ bool ParseArguments(int argc, char* const* argv, blist_params& params)
 
   // Gather file names
   for (auto i = opt_ind; i < argc; i++) {
-    char* file_name = argv[i];
+    std::string file_name = argv[i];
     if (params._debug) {
       std::cerr << "File argument '" << file_name << "'\n";
     }
-    params.files.emplace_back(std::string(file_name));
+    params.files.push_back(file_name);
   }
 
-  return (arg_error_count == 0);
+  return arg_error_count == 0;
 }
 
 /**
@@ -124,7 +124,7 @@ void ProcessFile(File& f, const blist_params& params, std::ostream& out = std::c
   }
 }
 
-int blist_main(int argc, char** argv)
+int blist_main(const int argc, char** argv)
 {
   // Sign-on message
   ProgramSignOn(PROGRAM_INFO, true);
@@ -161,7 +161,7 @@ int blist_main(int argc, char** argv)
   exit(0);
 }
 
-int main(int argc, char* argv[])
+int main(const int argc, char* argv[])
 {
   return blist_main(argc, argv);
 }

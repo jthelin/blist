@@ -71,7 +71,10 @@ public:
    * @param arguments - Function arguments info, if any.
    * @param always_log - Override the logEntryExists flag for this trace object.
    */
-  TraceEntryExit(std::string class_name, std::string function_name, std::string arguments, bool always_log = false);
+  TraceEntryExit(const std::string& class_name,
+                 const std::string& function_name,
+                 const std::string& arguments,
+                 bool               always_log = false);
 
   /**
    * Destructor: ~TraceEntryExit

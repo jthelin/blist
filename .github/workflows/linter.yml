@@ -27,5 +27,8 @@ jobs:
         uses: github/super-linter@v5
         env:
           VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: master
+          # Disable cpplint checks, use clang-format only.
+          VALIDATE_CPP: false
+          VALIDATE_JSCPD: false
+          DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

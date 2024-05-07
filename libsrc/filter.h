@@ -27,17 +27,17 @@ public:
     virtual const char* message() { return nullptr; }
   };
 
-  virtual void start(){};
+  virtual void start() {}
 
   virtual int retry() { return num_retries; }
 
   virtual int read() = 0; // Pure virtual function - sub-class must implement.
 
-  virtual void write(){}; // Default = No output.
+  virtual void write() {} // Default = No output.
 
-  virtual void compute(){};
+  virtual void compute() {}
 
-  virtual int result() { return 0; };
+  virtual int result() { return 0; }
 
   virtual ~IFilter() = default;
 
@@ -66,18 +66,18 @@ public:
   {
     is.get(c);
     return is.good();
-  };
+  }
 
   void write() override
   {
     if (bWriteOutput) {
       os.put(c);
     }
-  };
+  }
 
-  [[maybe_unused]] ICharStreamFilter(std::istream& ii, std::ostream& oo) : is(ii), os(oo), bWriteOutput(true){};
+  [[maybe_unused]] ICharStreamFilter(std::istream& ii, std::ostream& oo) : is(ii), os(oo), bWriteOutput(true) {}
 
-  explicit ICharStreamFilter(std::istream& ii) : is(ii), bWriteOutput(false){};
+  explicit ICharStreamFilter(std::istream& ii) : is(ii), bWriteOutput(false) {}
 };
 // End class ICharStreamFilter
 
@@ -104,24 +104,24 @@ public:
   {
     is.getline(buff.data(), MAX_LINE_SIZE, EOL);
     return is.good();
-  };
+  }
 
   void write() override
   {
     if (bWriteOutput) {
       os << buff.data() << EOL;
     }
-  };
+  }
 
   ILineStreamFilter(std::istream& ii, std::ostream& oo) : is(ii), os(oo), bWriteOutput(true)
   {
     std::memset(buff.data(), '\0', buff.size());
-  };
+  }
 
   explicit ILineStreamFilter(std::istream& ii) : is(ii), bWriteOutput(false)
   {
     std::memset(buff.data(), '\0', buff.size());
-  };
+  }
 };
 // End class ILineStreamFilter
 
@@ -129,9 +129,9 @@ class LineCounter : public ILineStreamFilter {
   int num_lines = 0;
 
 public:
-  void compute() override { num_lines++; };
+  void compute() override { num_lines++; }
 
-  int result() override { return num_lines; };
+  int result() override { return num_lines; }
 
   explicit LineCounter(std::istream& ii) : ILineStreamFilter(ii) {}
 };
@@ -140,9 +140,9 @@ class CharCounter : public ICharStreamFilter {
   int num_chars = 0;
 
 public:
-  void compute() override { num_chars++; };
+  void compute() override { num_chars++; }
 
-  int result() override { return num_chars; };
+  int result() override { return num_chars; }
 
   explicit CharCounter(std::istream& ii) : ICharStreamFilter(ii) {}
 };

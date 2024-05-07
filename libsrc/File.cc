@@ -12,10 +12,13 @@ class FilePrinter : public ILineStreamFilter {
 public:
   FilePrinter(std::ifstream& ii, std::ostream& oo) : ILineStreamFilter(ii, oo) {}
 
-  void compute() override{/* pass through */};
+  void compute() override
+  {
+    // Action = No-Op -- Just pass-through each file text line.
+  }
 };
 
-File::File(const std::string& file_path, bool log_failures) : _file(std::filesystem::path(file_path))
+File::File(const std::string& file_path, const bool log_failures) : _file(std::filesystem::path(file_path))
 {
   TraceEntryExit t("File", "<constructor>", _file.generic_string());
 

@@ -13,15 +13,16 @@
 
 #include "TextBox.h"
 
+#include <algorithm> // For std::max
 #include <iomanip>
 
-TextBox::TextBox(const std::string& text_line, BoxStyle box_type, char box_char) :
-    TextBox(std::vector<std::string>{text_line}, box_type, box_char)
+TextBox::TextBox(const std::string& text_line, const BoxStyle box_type, const char box_char) :
+    TextBox(std::vector{text_line}, box_type, box_char)
 {
 }
 
-TextBox::TextBox(std::vector<std::string> text_lines, const BoxStyle box_type, const char box_char) :
-    _text(std::move(text_lines)), _box_type(box_type), _box_char(box_char)
+TextBox::TextBox(const std::vector<std::string>& text_lines, const BoxStyle box_type, const char box_char) :
+    _text(text_lines), _box_type(box_type), _box_char(box_char)
 {
   if (!isprint(_box_char)) {
     // Specified box character is unprintable,
@@ -58,7 +59,7 @@ void TextBox::PrintTo(std::ostream& s) const
   }
 
   // Decide on the length of the longest line in the text box.
-  for (auto& line : _text) {
+  for (const auto& line : _text) {
     text_len = std::max(text_len, line.size());
   }
 
@@ -84,7 +85,7 @@ void TextBox::PrintTo(std::ostream& s) const
   }
 
   // Output each line of the text message
-  for (auto& line : _text) {
+  for (const auto& line : _text) {
     for (size_t i = 1; i <= border_width; i++) {
       s << _box_char;
     }
@@ -94,7 +95,7 @@ void TextBox::PrintTo(std::ostream& s) const
 
     // Output this line of the text left justified in a field
     // big enough to take the longest line in the TextBox.
-    s << std::setw(static_cast<int>(text_len)) << std::setiosflags(std::ios::left) << line;
+    s << std::left << std::setw(static_cast<int>(text_len)) << line;
 
     for (size_t i = 1; i <= hgap_width; i++) {
       s << SPACE;

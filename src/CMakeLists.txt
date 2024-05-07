@@ -25,9 +25,13 @@ add_cppcheck(file_filter UNUSED_FUNCTIONS STYLE POSSIBLE_ERROR FAIL_ON_WARNINGS)
 
 ENABLE_TESTING()
 
-ADD_TEST(run_blist_exe blist "${CMAKE_CURRENT_SOURCE_DIR}/blist_version.h")
+ADD_TEST(NAME run_blist_exe
+        COMMAND $<TARGET_FILE:blist> "${CMAKE_CURRENT_SOURCE_DIR}/blist_version.h"
+)
 
-ADD_TEST(run_filter_exe file_filter "${CMAKE_CURRENT_SOURCE_DIR}/blist_version.h")
+ADD_TEST(NAME run_filter_exe
+        COMMAND $<TARGET_FILE:file_filter> "${CMAKE_CURRENT_SOURCE_DIR}/blist_version.h"
+)
 
 # Install
 

@@ -1,7 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.12)
 
 PROJECT(blist
-    VERSION 2.1.2
+    VERSION 2.1.3
     DESCRIPTION "Bulk list contents of text file(s) to stdout (for redirection), preceded by header block with file info"
     HOMEPAGE_URL "https://github.com/jthelin/blist"
     LANGUAGES CXX
@@ -23,7 +23,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 # Google Test Framework
 INCLUDE(googletest)
 
-# Cmake Modules
+# Cmake Modules - For add_cppcheck
 INCLUDE(cmake-modules)
 
 # Enable Address Sanitizer in Debug builds
