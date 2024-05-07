@@ -59,7 +59,7 @@ static int filter_file(const std::filesystem::path& input_file, bool count_lines
 static int file_filter_main(const int argc, char** argv)
 {
   std::filesystem::path input_file;
-  bool                  count_lines = true; // Temp HACK
+  bool                  count_lines = true;  // Temp HACK
 
   if (argc >= 1) {
     input_file = argv[1];
@@ -68,7 +68,7 @@ static int file_filter_main(const int argc, char** argv)
   auto num_lines = filter_file(input_file, count_lines);
 
   return num_lines > 0 ? 0 : num_lines;
-} // End function file_filter_main
+}  // End function file_filter_main
 
 int main(const int argc, char* argv[])
 {
@@ -82,4 +82,4 @@ int main(const int argc, char* argv[])
               << " " << e.what() << std::endl;
   }
   return rc;
-} // End function main
+}  // End function main

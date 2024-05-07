@@ -107,16 +107,16 @@ void ProcessFile(File& f, const blist_params& params, std::ostream& out = std::c
   // Output file header
   out << TextBox(file_info, TextBox::BASIC);
 
-  out << NL; // Blank line
+  out << NL;  // Blank line
 
   // Output file contents
   f.PrintTo(out);
 
   if (params.useFormFeed) {
-    out << FF; // Start new page
+    out << FF;  // Start new page
   }
   else {
-    out << std::endl; // Just insert a blank line
+    out << std::endl;  // Just insert a blank line
   }
 
   if (params.flush) {
@@ -154,7 +154,7 @@ int blist_main(const int argc, char** argv)
       // Error has already been logged.
       exit(1);
     }
-  } // End process each file
+  }  // End process each file
 
   std::cout.flush();
 

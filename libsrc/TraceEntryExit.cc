@@ -25,20 +25,20 @@ bool TraceEntryExit::logEntryExits = false;
     std::clog << "\n"; /* Stream flush not required, so don't use std::endl */                                         \
   }
 
-static const std::string BLANK_STR;
+static const char* BLANK_STR = "";
 
 TraceEntryExit::TraceEntryExit(const std::string& class_name, const std::string& function_name, const bool always_log) :
     TraceEntryExit(class_name, function_name, BLANK_STR, always_log)
 {
 }
 
-TraceEntryExit::TraceEntryExit(std::string class_name,
-                               std::string function_name,
-                               std::string arguments,
+TraceEntryExit::TraceEntryExit(const std::string& class_name,
+                               const std::string& function_name,
+                               const std::string& arguments,
                                const bool  always_log) :
-    className(std::move(class_name)),
-    functionName(std::move(function_name)),
-    args(std::move(arguments)),
+    className(class_name),
+    functionName(function_name),
+    args(arguments),
     alwaysLog(always_log)
 {
   if (alwaysLog || logEntryExits) {
