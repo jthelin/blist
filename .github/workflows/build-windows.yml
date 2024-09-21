@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ windows-2019, windows-2022 ]
+        os: [windows-2019, windows-2022]
 
     runs-on: ${{ matrix.os }}
 
@@ -24,33 +24,33 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: 'Prepare'
+      - name: "Prepare"
         shell: cmd
         run: |
           mkdir ${{ env.Build_Directory }}
           mkdir ${{ env.Install_Directory }}
-      - name: 'cmake generate'
+      - name: "cmake generate"
         shell: cmd
         working-directory: ${{ env.Build_Directory }}
         run: |
           cmake --version
           cmake .. -DCMAKE_BUILD_TYPE=${{ env.Build_Configuration }}
-      - name: 'cmake build'
+      - name: "cmake build"
         shell: cmd
         run: |
           cmake --build ${{ env.Build_Directory }} --config ${{ env.Build_Configuration }}
           dir /s ${{ env.Build_Directory }}\src\${{ env.Build_Configuration }}
-      - name: 'Run tests'
+      - name: "Run tests"
         shell: cmd
         working-directory: ${{ env.Build_Directory }}
         run: |
           ctest -C ${{ env.Build_Configuration }} --output-on-failure
-      - name: 'cmake install'
+      - name: "cmake install"
         shell: cmd
         run: |
           cmake --install ${{ env.Build_Directory }} --config ${{ env.Build_Configuration }} --prefix ${{ env.Install_Directory }}
           dir /s ${{ env.Install_Directory }}
-      - name: 'Test program execution'
+      - name: "Test program execution"
         shell: cmd
         run: |
           echo -- Run blist.exe
