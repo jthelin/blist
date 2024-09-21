@@ -1,6 +1,6 @@
 #if defined(__clang__)
 #pragma clang diagnostic push
-#pragma ide diagnostic   ignored "cert-err58-cpp"
+#pragma ide diagnostic ignored "cert-err58-cpp"
 #endif
 
 #include "gtest/gtest.h"
@@ -10,7 +10,7 @@
 #include "../libsrc/TraceEntryExit.h"
 #include "../libsrc/fileutil.h"
 
-static const std::string prog_name = "file_filter_tests";
+static const std::string prog_name = "lib_tests";
 
 TEST(lib_tests, TraceLevelOverride)
 {
@@ -106,6 +106,24 @@ TEST(lib_tests, file_utils_dirname)
   EXPECT_EQ(FileUtils::dirname("c:\\windows\\path.ext"), "c:/windows/");
   EXPECT_EQ(FileUtils::dirname("c:\\windows\\no_filename\\"), "c:/windows/no_filename/");
 #endif
+}
+
+TEST(lib_tests, file_utils_GetModificationDate)
+{
+  std::filesystem::path file = "cmake_install.cmake";
+  EXPECT_TRUE(std::filesystem::exists(file));
+
+  auto str = FileUtils::GetModificationDate(file);
+
+  std::cout << "GetModificationDate " << file << " = [" << str << "]" << std::endl;
+  EXPECT_FALSE(str.empty());
+}
+
+TEST(lib_tests, file_utils_GetModificationDate_file_not_found)
+{
+  std::filesystem::path file = "no-file.non";
+  EXPECT_FALSE(std::filesystem::exists(file));
+  EXPECT_THROW(FileUtils::GetModificationDate(file), std::invalid_argument);
 }
 
 #if defined(__clang__)
