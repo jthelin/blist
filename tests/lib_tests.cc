@@ -1,6 +1,6 @@
 #if defined(__clang__)
 #pragma clang diagnostic push
-#pragma ide diagnostic   ignored "cert-err58-cpp"
+#pragma ide diagnostic ignored "cert-err58-cpp"
 #endif
 
 #include "gtest/gtest.h"
